@@ -1,14 +1,14 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import {Orders} from './Orders/Orders';
-import {Appointments} from './Appointments/Appointments';
-import {Customers} from './Customers/Customers';
-import {Galleries} from './Galleries/Galleries';
-import {Receipts} from './Receipts/Receipts';
-import {Dashboard} from './Dashboard';
-import {Dispatches} from './Dispatches/Dispatches';
-import {Profile} from '../Profile';
-import {Login} from '../Login';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Orders } from './Orders/Orders';
+import { Appointments } from './Appointments/Appointments';
+import { Customers } from './Customers/Customers';
+import { Galleries } from './Galleries/Galleries';
+import { Receipts } from './Receipts/Receipts';
+import { Dashboard } from './Dashboard';
+import { Dispatches } from './Dispatches/Dispatches';
+import { Profile } from '../Profile';
+import { Login } from '../Login';
 import {
   ScreenNamesMarketing,
   ScreenNamesGeneral,
@@ -17,8 +17,26 @@ import {
 export const AppNavigatorMarketing = () => {
   const Stack = createStackNavigator();
   return (
-    <Stack.Navigator>
-      <Stack.Screen name={ScreenNamesGeneral.LOGIN} component={Login} />
+    <Stack.Navigator
+      initialRouteName={ScreenNamesGeneral.LOGIN}
+      headerMode='none'
+      cardStyle={{
+        backgroundColor: 'transparent'
+      }}
+      transitionConfig={
+        transitionSpec = {
+          duration: 100,
+        }
+      }
+
+    >
+      <Stack.Screen name={ScreenNamesGeneral.LOGIN} component={Login}
+        navigationOptions={
+          header = null,
+          gesturesEnabled = false
+
+        }
+      />
       <Stack.Screen
         name={ScreenNamesMarketing.DASHBOARD}
         component={Dashboard}
@@ -42,6 +60,6 @@ export const AppNavigatorMarketing = () => {
         component={Galleries}
       />
       <Stack.Screen name={ScreenNamesMarketing.MYPROFILE} component={Profile} />
-    </Stack.Navigator>
+    </Stack.Navigator >
   );
 };
