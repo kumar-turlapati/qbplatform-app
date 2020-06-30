@@ -262,19 +262,23 @@ export const Dashboard = ({ navigation }) => {
             <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%', backgroundColor: 'black', opacity: 0.5 }} />
             <View style={{ height: '100%', width: '80%', backgroundColor: 'white' }} >
               <View style={{ marginTop: 24, flex: 1 }} >
-                <View style={{ flexDirection: 'row', marginLeft: 14, }}>
-                  <Image style={styles.imageStyle} />
-                  <Text style={styles.imageTextStyle}>UN</Text>
-                  <View>
-                    <Text style={styles.nameStyles}>User Name</Text>
-                    <Text style={styles.emailStyles}>username@gmail.com</Text>
+                <TouchableOpacity activeOpacity={1} onPress={() => {
+                  navigation.navigate(ScreenNamesMarketing.MYPROFILE)
+                }}>
+                  <View style={{ flexDirection: 'row', marginLeft: 14, }}>
+                    <Image style={styles.imageStyle} />
+                    <Text style={styles.imageTextStyle}>UN</Text>
+                    <View>
+                      <Text style={styles.nameStyles}>User Name</Text>
+                      <Text style={styles.emailStyles}>username@gmail.com</Text>
+                    </View>
                   </View>
-                </View>
+                </TouchableOpacity>
                 {renderListView()}
               </View>
               <View style={{ borderTopColor: 'rgba(0,0,0,0.1)', borderTopWidth: 1, }}>
                 <TouchableOpacity activeOpacity={1} onPress={() => {
-                  setShowSideMenu(false)
+                  navigation.pop(ScreenNamesMarketing.LOGIN)
                 }}>
                   <View >
                     <View style={{ marginLeft: 21, marginBottom: 27, marginTop: 24, flexDirection: 'row', }}>

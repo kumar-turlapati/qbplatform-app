@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import { Orders } from './Orders/Orders';
 import { Appointments } from './Appointments/Appointments';
 import { Customers } from './Customers/Customers';
@@ -20,6 +20,16 @@ export const AppNavigatorMarketing = () => {
     <Stack.Navigator
       initialRouteName={ScreenNamesGeneral.LOGIN}
       headerMode='none'
+      screenOptions={({ route, navigation }) => ({
+        headerShown: false,
+        gestureEnabled: false,
+        cardOverlayEnabled: false,
+        // headerStatusBarHeight:
+        //   navigation.dangerouslyGetState().routes.indexOf(route) > 0
+        //     ? 0
+        //     : undefined,
+        // ...TransitionPresets.ModalPresentationIOS,
+      })}
       cardStyle={{
         backgroundColor: 'transparent'
       }}
@@ -31,11 +41,6 @@ export const AppNavigatorMarketing = () => {
 
     >
       <Stack.Screen name={ScreenNamesGeneral.LOGIN} component={Login}
-        navigationOptions={
-          header = null,
-          gesturesEnabled = false
-
-        }
       />
       <Stack.Screen
         name={ScreenNamesMarketing.DASHBOARD}
@@ -59,7 +64,11 @@ export const AppNavigatorMarketing = () => {
         name={ScreenNamesMarketing.GALLERIES}
         component={Galleries}
       />
-      <Stack.Screen name={ScreenNamesMarketing.MYPROFILE} component={Profile} />
+      <Stack.Screen name={ScreenNamesMarketing.MYPROFILE} component={Profile}
+      // navigationOptions={
+      //   gesturesEnabled = false
+      // }
+      />
     </Stack.Navigator >
   );
 };

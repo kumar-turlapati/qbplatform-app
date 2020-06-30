@@ -56,3 +56,7 @@ export const MenuIcon = (props) => (
 export const LogoutIcon = (props) => (
   <IconBase {...props} source={require('./logout.png')} resizeMode={'contain'} />
 );
+
+export const BackHome = (props) => (
+  <IconBase {...props} source={require('./Back.png')} resizeMode={'contain'} />
+);
