@@ -9,6 +9,7 @@ const { height, width } = Dimensions.get('window')
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'rgb(245,245,245)'
   },
   headerTextStyles: {
     marginTop: 54,
@@ -25,6 +26,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0, 0, 0, 0.3)'
   },
   iconStyles: {
     width: 22,
@@ -191,6 +194,7 @@ export const Dashboard = ({ navigation }) => {
 
   const rowPressed = (index) => {
     console.log('pressed', index)
+    setShowSideMenu(false)
     switch (index) {
       case 0:
         navigation.navigate(ScreenNamesMarketing.APPOINTMENTS)
@@ -263,6 +267,7 @@ export const Dashboard = ({ navigation }) => {
             <View style={{ height: '100%', width: '80%', backgroundColor: 'white' }} >
               <View style={{ marginTop: 24, flex: 1 }} >
                 <TouchableOpacity activeOpacity={1} onPress={() => {
+                  setShowSideMenu(false)
                   navigation.navigate(ScreenNamesMarketing.MYPROFILE)
                 }}>
                   <View style={{ flexDirection: 'row', marginLeft: 14, }}>
