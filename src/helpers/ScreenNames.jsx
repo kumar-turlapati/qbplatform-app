@@ -7,6 +7,8 @@ export const ScreenNamesMarketing = {
   CUSTOMERS: 'Customers',
   GALLERIES: 'Galleries',
   MYPROFILE: 'MyProfile',
+  ORDERPRODUCTSEARCH: 'OrdersProductSearch',
+  ORDERPRODUCTDETAILS: 'OrdersProductDetails'
 };
 
 export const ScreenNamesGeneral = {

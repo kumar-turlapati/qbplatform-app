@@ -60,3 +60,19 @@ export const LogoutIcon = (props) => (
 export const BackHome = (props) => (
   <IconBase {...props} source={require('./Back.png')} resizeMode={'contain'} />
 );
+
+export const SearchIcon = (props) => (
+  <IconBase {...props} style={{ width: 17, height: 17 }} source={require('./SearchIcon.png')} resizeMode={'contain'} />
+);
+
+export const BarCodeIcon = (props) => (
+  <IconBase {...props} style={{ width: 23, height: 23 }} source={require('./BarCode.png')} resizeMode={'contain'} />
+);
+
+export const SideArrow = (props) => (
+  <IconBase {...props} source={require('./sideArrow.png')} resizeMode={'contain'} />
+);
+
+export const SearchBlackIcon = (props) => (
+  <IconBase {...props} source={require('./searchBlackIcon.png')} resizeMode={'contain'} />
+);

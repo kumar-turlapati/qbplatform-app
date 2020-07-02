@@ -9,6 +9,9 @@ import { Dashboard } from './Dashboard';
 import { Dispatches } from './Dispatches/Dispatches';
 import { Profile } from '../Profile';
 import { Login } from '../Login';
+import { OrdersProductSearch } from './Orders/OrdersProductSearch'
+import { OrdersProductDetails } from './Orders/OrdersProductDetails'
+
 import {
   ScreenNamesMarketing,
   ScreenNamesGeneral,
@@ -23,7 +26,7 @@ export const AppNavigatorMarketing = () => {
       screenOptions={({ route, navigation }) => ({
         headerShown: false,
         gestureEnabled: false,
-        cardOverlayEnabled: false,
+        // cardOverlayEnabled: true,
         // headerStatusBarHeight:
         //   navigation.dangerouslyGetState().routes.indexOf(route) > 0
         //     ? 0
@@ -40,8 +43,7 @@ export const AppNavigatorMarketing = () => {
       }
 
     >
-      <Stack.Screen name={ScreenNamesGeneral.LOGIN} component={Login}
-      />
+      <Stack.Screen name={ScreenNamesGeneral.LOGIN} component={Login} />
       <Stack.Screen
         name={ScreenNamesMarketing.DASHBOARD}
         component={Dashboard}
@@ -64,10 +66,18 @@ export const AppNavigatorMarketing = () => {
         name={ScreenNamesMarketing.GALLERIES}
         component={Galleries}
       />
-      <Stack.Screen name={ScreenNamesMarketing.MYPROFILE} component={Profile}
-      // navigationOptions={
-      //   gesturesEnabled = false
-      // }
+      <Stack.Screen name={ScreenNamesMarketing.MYPROFILE} component={Profile} />
+      <Stack.Screen name={ScreenNamesMarketing.ORDERPRODUCTSEARCH} component={OrdersProductSearch}
+        options={{
+          title: ScreenNamesMarketing.MYPROFILE,
+          cardOverlayEnabled: true,
+          headerStatusBarHeight: 0,
+          ...TransitionPresets.ModalPresentationIOS,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.ORDERPRODUCTDETAILS}
+        component={OrdersProductDetails}
       />
     </Stack.Navigator >
   );

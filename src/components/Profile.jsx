@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, Dimensions, Image, Alert, TextInput } from 'react-native';
-import { BackHome, } from '../icons/Icons';
+import { Text, StyleSheet, View, TouchableOpacity, Dimensions, Image, Alert, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import CommonHeader from "./MarketingExecutive/UI/CommonHeader";
 
 const { height, width } = Dimensions.get('window')
 
@@ -9,44 +9,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'rgb(245,245,245)'
-  },
-  headerTextStyles: {
-    marginTop: 54,
-    height: 20,
-    fontSize: 17,
-    lineHeight: 22,
-    fontWeight: '600',
-    marginLeft: -20
-  },
-  headerStyles: {
-    width: width,
-    height: 88,
-    backgroundColor: 'white',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.3)'
-  },
-  iconStyles: {
-    height: 21,
-    width: 13,
-    marginTop: 8,
-  },
-  iconViewStyles: {
-    height: 44,
-    width: 55,
-    marginLeft: 8,
-    marginTop: 49,
-    flexDirection: 'row',
-  },
-  homeIconStyles: {
-    fontSize: 17,
-    lineHeight: 22,
-    letterSpacing: -0.408,
-    color: '#0081CE',
-    marginLeft: 4,
-    marginTop: 7
   },
   nameViewStyles: {
     backgroundColor: 'white'
@@ -77,33 +39,24 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 22,
     letterSpacing: -0.408,
+  },
+  subHeaderTextStyle: {
+    height: 38,
+    width: '100%',
+    backgroundColor: '#EFEFF4',
+    fontSize: 13,
+    lineHeight: 18,
+    letterSpacing: -0.078,
+    textTransform: 'uppercase',
+    color: 'rgba(60, 60, 67, 0.6)',
+    paddingLeft: 16,
+    paddingTop: 14,
+    paddingBottom: 6
   }
 })
 
 export const Profile = ({ navigation }) => {
   const [selectPicture, setSelectPicture] = useState('');
-
-  const renderHeader = () => {
-    return (
-      <View style={styles.headerStyles}>
-        <TouchableOpacity activeOpacity={1} onPress={() => {
-          navigation.goBack()
-        }}>
-          <View style={styles.iconViewStyles}>
-            <BackHome style={styles.iconStyles} />
-            <Text style={styles.homeIconStyles}>Home</Text>
-          </View>
-        </TouchableOpacity>
-        <Text style={styles.headerTextStyles}>Profile</Text>
-        <TouchableOpacity activeOpacity={1} onPress={() => {
-          console.log('update')
-        }}>
-          <Text style={[styles.headerTextStyles, { marginRight: 26, color: '#0081CE', height: 44 }]}>Update</Text>
-        </TouchableOpacity>
-
-      </View>
-    );
-  }
 
   const renderProfilePicName = () => {
     return (
@@ -124,7 +77,7 @@ export const Profile = ({ navigation }) => {
         }} />
         <TextInput
           style={{
-            height: 40,
+            height: 45,
             marginTop: 0,
             marginLeft: 16,
             marginRight: 0,
@@ -139,7 +92,7 @@ export const Profile = ({ navigation }) => {
           autoCorrect={false}
         />
         <View style={{
-          marginTop: 5,
+          marginTop: 0,
           height: 13,
           marginLeft: 16,
           borderTopColor: 'rgba(0,0,0,0.1)',
@@ -213,10 +166,147 @@ export const Profile = ({ navigation }) => {
     );
   }
 
+  const renderPhoneNumer = () => {
+    return (
+      <View>
+        <Text style={styles.subHeaderTextStyle}>PHONE NUMBER</Text>
+        <View style={{
+          backgroundColor: 'black', opacity: 0.1, marginTop: 0, height: 1, margin: 0,
+        }} />
+        <TextInput
+          style={{
+            height: 45,
+            marginBottom: 0,
+            color: 'black',
+            fontSize: 14,
+            lineHeight: 22,
+            letterSpacing: -0.408,
+            backgroundColor: 'white',
+            paddingLeft: 16
+          }}
+          editable
+          placeholder='+91 90000 12345'
+          autoCorrect={false}
+        />
+        <View style={{
+          height: 13,
+          margin: 0,
+          borderTopColor: 'rgba(0,0,0,0.1)',
+          borderTopWidth: 1,
+        }} />
+      </View >
+    );
+  }
+
+  const renderPassword = () => {
+    return (
+      <View>
+        <Text style={styles.subHeaderTextStyle}>Password</Text>
+        <View style={{
+          backgroundColor: 'black', opacity: 0.1, marginTop: 0, height: 1, margin: 0,
+        }} />
+        <TextInput
+          style={{
+            height: 45,
+            marginBottom: 0,
+            color: 'black',
+            fontSize: 14,
+            lineHeight: 22,
+            letterSpacing: -0.408,
+            backgroundColor: 'white',
+            paddingLeft: 16
+          }}
+          editable
+          placeholder='Password'
+          autoCorrect={false}
+          secureTextEntry={true}
+        />
+        <View style={{
+          height: 13,
+          margin: 0,
+          borderTopColor: 'rgba(0,0,0,0.1)',
+          borderTopWidth: 1,
+        }} />
+      </View >
+    );
+  }
+
+  const renderChangePassword = () => {
+    return (
+      <View>
+        <Text style={styles.subHeaderTextStyle}>Change password</Text>
+        <View style={{
+          backgroundColor: 'black', opacity: 0.1, marginTop: 0, height: 1, margin: 0,
+        }} />
+        <TextInput
+          style={{
+            height: 45,
+            marginBottom: 0,
+            color: 'black',
+            fontSize: 14,
+            lineHeight: 22,
+            letterSpacing: -0.408,
+            backgroundColor: 'white',
+            paddingLeft: 16
+          }}
+          editable
+          placeholder='Enter New Password'
+          autoCorrect={false}
+          secureTextEntry={true}
+        />
+        <View style={{
+          height: 13,
+          margin: 0,
+          borderTopColor: 'rgba(0,0,0,0.1)',
+          borderTopWidth: 1,
+        }} />
+        <TextInput
+          style={{
+            height: 45,
+            marginBottom: 0,
+            color: 'black',
+            fontSize: 14,
+            lineHeight: 22,
+            letterSpacing: -0.408,
+            backgroundColor: 'white',
+            paddingLeft: 16
+          }}
+          editable
+          placeholder='Repeat New Password'
+          autoCorrect={false}
+          secureTextEntry={true}
+        />
+        <View style={{
+          height: 13,
+          margin: 0,
+          borderTopColor: 'rgba(0,0,0,0.1)',
+          borderTopWidth: 1,
+        }} />
+      </View >
+    );
+  }
+
   return (
-    <View style={styles.container}>
-      {renderHeader()}
-      {renderProfilePicName()}
-    </View>
+    <ScrollView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : null}
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={Platform.select({ ios: 0, android: 500 })}
+      >
+        {/* <View style={styles.container}> */}
+        <CommonHeader
+          mainViewHeading={'Profile'}
+          leftSideText={'Home'}
+          rightSideText={'Update'}
+          onPressLeftButton={() => { navigation.goBack() }}
+          onPressRightButton={() => { console.log('Update button pressed') }}
+        />
+        {renderProfilePicName()}
+        {renderPhoneNumer()}
+        {renderPassword()}
+        {renderChangePassword()}
+        {/* </View> */}
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
