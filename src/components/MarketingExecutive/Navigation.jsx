@@ -11,6 +11,9 @@ import { Profile } from '../Profile';
 import { Login } from '../Login';
 import { OrdersProductSearch } from './Orders/OrdersProductSearch'
 import { OrdersProductDetails } from './Orders/OrdersProductDetails'
+import { OrderCartDetails } from './Orders/OrderCartDetails'
+import { OrderAvailabilityCheck } from './Orders/OrderAvailabilityCheck'
+import { OrderProductDeliveryStatus } from './Orders/OrderProductDeliveryStatus'
 
 import {
   ScreenNamesMarketing,
@@ -78,6 +81,18 @@ export const AppNavigatorMarketing = () => {
       <Stack.Screen
         name={ScreenNamesMarketing.ORDERPRODUCTDETAILS}
         component={OrdersProductDetails}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.ORDERCARTDETAILS}
+        component={OrderCartDetails}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.ORDERAVAILABILITYCHECK}
+        component={OrderAvailabilityCheck}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.ORDERPRODUCTDELIVERYSTATUS}
+        component={OrderProductDeliveryStatus}
       />
     </Stack.Navigator >
   );

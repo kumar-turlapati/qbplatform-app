@@ -76,3 +76,15 @@ export const SideArrow = (props) => (
 export const SearchBlackIcon = (props) => (
   <IconBase {...props} source={require('./searchBlackIcon.png')} resizeMode={'contain'} />
 );
+
+export const DeleteIcon = (props) => (
+  <IconBase {...props} source={require('./Delete.png')} resizeMode={'contain'} />
+);
+
+export const SearchBlueIcon = (props) => (
+  <IconBase {...props} source={require('./searchBlue.png')} resizeMode={'contain'} />
+);
+
+export const AddIcon = (props) => (
+  <IconBase {...props} source={require('./Plus.png')} resizeMode={'contain'} />
+);

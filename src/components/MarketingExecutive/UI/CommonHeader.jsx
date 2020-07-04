@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { BackHome } from '../../../icons/Icons';
+import { BackHome, SearchBlueIcon, AddIcon } from '../../../icons/Icons';
 
 const { height, width } = Dimensions.get('window')
 
@@ -53,11 +53,29 @@ const styles = StyleSheet.create({
         marginRight: 26,
         color: '#0081CE',
         height: 44
+    },
+    iconTouchStyle: {
+        width: 40,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 5
+    },
+    rightIconViewStyle: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        marginTop: 45,
+        marginRight: 5
     }
 })
 
 
-export default CommonHeader = ({ mainViewHeading, leftSideText, rightSideText, onPressLeftButton, onPressRightButton }) => {
+export default CommonHeader = ({ mainViewHeading, leftSideText, rightSideText, onPressLeftButton, onPressRightButton,
+    rightIcon,
+    onPressSearchIcon,
+    onPressPlusIcon
+}) => {
 
     const renderHeader = () => {
         return (
@@ -71,11 +89,26 @@ export default CommonHeader = ({ mainViewHeading, leftSideText, rightSideText, o
                     </View>
                 </TouchableOpacity>
                 <Text style={styles.headerTextStyles}>{mainViewHeading}</Text>
-                <TouchableOpacity activeOpacity={1} onPress={() => {
-                    onPressRightButton()
-                }}>
-                    <Text style={styles.rightTextStyle}>{rightSideText}</Text>
-                </TouchableOpacity>
+                {rightIcon ?
+                    <View style={styles.rightIconViewStyle}>
+                        <TouchableOpacity style={styles.iconTouchStyle} activeOpacity={1} onPress={() => {
+                            onPressSearchIcon()
+                        }}>
+                            <SearchBlueIcon style={{ width: 17, height: 17 }} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.iconTouchStyle} activeOpacity={1} onPress={() => {
+                            onPressPlusIcon()
+                        }}>
+                            <AddIcon style={{ width: 14, height: 15 }} />
+                        </TouchableOpacity>
+                    </View>
+                    :
+                    <TouchableOpacity activeOpacity={1} onPress={() => {
+                        onPressRightButton()
+                    }}>
+                        <Text style={styles.rightTextStyle}>{rightSideText}</Text>
+                    </TouchableOpacity>
+                }
 
             </View>
         );
