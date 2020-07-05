@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Dimensions, FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
 import { SideArrow } from '../../../icons/Icons';
+import CommonDialogView from '../UI/CommonDialogView';
 import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
 
 const { height, width } = Dimensions.get('window')
@@ -79,28 +80,22 @@ const styles = StyleSheet.create({
 const orderdata = [
   {
     name: 'Yashwanth Rana',
-    id: '23456789',
-    status: ''
+    id: 'ID 23456789',
+    status: 'Accepted'
   },
   {
-    name: 'Yashwanth Rana',
-    id: '23456799',
-    status: ''
+    name: 'Suraj Chouhan',
+    id: 'ID 23456799',
+    status: 'Approved'
   },
   {
-    name: 'Yashwanth Rana',
-    id: '2345670',
+    name: 'Suraj Chouhan',
+    id: 'ID 23456799',
     status: 'Shipped'
-  },
-  {
-    name: 'Yashwanth Rana',
-    id: '23456725',
-    status: ''
   }
 ]
 
-export const DispatchCustomerList = ({ navigation, route }) => {
-  const { name, fromCustomer } = route.params;
+export const ReceiptOrderList = ({ navigation }) => {
 
   const renderHeader = () => {
     return (
@@ -108,8 +103,8 @@ export const DispatchCustomerList = ({ navigation, route }) => {
         mainViewHeading={'Orders'}
         leftSideText={'Back'}
         onPressLeftButton={() => { navigation.goBack() }}
-        shareIcon={fromCustomer}
         onShareIconPress={() => { }}
+        shareIcon={true}
       />
     )
   }
@@ -118,17 +113,18 @@ export const DispatchCustomerList = ({ navigation, route }) => {
     return (
       <>
         <TouchableOpacity activeOpacity={1} onPress={() => {
-          navigation.navigate(ScreenNamesMarketing.DISPATCHDETAILS, { name: name, invoiceNumber: rowData.id, status: rowData.status, fromCustomer: fromCustomer })
+          navigation.navigate(ScreenNamesMarketing.RECEIPTORDERDETAILS, { name: rowData.name, invoiceNumber: rowData.id, status: rowData.status })
+
         }}>
           <View style={styles.rowView}>
             <View>
               <Text
                 style={styles.textStyle}>
-                {name}
+                {rowData.name}
               </Text>
               <Text
                 style={styles.descriptionStyle}>
-                Invoice {rowData.id}
+                {rowData.id}
               </Text>
             </View>
             {rowData.status === 'Shipped' ?
@@ -160,9 +156,9 @@ export const DispatchCustomerList = ({ navigation, route }) => {
         <FlatList
           style={{
             flex: 1,
+            marginTop: 31,
             backgroundColor: 'white',
-            marginBottom: 0,
-            marginTop: 1
+            marginBottom: 0
           }}
           data={orderdata}
           renderItem={({ item, index }) => renderRow(item, index)}
@@ -176,24 +172,19 @@ export const DispatchCustomerList = ({ navigation, route }) => {
 
   const renderCompanyName = () => {
     return (
-      <TouchableOpacity activeOpacity={1} onPress={() => {
-        console.log('add new customer')
-      }}>
-        <View style={{ backgroundColor: 'white', height: 44 }}>
-          <View style={{ marginHorizontal: 16, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-            <Text style={[styles.titleStyle, {
-              color: '#3C3C43',
-              opacity: 0.5
-            }]}>Company</Text>
-            <Text style={[styles.titleStyle, {
-              marginRight: 24,
-              color: '#3C3C43',
-            }]}>Rana Textiles</Text>
-            <SideArrow style={{ width: 9, height: 16, top: 14, right: 0, position: 'absolute' }} resizeMode={'contain'} />
-          </View>
-          <View style={{ left: 16, right: 0, height: 1, backgroundColor: 'black', opacity: 0.1, top: 43, position: 'absolute' }} />
+      <View style={{ backgroundColor: 'white', height: 44 }}>
+        <View style={{ marginHorizontal: 16, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+          <Text style={[styles.titleStyle, {
+            color: '#3C3C43',
+            opacity: 0.5
+          }]}>Company</Text>
+          <Text style={[styles.titleStyle, {
+            marginRight: 24,
+            color: '#3C3C43',
+          }]}>Rana Textiles</Text>
         </View>
-      </TouchableOpacity>
+        <View style={{ left: 16, right: 0, height: 1, backgroundColor: 'black', opacity: 0.1, top: 43, position: 'absolute' }} />
+      </View>
     );
   }
 

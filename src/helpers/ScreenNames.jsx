@@ -17,7 +17,13 @@ export const ScreenNamesMarketing = {
   DISPATCHORDERLIST: "DispatchOrderList",
   DISPATCHCUSTOMERLIST: "DispatchCustomerList",
   DISPATCHDETAILS: "DispatchDetails",
-  DISPATCHTRACKSTATUS: "DispatchTrackStatus"
+  DISPATCHTRACKSTATUS: "DispatchTrackStatus",
+  CUSTOMERNAMESEARCH: 'CustomerNameSearch',
+  RECEIPTORDERLIST: 'ReceiptOrderList',
+  RECEIPTORDERDETAILS: "ReceiptOrderDetails",
+  CUSTOMERDETAILSUPDATE: "CustomerDetailsUpdate",
+  CUSTOMERAPPOINTMENTANDORDER: "CustomerAppointmentAndOrder",
+  CUSTOMERORDERFLOWSTATUS: "CustomerOrderFlowStatus"
 };
 
 export const ScreenNamesGeneral = {

@@ -96,3 +96,7 @@ export const EditIcon = (props) => (
 export const InvoiceIcon = (props) => (
   <IconBase {...props} source={require('./InvoiceIcon.png')} resizeMode={'contain'} />
 );
+
+export const ShareIcon = (props) => (
+  <IconBase {...props} source={require('./ShareIcon.png')} resizeMode={'contain'} />
+);

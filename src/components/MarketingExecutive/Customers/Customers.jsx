@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
 import CommonHeader from '../UI/CommonHeader';
+import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
 
 const styles = StyleSheet.create({
   container: {
@@ -37,6 +38,9 @@ export const Customers = ({ navigation }) => {
         mainViewHeading={'Customers'}
         leftSideText={'Home'}
         onPressLeftButton={() => { navigation.goBack() }}
+        rightIcon={true}
+        onPressSearchIcon={() => { }}
+        onPressPlusIcon={() => { }}
       />
     )
   }
@@ -45,7 +49,7 @@ export const Customers = ({ navigation }) => {
     return (
       <View>
         <TouchableOpacity activeOpacity={1} onPress={() => {
-
+          navigation.navigate(ScreenNamesMarketing.CUSTOMERDETAILSUPDATE, { name: item.name })
         }}>
           <View style={{ backgroundColor: 'white', height: 46, }}>
             <Text style={styles.textStyle}>{item.name}</Text>

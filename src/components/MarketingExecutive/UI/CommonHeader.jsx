@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { BackHome, SearchBlueIcon, AddIcon, EditIcon } from '../../../icons/Icons';
+import { BackHome, SearchBlueIcon, AddIcon, EditIcon, ShareIcon } from '../../../icons/Icons';
 
 const { height, width } = Dimensions.get('window')
 
@@ -76,7 +76,11 @@ export default CommonHeader = ({ mainViewHeading, leftSideText, rightSideText, o
     onPressSearchIcon,
     onPressPlusIcon,
     rightSingleIcon,
-    onPressEditIcon
+    onPressEditIcon,
+    addIcon,
+    onAddIconPress,
+    shareIcon,
+    onShareIconPress
 }) => {
 
     const renderHeader = () => {
@@ -121,6 +125,28 @@ export default CommonHeader = ({ mainViewHeading, leftSideText, rightSideText, o
                                 <Text style={styles.rightTextStyle}>{rightSideText}</Text>
                             </TouchableOpacity>
                         }
+                        {addIcon ?
+                            <View style={[styles.rightIconViewStyle, {
+                                marginTop: -50,
+                            }]}>
+                                <TouchableOpacity style={styles.iconTouchStyle} activeOpacity={1} onPress={() => {
+                                    onAddIconPress()
+                                }}>
+                                    <AddIcon style={{ width: 14, height: 15 }} />
+                                </TouchableOpacity>
+                            </View>
+                            : null}
+                        {shareIcon ?
+                            <View style={[styles.rightIconViewStyle, {
+                                marginTop: -50,
+                            }]}>
+                                <TouchableOpacity style={styles.iconTouchStyle} activeOpacity={1} onPress={() => {
+                                    onShareIconPress()
+                                }}>
+                                    <ShareIcon style={{ width: 13, height: 17 }} />
+                                </TouchableOpacity>
+                            </View>
+                            : null}
                     </View>
                 }
 

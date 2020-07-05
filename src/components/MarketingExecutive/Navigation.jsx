@@ -20,6 +20,12 @@ import { DispatchOrderList } from './Dispatches/DispatchOrderList'
 import { DispatchCustomerList } from './Dispatches/DispatchCustomerList'
 import { DispatchDetails } from './Dispatches/DispatchDetails'
 import { DispatchTrackStatus } from './Dispatches/DispatchTrackStatus'
+import { CustomerNameSearch } from './Receipts/CustomerNameSearch'
+import { ReceiptOrderList } from './Receipts/ReceiptOrderList'
+import { ReceiptOrderDetails } from './Receipts/ReceiptOrderDetails'
+import { CustomerDetailsUpdate } from './Customers/CustomerDetailsUpdate'
+import { CustomerAppointmentAndOrder } from './Customers/CustomerAppointmentAndOrder'
+import { CustomerOrderFlowStatus } from './Customers/CustomerOrderFlowStatus'
 
 import {
   ScreenNamesMarketing,
@@ -123,6 +129,34 @@ export const AppNavigatorMarketing = () => {
       <Stack.Screen
         name={ScreenNamesMarketing.DISPATCHTRACKSTATUS}
         component={DispatchTrackStatus}
+      />
+      <Stack.Screen name={ScreenNamesMarketing.CUSTOMERNAMESEARCH} component={CustomerNameSearch}
+        options={{
+          title: ScreenNamesMarketing.MYPROFILE,
+          cardOverlayEnabled: true,
+          headerStatusBarHeight: 0,
+          ...TransitionPresets.ModalPresentationIOS,
+        }}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.RECEIPTORDERLIST}
+        component={ReceiptOrderList}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.RECEIPTORDERDETAILS}
+        component={ReceiptOrderDetails}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.CUSTOMERDETAILSUPDATE}
+        component={CustomerDetailsUpdate}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.CUSTOMERAPPOINTMENTANDORDER}
+        component={CustomerAppointmentAndOrder}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.CUSTOMERORDERFLOWSTATUS}
+        component={CustomerOrderFlowStatus}
       />
     </Stack.Navigator >
   );
