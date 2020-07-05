@@ -23,7 +23,8 @@ export const ScreenNamesMarketing = {
   RECEIPTORDERDETAILS: "ReceiptOrderDetails",
   CUSTOMERDETAILSUPDATE: "CustomerDetailsUpdate",
   CUSTOMERAPPOINTMENTANDORDER: "CustomerAppointmentAndOrder",
-  CUSTOMERORDERFLOWSTATUS: "CustomerOrderFlowStatus"
+  CUSTOMERORDERFLOWSTATUS: "CustomerOrderFlowStatus",
+  GALLERYDETAILVIEW: "GalleryDetailView"
 };
 
 export const ScreenNamesGeneral = {

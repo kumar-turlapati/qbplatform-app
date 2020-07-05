@@ -26,6 +26,7 @@ import { ReceiptOrderDetails } from './Receipts/ReceiptOrderDetails'
 import { CustomerDetailsUpdate } from './Customers/CustomerDetailsUpdate'
 import { CustomerAppointmentAndOrder } from './Customers/CustomerAppointmentAndOrder'
 import { CustomerOrderFlowStatus } from './Customers/CustomerOrderFlowStatus'
+import { GalleryDetailView } from './Galleries/GalleryDetailView'
 
 import {
   ScreenNamesMarketing,
@@ -157,6 +158,10 @@ export const AppNavigatorMarketing = () => {
       <Stack.Screen
         name={ScreenNamesMarketing.CUSTOMERORDERFLOWSTATUS}
         component={CustomerOrderFlowStatus}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.GALLERYDETAILVIEW}
+        component={GalleryDetailView}
       />
     </Stack.Navigator >
   );

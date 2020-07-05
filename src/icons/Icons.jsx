@@ -100,3 +100,19 @@ export const InvoiceIcon = (props) => (
 export const ShareIcon = (props) => (
   <IconBase {...props} source={require('./ShareIcon.png')} resizeMode={'contain'} />
 );
+
+export const Aravinda = (props) => (
+  <IconBase {...props} source={require('./Aravinda.png')} resizeMode={'contain'} />
+);
+
+export const Upada = (props) => (
+  <IconBase {...props} source={require('./Upada.png')} resizeMode={'contain'} />
+);
+
+export const MenuBig = (props) => (
+  <IconBase {...props} source={require('./MenuBig.png')} resizeMode={'contain'} />
+);
+
+export const MenuSmall = (props) => (
+  <IconBase {...props} source={require('./MenuSmall.png')} resizeMode={'contain'} />
+);

@@ -80,7 +80,8 @@ export default CommonHeader = ({ mainViewHeading, leftSideText, rightSideText, o
     addIcon,
     onAddIconPress,
     shareIcon,
-    onShareIconPress
+    onShareIconPress,
+    searchIcon
 }) => {
 
     const renderHeader = () => {
@@ -144,6 +145,17 @@ export default CommonHeader = ({ mainViewHeading, leftSideText, rightSideText, o
                                     onShareIconPress()
                                 }}>
                                     <ShareIcon style={{ width: 13, height: 17 }} />
+                                </TouchableOpacity>
+                            </View>
+                            : null}
+                        {searchIcon ?
+                            <View style={[styles.rightIconViewStyle, {
+                                marginTop: -50,
+                            }]}>
+                                <TouchableOpacity style={styles.iconTouchStyle} activeOpacity={1} onPress={() => {
+                                    onPressSearchIcon()
+                                }}>
+                                    <SearchBlueIcon style={{ width: 17, height: 17 }} />
                                 </TouchableOpacity>
                             </View>
                             : null}

@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, ImageBackground, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, FlatList, ImageBackground, TouchableOpacity, Dimensions } from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
-import { MenuBig } from '../../../icons/Icons';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import { MenuSmall } from '../../../icons/Icons';
+
+const { width, height } = Dimensions.get('window')
 
 const styles = StyleSheet.create({
   container: {
@@ -10,11 +11,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(245,245,245)'
   },
   rowStyle: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-    height: 376,
+    marginBottom: 10,
     borderRadius: 13,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    marginRight: 6
   },
   textStyle: {
     fontWeight: '600',
@@ -39,33 +39,111 @@ const styles = StyleSheet.create({
 const clothes = [
   {
     id: 1,
-    type: 'Uppada pattu sarees',
-    date: '15 Jan',
   },
   {
     id: 2,
-    type: 'Arvind cotton materials',
-    date: '15 Jan',
   },
   {
     id: 3,
-    type: 'Uppada pattu sarees',
-    date: '15 Jan',
   },
   {
     id: 4,
-    type: 'Arvind cotton materials',
-    date: '15 Jan',
+  },
+  {
+    id: 1,
+  },
+  {
+    id: 2,
+  },
+  {
+    id: 3,
+  },
+  {
+    id: 4,
+  },
+  {
+    id: 1,
+  },
+  {
+    id: 2,
+  },
+  {
+    id: 3,
+  },
+  {
+    id: 4,
+  },
+  {
+    id: 1,
+  },
+  {
+    id: 2,
+  },
+  {
+    id: 3,
+  },
+  {
+    id: 4,
+  },
+  {
+    id: 1,
+  },
+  {
+    id: 2,
+  },
+  {
+    id: 3,
+  },
+  {
+    id: 4,
+  },
+  {
+    id: 1,
+  },
+  {
+    id: 2,
+  },
+  {
+    id: 3,
+  },
+  {
+    id: 4,
+  },
+  {
+    id: 1,
+  },
+  {
+    id: 2,
+  },
+  {
+    id: 3,
+  },
+  {
+    id: 4,
+  },
+  {
+    id: 1,
+  },
+  {
+    id: 2,
+  },
+  {
+    id: 3,
+  },
+  {
+    id: 4,
   },
 ]
 
-export const Galleries = ({ navigation }) => {
+export const GalleryDetailView = ({ navigation, route }) => {
+
+  const { type } = route.params
 
   const renderHeader = () => {
     return (
       <CommonHeader
-        mainViewHeading={'Galleries'}
-        leftSideText={'Home'}
+        mainViewHeading={type}
+        leftSideText={'Back'}
         onPressLeftButton={() => { navigation.goBack() }}
         onAddIconPress={() => { }}
         searchIcon={true}
@@ -77,15 +155,14 @@ export const Galleries = ({ navigation }) => {
   const renderRow = (item, index) => {
     return (
       <TouchableOpacity activeOpacity={1} onPress={() => {
-        navigation.navigate(ScreenNamesMarketing.GALLERYDETAILVIEW, { type: item.type })
       }}>
-        <ImageBackground style={styles.rowStyle}
-          source={item.type === 'Uppada pattu sarees' ? require('../../../icons/Upada.png') : require('../../../icons/Aravinda.png')}
+        <ImageBackground style={[styles.rowStyle, {
+          height: width / 3 - 11,
+          width: width / 3 - 11,
+        }]}
+          source={type === 'Uppada pattu sarees' ? require('../../../icons/Upada.png') : require('../../../icons/Aravinda.png')}
         >
-          <View style={{ position: 'absolute', top: 0, right: 0, left: 0, bottom: 0, backgroundColor: '#1C1C1E', opacity: 0.4 }} />
-          <Text style={styles.textStyle}>{item.type}</Text>
-          <Text style={styles.descriptionStyles}>{item.date}</Text>
-          <MenuBig style={{ position: 'absolute', top: 15, right: 14, width: 32, height: 32 }} />
+          <MenuSmall style={{ position: 'absolute', top: 8, right: 8, width: 18, height: 18 }} />
         </ImageBackground>
       </TouchableOpacity >
     );
@@ -97,8 +174,10 @@ export const Galleries = ({ navigation }) => {
         style={{
           flex: 1,
           marginTop: 8,
-          marginBottom: 0
+          marginBottom: 0,
+          marginHorizontal: 10
         }}
+        numColumns={3}
         data={clothes}
         renderItem={({ item, index }) => renderRow(item, index)}
         keyExtractor={item => item.id}
