@@ -14,6 +14,12 @@ import { OrdersProductDetails } from './Orders/OrdersProductDetails'
 import { OrderCartDetails } from './Orders/OrderCartDetails'
 import { OrderAvailabilityCheck } from './Orders/OrderAvailabilityCheck'
 import { OrderProductDeliveryStatus } from './Orders/OrderProductDeliveryStatus'
+import { OrderDetailsView } from './Orders/OrderDetailsView'
+import { OrderUpdate } from './Orders/OrderUpdate'
+import { DispatchOrderList } from './Dispatches/DispatchOrderList'
+import { DispatchCustomerList } from './Dispatches/DispatchCustomerList'
+import { DispatchDetails } from './Dispatches/DispatchDetails'
+import { DispatchTrackStatus } from './Dispatches/DispatchTrackStatus'
 
 import {
   ScreenNamesMarketing,
@@ -93,6 +99,30 @@ export const AppNavigatorMarketing = () => {
       <Stack.Screen
         name={ScreenNamesMarketing.ORDERPRODUCTDELIVERYSTATUS}
         component={OrderProductDeliveryStatus}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.ORDERDETAILSVIEW}
+        component={OrderDetailsView}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.ORDERUPDAATE}
+        component={OrderUpdate}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.DISPATCHORDERLIST}
+        component={DispatchOrderList}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.DISPATCHCUSTOMERLIST}
+        component={DispatchCustomerList}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.DISPATCHDETAILS}
+        component={DispatchDetails}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.DISPATCHTRACKSTATUS}
+        component={DispatchTrackStatus}
       />
     </Stack.Navigator >
   );

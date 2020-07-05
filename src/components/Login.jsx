@@ -167,7 +167,7 @@ export const Login = ({ navigation }) => {
           onPress={() => {
             if (!disableSubmit) {
               navigation.navigate(ScreenNamesMarketing.DASHBOARD)
-
+              setShowOTPView(false)
             }
           }}
         />

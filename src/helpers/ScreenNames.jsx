@@ -11,7 +11,13 @@ export const ScreenNamesMarketing = {
   ORDERPRODUCTDETAILS: 'OrdersProductDetails',
   ORDERCARTDETAILS: "OrderCartDetails",
   ORDERAVAILABILITYCHECK: "OrderAvailabilityCheck",
-  ORDERPRODUCTDELIVERYSTATUS: "OrderProductDeliveryStatus"
+  ORDERPRODUCTDELIVERYSTATUS: "OrderProductDeliveryStatus",
+  ORDERDETAILSVIEW: "OrderDetailsView",
+  ORDERUPDAATE: 'OrderUpdate',
+  DISPATCHORDERLIST: "DispatchOrderList",
+  DISPATCHCUSTOMERLIST: "DispatchCustomerList",
+  DISPATCHDETAILS: "DispatchDetails",
+  DISPATCHTRACKSTATUS: "DispatchTrackStatus"
 };
 
 export const ScreenNamesGeneral = {

@@ -81,23 +81,21 @@ const orderdata = [
   {
     name: 'Yashwanth Rana',
     id: 'ID 23456789',
-    status: 'Shipped'
-  },
-  {
-    name: 'Suraj Chouhan',
-    id: 'ID 23456799',
-    status: ''
+    status: 'Accepted'
   },
   {
     name: 'Suraj Chouhan',
     id: 'ID 23456799',
     status: 'Approved'
+  },
+  {
+    name: 'Suraj Chouhan',
+    id: 'ID 23456799',
+    status: 'Shipped'
   }
 ]
 
-export const OrderProductDeliveryStatus = ({ navigation }) => {
-
-  const [showDialog, setShowDialog] = useState(false);
+export const DispatchOrderList = ({ navigation }) => {
 
   const renderHeader = () => {
     return (
@@ -105,9 +103,6 @@ export const OrderProductDeliveryStatus = ({ navigation }) => {
         mainViewHeading={'Orders'}
         leftSideText={'Back'}
         onPressLeftButton={() => { navigation.goBack() }}
-        rightIcon={true}
-        onPressSearchIcon={() => { }}
-        onPressPlusIcon={() => { }}
       />
     )
   }
@@ -116,7 +111,8 @@ export const OrderProductDeliveryStatus = ({ navigation }) => {
     return (
       <>
         <TouchableOpacity activeOpacity={1} onPress={() => {
-          setShowDialog(true)
+          navigation.navigate(ScreenNamesMarketing.DISPATCHCUSTOMERLIST, { name: rowData.name })
+
         }}>
           <View style={styles.rowView}>
             <View>
@@ -136,7 +132,12 @@ export const OrderProductDeliveryStatus = ({ navigation }) => {
                 {rowData.status === 'Approved' ?
                   <Text style={[styles.statusTextStyle, { backgroundColor: '#0081CE' }]}>{rowData.status}</Text>
                   :
-                  null
+                  <View>
+                    {
+                      rowData.status === 'Accepted' ?
+                        <Text style={[styles.statusTextStyle, { backgroundColor: '#FF9500' }]}>{rowData.status}</Text> : null
+                    }
+                  </View>
                 }
               </View>
             }
@@ -167,32 +168,34 @@ export const OrderProductDeliveryStatus = ({ navigation }) => {
     );
   }
 
-  const renderDialog = () => {
+  const renderCompanyName = () => {
     return (
-      <CommonDialogView
-        onPressViewDetails={() => {
-          navigation.navigate(ScreenNamesMarketing.ORDERDETAILSVIEW)
-          setShowDialog(false)
-        }}
-        onPressUpdate={() => {
-          navigation.navigate(ScreenNamesMarketing.ORDERUPDAATE)
-          setShowDialog(false)
-        }}
-        onPressDelete={() => {
-
-        }}
-        onPressCancel={() => {
-          setShowDialog(false)
-        }}
-      />
-    )
+      <TouchableOpacity activeOpacity={1} onPress={() => {
+        console.log('add new customer')
+      }}>
+        <View style={{ backgroundColor: 'white', height: 44 }}>
+          <View style={{ marginHorizontal: 16, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+            <Text style={[styles.titleStyle, {
+              color: '#3C3C43',
+              opacity: 0.5
+            }]}>Company</Text>
+            <Text style={[styles.titleStyle, {
+              marginRight: 24,
+              color: '#3C3C43',
+            }]}>Rana Textiles</Text>
+            <SideArrow style={{ width: 9, height: 16, top: 14, right: 0, position: 'absolute' }} resizeMode={'contain'} />
+          </View>
+          <View style={{ left: 16, right: 0, height: 1, backgroundColor: 'black', opacity: 0.1, top: 43, position: 'absolute' }} />
+        </View>
+      </TouchableOpacity>
+    );
   }
 
   return (
     <View style={styles.container}>
       {renderHeader()}
+      {renderCompanyName()}
       {renderFlatList()}
-      {showDialog && renderDialog()}
     </View>
   );
 };

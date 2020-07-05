@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Dimensions, FlatList, StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
 import { SideArrow } from '../../../icons/Icons';
-import CommonDialogView from '../UI/CommonDialogView';
 import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
 
 const { height, width } = Dimensions.get('window')
@@ -80,24 +79,28 @@ const styles = StyleSheet.create({
 const orderdata = [
   {
     name: 'Yashwanth Rana',
-    id: 'ID 23456789',
-    status: 'Shipped'
-  },
-  {
-    name: 'Suraj Chouhan',
-    id: 'ID 23456799',
+    id: '23456789',
     status: ''
   },
   {
-    name: 'Suraj Chouhan',
-    id: 'ID 23456799',
-    status: 'Approved'
+    name: 'Yashwanth Rana',
+    id: '23456799',
+    status: ''
+  },
+  {
+    name: 'Yashwanth Rana',
+    id: '2345670',
+    status: 'Shipped'
+  },
+  {
+    name: 'Yashwanth Rana',
+    id: '23456725',
+    status: ''
   }
 ]
 
-export const OrderProductDeliveryStatus = ({ navigation }) => {
-
-  const [showDialog, setShowDialog] = useState(false);
+export const DispatchCustomerList = ({ navigation, route }) => {
+  const { name } = route.params;
 
   const renderHeader = () => {
     return (
@@ -105,9 +108,6 @@ export const OrderProductDeliveryStatus = ({ navigation }) => {
         mainViewHeading={'Orders'}
         leftSideText={'Back'}
         onPressLeftButton={() => { navigation.goBack() }}
-        rightIcon={true}
-        onPressSearchIcon={() => { }}
-        onPressPlusIcon={() => { }}
       />
     )
   }
@@ -116,17 +116,17 @@ export const OrderProductDeliveryStatus = ({ navigation }) => {
     return (
       <>
         <TouchableOpacity activeOpacity={1} onPress={() => {
-          setShowDialog(true)
+          navigation.navigate(ScreenNamesMarketing.DISPATCHDETAILS, { name: name, invoiceNumber: rowData.id, status: rowData.status })
         }}>
           <View style={styles.rowView}>
             <View>
               <Text
                 style={styles.textStyle}>
-                {rowData.name}
+                {name}
               </Text>
               <Text
                 style={styles.descriptionStyle}>
-                {rowData.id}
+                Invoice {rowData.id}
               </Text>
             </View>
             {rowData.status === 'Shipped' ?
@@ -136,7 +136,12 @@ export const OrderProductDeliveryStatus = ({ navigation }) => {
                 {rowData.status === 'Approved' ?
                   <Text style={[styles.statusTextStyle, { backgroundColor: '#0081CE' }]}>{rowData.status}</Text>
                   :
-                  null
+                  <View>
+                    {
+                      rowData.status === 'Accepted' ?
+                        <Text style={[styles.statusTextStyle, { backgroundColor: '#FF9500' }]}>{rowData.status}</Text> : null
+                    }
+                  </View>
                 }
               </View>
             }
@@ -153,7 +158,6 @@ export const OrderProductDeliveryStatus = ({ navigation }) => {
         <FlatList
           style={{
             flex: 1,
-            marginTop: 31,
             backgroundColor: 'white',
             marginBottom: 0
           }}
@@ -167,32 +171,34 @@ export const OrderProductDeliveryStatus = ({ navigation }) => {
     );
   }
 
-  const renderDialog = () => {
+  const renderCompanyName = () => {
     return (
-      <CommonDialogView
-        onPressViewDetails={() => {
-          navigation.navigate(ScreenNamesMarketing.ORDERDETAILSVIEW)
-          setShowDialog(false)
-        }}
-        onPressUpdate={() => {
-          navigation.navigate(ScreenNamesMarketing.ORDERUPDAATE)
-          setShowDialog(false)
-        }}
-        onPressDelete={() => {
-
-        }}
-        onPressCancel={() => {
-          setShowDialog(false)
-        }}
-      />
-    )
+      <TouchableOpacity activeOpacity={1} onPress={() => {
+        console.log('add new customer')
+      }}>
+        <View style={{ backgroundColor: 'white', height: 44 }}>
+          <View style={{ marginHorizontal: 16, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+            <Text style={[styles.titleStyle, {
+              color: '#3C3C43',
+              opacity: 0.5
+            }]}>Company</Text>
+            <Text style={[styles.titleStyle, {
+              marginRight: 24,
+              color: '#3C3C43',
+            }]}>Rana Textiles</Text>
+            <SideArrow style={{ width: 9, height: 16, top: 14, right: 0, position: 'absolute' }} resizeMode={'contain'} />
+          </View>
+          <View style={{ left: 16, right: 0, height: 1, backgroundColor: 'black', opacity: 0.1, top: 43, position: 'absolute' }} />
+        </View>
+      </TouchableOpacity>
+    );
   }
 
   return (
     <View style={styles.container}>
       {renderHeader()}
+      {renderCompanyName()}
       {renderFlatList()}
-      {showDialog && renderDialog()}
     </View>
   );
 };

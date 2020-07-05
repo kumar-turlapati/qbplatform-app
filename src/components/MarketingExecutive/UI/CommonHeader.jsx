@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { BackHome, SearchBlueIcon, AddIcon } from '../../../icons/Icons';
+import { BackHome, SearchBlueIcon, AddIcon, EditIcon } from '../../../icons/Icons';
 
 const { height, width } = Dimensions.get('window')
 
@@ -74,7 +74,9 @@ const styles = StyleSheet.create({
 export default CommonHeader = ({ mainViewHeading, leftSideText, rightSideText, onPressLeftButton, onPressRightButton,
     rightIcon,
     onPressSearchIcon,
-    onPressPlusIcon
+    onPressPlusIcon,
+    rightSingleIcon,
+    onPressEditIcon
 }) => {
 
     const renderHeader = () => {
@@ -103,11 +105,23 @@ export default CommonHeader = ({ mainViewHeading, leftSideText, rightSideText, o
                         </TouchableOpacity>
                     </View>
                     :
-                    <TouchableOpacity activeOpacity={1} onPress={() => {
-                        onPressRightButton()
-                    }}>
-                        <Text style={styles.rightTextStyle}>{rightSideText}</Text>
-                    </TouchableOpacity>
+                    <View>
+                        {rightSingleIcon ?
+                            <View style={styles.rightIconViewStyle}>
+                                <TouchableOpacity style={styles.iconTouchStyle} activeOpacity={1} onPress={() => {
+                                    onPressEditIcon()
+                                }}>
+                                    <EditIcon style={{ width: 17, height: 17 }} />
+                                </TouchableOpacity>
+                            </View>
+                            :
+                            <TouchableOpacity activeOpacity={1} onPress={() => {
+                                onPressRightButton()
+                            }}>
+                                <Text style={styles.rightTextStyle}>{rightSideText}</Text>
+                            </TouchableOpacity>
+                        }
+                    </View>
                 }
 
             </View>

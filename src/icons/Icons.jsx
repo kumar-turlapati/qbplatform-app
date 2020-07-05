@@ -88,3 +88,11 @@ export const SearchBlueIcon = (props) => (
 export const AddIcon = (props) => (
   <IconBase {...props} source={require('./Plus.png')} resizeMode={'contain'} />
 );
+
+export const EditIcon = (props) => (
+  <IconBase {...props} source={require('./editIcon.png')} resizeMode={'contain'} />
+);
+
+export const InvoiceIcon = (props) => (
+  <IconBase {...props} source={require('./InvoiceIcon.png')} resizeMode={'contain'} />
+);
