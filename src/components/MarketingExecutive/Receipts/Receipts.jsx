@@ -1,21 +1,21 @@
 import React from 'react';
-import { View, StyleSheet, Text, Dimensions } from 'react-native';
-import CommonHeader from "../UI/CommonHeader";
-import { SearchIcon, SideArrow, BarCodeIcon } from '../../../icons/Icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import {View, StyleSheet, Text, Dimensions} from 'react-native';
+import CommonHeader from '../UI/CommonHeader';
+import {SearchIcon, SideArrow, BarCodeIcon} from '../../../icons/Icons';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 
-const { height, width } = Dimensions.get('window')
+const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgb(245,245,245)'
+    backgroundColor: 'rgb(245,245,245)',
   },
   mainDescriptionStyle: {
     fontSize: 13,
     lineHeight: 18,
-    letterSpacing: - 0.078,
+    letterSpacing: -0.078,
     color: 'rgba(60, 60, 67, 0.6)',
     paddingTop: 6,
     paddingHorizontal: 16,
@@ -32,65 +32,79 @@ const styles = StyleSheet.create({
     height: 40,
     width: 40,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   listMainTitle: {
     fontSize: 17,
     lineHeight: 22,
-    letterSpacing: - 0.408,
+    letterSpacing: -0.408,
     color: '#000000',
     paddingLeft: 11,
-    paddingTop: 9
+    paddingTop: 9,
   },
   listDescriptionTitle: {
     fontSize: 15,
     lineHeight: 20,
-    letterSpacing: - 0.24,
+    letterSpacing: -0.24,
     color: 'rgba(60, 60, 67, 0.6)',
     paddingLeft: 11,
-    paddingTop: 0
+    paddingTop: 0,
   },
   mainViewStyles: {
     backgroundColor: 'white',
     borderBottomColor: 'rgba(0,0,0,0.1)',
     borderBottomWidth: 1,
-  }
-})
+  },
+});
 
-export const Receipts = ({ navigation }) => {
-
+export const Receipts = ({navigation}) => {
   const renderHeader = () => {
     return (
       <CommonHeader
         mainViewHeading={'New Order'}
         leftSideText={'Home'}
-        onPressLeftButton={() => { navigation.goBack() }}
-        onAddIconPress={() => { }}
+        onPressLeftButton={() => {
+          navigation.goBack();
+        }}
+        onAddIconPress={() => {}}
         addIcon={true}
       />
-    )
-  }
+    );
+  };
 
   const renderListView = () => {
     return (
       <View style={styles.mainViewStyles}>
-        <TouchableOpacity activeOpacity={1} onPress={() => {
-          navigation.navigate(ScreenNamesMarketing.CUSTOMERNAMESEARCH)
-        }}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            navigation.navigate(ScreenNamesMarketing.CUSTOMERNAMESEARCH);
+          }}>
           <View style={styles.productViewStyles}>
             <View style={styles.iconBackgroundStyle}>
               <SearchIcon />
             </View>
             <View>
               <Text style={styles.listMainTitle}>Customer Name</Text>
-              <Text style={styles.listDescriptionTitle}>Tap to view list of customers</Text>
+              <Text style={styles.listDescriptionTitle}>
+                Tap to view list of customers
+              </Text>
             </View>
-            <SideArrow style={{ width: 9, height: 16, top: 25, right: 0, position: 'absolute' }} resizeMode={'contain'} />
+            <SideArrow
+              style={{
+                width: 9,
+                height: 16,
+                top: 25,
+                right: 0,
+                position: 'absolute',
+              }}
+              resizeMode={'contain'}
+            />
           </View>
         </TouchableOpacity>
       </View>
     );
-  }
+  };
 
   return (
     <View style={styles.container}>

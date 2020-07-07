@@ -1,31 +1,31 @@
 import React from 'react';
-import { Text, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import {Text, View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 
 import CommonHeader from '../UI/CommonHeader';
-import { SideArrow } from '../../../icons/Icons';
-import { useState } from 'react';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import {SideArrow} from '../../../icons/Icons';
+import {useState} from 'react';
+import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgb(245,245,245)'
+    backgroundColor: 'rgb(245,245,245)',
   },
   titleStyle: {
     paddingVertical: 10,
     fontSize: 17,
     lineHeight: 22,
-    letterSpacing: - 0.5,
+    letterSpacing: -0.5,
     color: '#3C3C43',
-    opacity: 0.5
+    opacity: 0.5,
   },
   descriptionStyle: {
     paddingVertical: 10,
     fontSize: 15,
     lineHeight: 20,
-    letterSpacing: - 0.5,
+    letterSpacing: -0.5,
     color: '#3C3C43',
-    opacity: 0.5
+    opacity: 0.5,
   },
   viewStyles: {
     marginLeft: 16,
@@ -42,15 +42,15 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     backgroundColor: 'white',
-    height: 62
+    height: 62,
   },
   textStyle: {
     paddingTop: 9,
     fontSize: 17,
     lineHeight: 22,
-    letterSpacing: - 0.408,
+    letterSpacing: -0.408,
     color: '#000000',
-    marginLeft: 16
+    marginLeft: 16,
   },
   descriptionRowStyle: {
     fontSize: 15,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.24,
     color: 'rgba(60, 60, 67, 0.6)',
     paddingBottom: 9,
-    marginLeft: 16
+    marginLeft: 16,
   },
   statusTextStyle: {
     fontSize: 14,
@@ -74,79 +74,95 @@ const styles = StyleSheet.create({
     marginRight: 40,
     paddingTop: 1,
     overflow: 'hidden',
-  }
-})
+  },
+});
 
-export const CustomerOrderFlowStatus = ({ navigation, route }) => {
-  const { name } = route.params
+export const CustomerOrderFlowStatus = ({navigation, route}) => {
+  const {name} = route.params;
 
   const renderHeader = () => {
     return (
       <CommonHeader
         mainViewHeading={'Customers'}
         leftSideText={'Back'}
-        onPressLeftButton={() => { navigation.goBack() }}
+        onPressLeftButton={() => {
+          navigation.goBack();
+        }}
         rightIcon={false}
         rightSingleIcon={true}
-        onPressEditIcon={() => { }}
+        onPressEditIcon={() => {}}
       />
-    )
-  }
+    );
+  };
 
   const renderAppointmentDetails = () => {
     return (
       <View>
         <View style={styles.rowView}>
           <View>
-            <Text
-              style={styles.textStyle}>
-              Appointment
-          </Text>
-            <Text
-              style={styles.descriptionRowStyle}>
+            <Text style={styles.textStyle}>Appointment</Text>
+            <Text style={styles.descriptionRowStyle}>
               23 Jun,2020, 10AM to 11AM
-          </Text>
+            </Text>
           </View>
-          <Text style={[styles.statusTextStyle, { backgroundColor: '#34C759' }]}>{'Completed'}</Text>
-        </View >
-        <TouchableOpacity activeOpacity={1} onPress={() => {
-        }}>
+          <Text style={[styles.statusTextStyle, {backgroundColor: '#34C759'}]}>
+            {'Completed'}
+          </Text>
+        </View>
+        <TouchableOpacity activeOpacity={1} onPress={() => {}}>
           <View style={styles.rowView}>
             <View>
-              <Text
-                style={styles.textStyle}>
-                Order
-          </Text>
-              <Text
-                style={styles.descriptionRowStyle}>
-                ID 23456799
-          </Text>
+              <Text style={styles.textStyle}>Order</Text>
+              <Text style={styles.descriptionRowStyle}>ID 23456799</Text>
             </View>
-            <Text style={[styles.statusTextStyle, { backgroundColor: '#0081CE' }]}>{'Approved'}</Text>
-            <SideArrow style={{ width: 9, height: 16, top: 22, right: 19, position: 'absolute' }} resizeMode={'contain'} />
-          </View >
+            <Text
+              style={[styles.statusTextStyle, {backgroundColor: '#0081CE'}]}>
+              {'Approved'}
+            </Text>
+            <SideArrow
+              style={{
+                width: 9,
+                height: 16,
+                top: 22,
+                right: 19,
+                position: 'absolute',
+              }}
+              resizeMode={'contain'}
+            />
+          </View>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={1} onPress={() => {
-          navigation.navigate(ScreenNamesMarketing.DISPATCHCUSTOMERLIST, { fromCustomer: true, name: name })
-        }}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            navigation.navigate(ScreenNamesMarketing.DISPATCHCUSTOMERLIST, {
+              fromCustomer: true,
+              name: name,
+            });
+          }}>
           <View style={styles.rowView}>
             <View>
-              <Text
-                style={styles.textStyle}>
-                Dispatch
-          </Text>
-              <Text
-                style={styles.descriptionRowStyle}>
-                2/5
-          </Text>
+              <Text style={styles.textStyle}>Dispatch</Text>
+              <Text style={styles.descriptionRowStyle}>2/5</Text>
             </View>
-            <Text style={[styles.statusTextStyle, { backgroundColor: '#4A4A4A' }]}>{'Inprogress'}</Text>
-            <SideArrow style={{ width: 9, height: 16, top: 22, right: 19, position: 'absolute' }} resizeMode={'contain'} />
-          </View >
+            <Text
+              style={[styles.statusTextStyle, {backgroundColor: '#4A4A4A'}]}>
+              {'Inprogress'}
+            </Text>
+            <SideArrow
+              style={{
+                width: 9,
+                height: 16,
+                top: 22,
+                right: 19,
+                position: 'absolute',
+              }}
+              resizeMode={'contain'}
+            />
+          </View>
         </TouchableOpacity>
-      </View >
-    )
-  }
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>

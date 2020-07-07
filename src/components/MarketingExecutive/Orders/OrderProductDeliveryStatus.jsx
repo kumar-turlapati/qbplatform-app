@@ -1,21 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Dimensions, FlatList, StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
-import { SideArrow } from '../../../icons/Icons';
+import {SideArrow} from '../../../icons/Icons';
 import CommonDialogView from '../UI/CommonDialogView';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 
-const { height, width } = Dimensions.get('window')
+const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgb(245,245,245)'
+    backgroundColor: 'rgb(245,245,245)',
   },
   mainDescriptionStyle: {
     fontSize: 13,
     lineHeight: 18,
-    letterSpacing: - 0.078,
+    letterSpacing: -0.078,
     color: 'rgba(60, 60, 67, 0.6)',
     paddingTop: 6,
     paddingHorizontal: 16,
@@ -27,15 +35,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    flex: 1
+    flex: 1,
   },
   textStyle: {
     paddingTop: 9,
     fontSize: 17,
     lineHeight: 22,
-    letterSpacing: - 0.408,
+    letterSpacing: -0.408,
     color: '#000000',
-    marginLeft: 16
+    marginLeft: 16,
   },
   viewStyle: {
     marginLeft: 16,
@@ -49,7 +57,7 @@ const styles = StyleSheet.create({
     paddingTop: 9,
     fontSize: 17,
     lineHeight: 22,
-    letterSpacing: - 0.5,
+    letterSpacing: -0.5,
     color: 'black',
   },
   descriptionStyle: {
@@ -58,7 +66,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.24,
     color: 'rgba(60, 60, 67, 0.6)',
     paddingBottom: 9,
-    marginLeft: 16
+    marginLeft: 16,
   },
   statusTextStyle: {
     fontSize: 14,
@@ -74,29 +82,28 @@ const styles = StyleSheet.create({
     marginRight: 45,
     paddingTop: 1,
     overflow: 'hidden',
-  }
-})
+  },
+});
 
 const orderdata = [
   {
     name: 'Yashwanth Rana',
     id: 'ID 23456789',
-    status: 'Shipped'
+    status: 'Shipped',
   },
   {
     name: 'Suraj Chouhan',
     id: 'ID 23456799',
-    status: ''
+    status: '',
   },
   {
     name: 'Suraj Chouhan',
     id: 'ID 23456799',
-    status: 'Approved'
-  }
-]
+    status: 'Approved',
+  },
+];
 
-export const OrderProductDeliveryStatus = ({ navigation }) => {
-
+export const OrderProductDeliveryStatus = ({navigation}) => {
   const [showDialog, setShowDialog] = useState(false);
 
   const renderHeader = () => {
@@ -104,44 +111,58 @@ export const OrderProductDeliveryStatus = ({ navigation }) => {
       <CommonHeader
         mainViewHeading={'Orders'}
         leftSideText={'Back'}
-        onPressLeftButton={() => { navigation.goBack() }}
+        onPressLeftButton={() => {
+          navigation.goBack();
+        }}
         rightIcon={true}
-        onPressSearchIcon={() => { }}
-        onPressPlusIcon={() => { }}
+        onPressSearchIcon={() => {}}
+        onPressPlusIcon={() => {}}
       />
-    )
-  }
+    );
+  };
 
   const renderRow = (rowData, index) => {
     return (
       <>
-        <TouchableOpacity activeOpacity={1} onPress={() => {
-          setShowDialog(true)
-        }}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            setShowDialog(true);
+          }}>
           <View style={styles.rowView}>
             <View>
-              <Text
-                style={styles.textStyle}>
-                {rowData.name}
-              </Text>
-              <Text
-                style={styles.descriptionStyle}>
-                {rowData.id}
-              </Text>
+              <Text style={styles.textStyle}>{rowData.name}</Text>
+              <Text style={styles.descriptionStyle}>{rowData.id}</Text>
             </View>
-            {rowData.status === 'Shipped' ?
-              <Text style={[styles.statusTextStyle, { backgroundColor: '#34C759' }]}>{rowData.status}</Text>
-              :
+            {rowData.status === 'Shipped' ? (
+              <Text
+                style={[styles.statusTextStyle, {backgroundColor: '#34C759'}]}>
+                {rowData.status}
+              </Text>
+            ) : (
               <View>
-                {rowData.status === 'Approved' ?
-                  <Text style={[styles.statusTextStyle, { backgroundColor: '#0081CE' }]}>{rowData.status}</Text>
-                  :
-                  null
-                }
+                {rowData.status === 'Approved' ? (
+                  <Text
+                    style={[
+                      styles.statusTextStyle,
+                      {backgroundColor: '#0081CE'},
+                    ]}>
+                    {rowData.status}
+                  </Text>
+                ) : null}
               </View>
-            }
-            <SideArrow style={{ width: 9, height: 16, top: 22, right: 19, position: 'absolute' }} resizeMode={'contain'} />
-          </View >
+            )}
+            <SideArrow
+              style={{
+                width: 9,
+                height: 16,
+                top: 22,
+                right: 19,
+                position: 'absolute',
+              }}
+              resizeMode={'contain'}
+            />
+          </View>
         </TouchableOpacity>
       </>
     );
@@ -149,44 +170,41 @@ export const OrderProductDeliveryStatus = ({ navigation }) => {
 
   const renderFlatList = () => {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <FlatList
           style={{
             flex: 1,
             marginTop: 31,
             backgroundColor: 'white',
-            marginBottom: 0
+            marginBottom: 0,
           }}
           data={orderdata}
-          renderItem={({ item, index }) => renderRow(item, index)}
+          renderItem={({item, index}) => renderRow(item, index)}
           keyExtractor={item => item.id}
           removeClippedSubviews={true}
         />
       </View>
-
     );
-  }
+  };
 
   const renderDialog = () => {
     return (
       <CommonDialogView
         onPressViewDetails={() => {
-          navigation.navigate(ScreenNamesMarketing.ORDERDETAILSVIEW)
-          setShowDialog(false)
+          navigation.navigate(ScreenNamesMarketing.ORDERDETAILSVIEW);
+          setShowDialog(false);
         }}
         onPressUpdate={() => {
-          navigation.navigate(ScreenNamesMarketing.ORDERUPDAATE)
-          setShowDialog(false)
+          navigation.navigate(ScreenNamesMarketing.ORDERUPDAATE);
+          setShowDialog(false);
         }}
-        onPressDelete={() => {
-
-        }}
+        onPressDelete={() => {}}
         onPressCancel={() => {
-          setShowDialog(false)
+          setShowDialog(false);
         }}
       />
-    )
-  }
+    );
+  };
 
   return (
     <View style={styles.container}>

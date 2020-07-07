@@ -1,19 +1,19 @@
 import React from 'react';
-import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
+import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 
-const { height, width } = Dimensions.get('window')
+const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgb(245,245,245)'
+    backgroundColor: 'rgb(245,245,245)',
   },
   mainDescriptionStyle: {
     fontSize: 13,
     lineHeight: 18,
-    letterSpacing: - 0.078,
+    letterSpacing: -0.078,
     color: 'rgba(60, 60, 67, 0.6)',
     paddingTop: 6,
     paddingHorizontal: 16,
@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
     paddingVertical: 11,
     fontSize: 17,
     lineHeight: 22,
-    letterSpacing: - 0.408,
-    color: '#000000'
+    letterSpacing: -0.408,
+    color: '#000000',
   },
-})
+});
 
 const productData = [
   {
@@ -184,19 +184,20 @@ const productData = [
   },
 ];
 
-
-export const OrdersProductSearch = ({ navigation }) => {
-
+export const OrdersProductSearch = ({navigation}) => {
   const renderHeader = () => {
     return (
       <CommonSearchHeader
         rightSideText={'Cancel'}
-        onPressRightButton={() => { navigation.goBack() }}
-        onSearchValue={(searchValue) => { console.log('searchValue', searchValue) }}
+        onPressRightButton={() => {
+          navigation.goBack();
+        }}
+        onSearchValue={searchValue => {
+          console.log('searchValue', searchValue);
+        }}
       />
-    )
-  }
-
+    );
+  };
 
   const renderRow = (rowData, index) => {
     return (
@@ -204,7 +205,7 @@ export const OrdersProductSearch = ({ navigation }) => {
         <Text
           onPress={() => {
             console.log('text cliched', index);
-            navigation.navigate(ScreenNamesMarketing.ORDERPRODUCTDETAILS)
+            navigation.navigate(ScreenNamesMarketing.ORDERPRODUCTDETAILS);
           }}
           style={styles.textStyle}>
           {rowData.title}
@@ -215,23 +216,22 @@ export const OrdersProductSearch = ({ navigation }) => {
 
   const renderListView = () => {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <FlatList
           style={{
             flex: 1,
             marginTop: 31,
             backgroundColor: 'white',
-            marginBottom: 0
+            marginBottom: 0,
           }}
           data={productData}
-          renderItem={({ item, index }) => renderRow(item, index)}
+          renderItem={({item, index}) => renderRow(item, index)}
           keyExtractor={item => item.id}
           removeClippedSubviews={true}
         />
       </View>
-
     );
-  }
+  };
 
   return (
     <View style={styles.container}>

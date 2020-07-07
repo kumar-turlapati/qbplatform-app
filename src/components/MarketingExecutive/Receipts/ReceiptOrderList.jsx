@@ -1,21 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Dimensions, FlatList, StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
-import { SideArrow } from '../../../icons/Icons';
+import {SideArrow} from '../../../icons/Icons';
 import CommonDialogView from '../UI/CommonDialogView';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 
-const { height, width } = Dimensions.get('window')
+const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgb(245,245,245)'
+    backgroundColor: 'rgb(245,245,245)',
   },
   mainDescriptionStyle: {
     fontSize: 13,
     lineHeight: 18,
-    letterSpacing: - 0.078,
+    letterSpacing: -0.078,
     color: 'rgba(60, 60, 67, 0.6)',
     paddingTop: 6,
     paddingHorizontal: 16,
@@ -27,15 +35,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    flex: 1
+    flex: 1,
   },
   textStyle: {
     paddingTop: 9,
     fontSize: 17,
     lineHeight: 22,
-    letterSpacing: - 0.408,
+    letterSpacing: -0.408,
     color: '#000000',
-    marginLeft: 16
+    marginLeft: 16,
   },
   viewStyle: {
     marginLeft: 16,
@@ -49,7 +57,7 @@ const styles = StyleSheet.create({
     paddingTop: 9,
     fontSize: 17,
     lineHeight: 22,
-    letterSpacing: - 0.5,
+    letterSpacing: -0.5,
     color: 'black',
   },
   descriptionStyle: {
@@ -58,7 +66,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.24,
     color: 'rgba(60, 60, 67, 0.6)',
     paddingBottom: 9,
-    marginLeft: 16
+    marginLeft: 16,
   },
   statusTextStyle: {
     fontSize: 14,
@@ -74,77 +82,100 @@ const styles = StyleSheet.create({
     marginRight: 45,
     paddingTop: 1,
     overflow: 'hidden',
-  }
-})
+  },
+});
 
 const orderdata = [
   {
     name: 'Yashwanth Rana',
     id: 'ID 23456789',
-    status: 'Accepted'
+    status: 'Accepted',
   },
   {
     name: 'Suraj Chouhan',
     id: 'ID 23456799',
-    status: 'Approved'
+    status: 'Approved',
   },
   {
     name: 'Suraj Chouhan',
     id: 'ID 23456799',
-    status: 'Shipped'
-  }
-]
+    status: 'Shipped',
+  },
+];
 
-export const ReceiptOrderList = ({ navigation }) => {
-
+export const ReceiptOrderList = ({navigation}) => {
   const renderHeader = () => {
     return (
       <CommonHeader
         mainViewHeading={'Orders'}
         leftSideText={'Back'}
-        onPressLeftButton={() => { navigation.goBack() }}
-        onShareIconPress={() => { }}
+        onPressLeftButton={() => {
+          navigation.goBack();
+        }}
+        onShareIconPress={() => {}}
         shareIcon={true}
       />
-    )
-  }
+    );
+  };
 
   const renderRow = (rowData, index) => {
     return (
       <>
-        <TouchableOpacity activeOpacity={1} onPress={() => {
-          navigation.navigate(ScreenNamesMarketing.RECEIPTORDERDETAILS, { name: rowData.name, invoiceNumber: rowData.id, status: rowData.status })
-
-        }}>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            navigation.navigate(ScreenNamesMarketing.RECEIPTORDERDETAILS, {
+              name: rowData.name,
+              invoiceNumber: rowData.id,
+              status: rowData.status,
+            });
+          }}>
           <View style={styles.rowView}>
             <View>
-              <Text
-                style={styles.textStyle}>
-                {rowData.name}
-              </Text>
-              <Text
-                style={styles.descriptionStyle}>
-                {rowData.id}
-              </Text>
+              <Text style={styles.textStyle}>{rowData.name}</Text>
+              <Text style={styles.descriptionStyle}>{rowData.id}</Text>
             </View>
-            {rowData.status === 'Shipped' ?
-              <Text style={[styles.statusTextStyle, { backgroundColor: '#34C759' }]}>{rowData.status}</Text>
-              :
+            {rowData.status === 'Shipped' ? (
+              <Text
+                style={[styles.statusTextStyle, {backgroundColor: '#34C759'}]}>
+                {rowData.status}
+              </Text>
+            ) : (
               <View>
-                {rowData.status === 'Approved' ?
-                  <Text style={[styles.statusTextStyle, { backgroundColor: '#0081CE' }]}>{rowData.status}</Text>
-                  :
+                {rowData.status === 'Approved' ? (
+                  <Text
+                    style={[
+                      styles.statusTextStyle,
+                      {backgroundColor: '#0081CE'},
+                    ]}>
+                    {rowData.status}
+                  </Text>
+                ) : (
                   <View>
-                    {
-                      rowData.status === 'Accepted' ?
-                        <Text style={[styles.statusTextStyle, { backgroundColor: '#FF9500' }]}>{rowData.status}</Text> : null
-                    }
+                    {rowData.status === 'Accepted' ? (
+                      <Text
+                        style={[
+                          styles.statusTextStyle,
+                          {backgroundColor: '#FF9500'},
+                        ]}>
+                        {rowData.status}
+                      </Text>
+                    ) : null}
                   </View>
-                }
+                )}
               </View>
-            }
-            <SideArrow style={{ width: 9, height: 16, top: 22, right: 19, position: 'absolute' }} resizeMode={'contain'} />
-          </View >
+            )}
+            <SideArrow
+              style={{
+                width: 9,
+                height: 16,
+                top: 22,
+                right: 19,
+                position: 'absolute',
+              }}
+              resizeMode={'contain'}
+            />
+          </View>
         </TouchableOpacity>
       </>
     );
@@ -152,41 +183,68 @@ export const ReceiptOrderList = ({ navigation }) => {
 
   const renderFlatList = () => {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <FlatList
           style={{
             flex: 1,
             marginTop: 31,
             backgroundColor: 'white',
-            marginBottom: 0
+            marginBottom: 0,
           }}
           data={orderdata}
-          renderItem={({ item, index }) => renderRow(item, index)}
+          renderItem={({item, index}) => renderRow(item, index)}
           keyExtractor={item => item.id}
           removeClippedSubviews={true}
         />
       </View>
-
     );
-  }
+  };
 
   const renderCompanyName = () => {
     return (
-      <View style={{ backgroundColor: 'white', height: 44 }}>
-        <View style={{ marginHorizontal: 16, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-          <Text style={[styles.titleStyle, {
-            color: '#3C3C43',
-            opacity: 0.5
-          }]}>Company</Text>
-          <Text style={[styles.titleStyle, {
-            marginRight: 24,
-            color: '#3C3C43',
-          }]}>Rana Textiles</Text>
+      <View style={{backgroundColor: 'white', height: 44}}>
+        <View
+          style={{
+            marginHorizontal: 16,
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+          }}>
+          <Text
+            style={[
+              styles.titleStyle,
+              {
+                color: '#3C3C43',
+                opacity: 0.5,
+              },
+            ]}>
+            Company
+          </Text>
+          <Text
+            style={[
+              styles.titleStyle,
+              {
+                marginRight: 24,
+                color: '#3C3C43',
+              },
+            ]}>
+            Rana Textiles
+          </Text>
         </View>
-        <View style={{ left: 16, right: 0, height: 1, backgroundColor: 'black', opacity: 0.1, top: 43, position: 'absolute' }} />
+        <View
+          style={{
+            left: 16,
+            right: 0,
+            height: 1,
+            backgroundColor: 'black',
+            opacity: 0.1,
+            top: 43,
+            position: 'absolute',
+          }}
+        />
       </View>
     );
-  }
+  };
 
   return (
     <View style={styles.container}>
