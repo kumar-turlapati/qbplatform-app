@@ -123,15 +123,15 @@ const list = [{
   title: 'Orders'
 },
 {
-  icon: <DispatchIcon style={{ width: 27, height: 29, marginTop: 16 }} />,
+  icon: <DispatchIcon style={{ width: 27, height: 29, marginTop: 16, marginLeft: 1 }} />,
   title: 'Dispatches'
 },
 {
-  icon: <ReceiptsIcon style={{ width: 23, height: 30, marginTop: 16 }} />,
+  icon: <ReceiptsIcon style={{ width: 23, height: 30, marginTop: 16, marginLeft: 3 }} />,
   title: 'Receipts'
 },
 {
-  icon: <CustomersIcon style={{ width: 28, height: 29, marginTop: 16 }} />,
+  icon: <CustomersIcon style={{ width: 28, height: 29, marginTop: 16, marginLeft: 1 }} />,
   title: 'Customers'
 },
 {
