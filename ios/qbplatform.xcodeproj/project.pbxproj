@@ -20,7 +20,7 @@
 		508B77D7888245C3B4344998 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4415CA422A7D49AE93DEA757 /* Fontisto.ttf */; };
 		5334AA07C89B4430B47FEF77 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ACE823FD44D94D26826EE43D /* Octicons.ttf */; };
 		57283EA1C24D421C9E92B7F6 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A675B67AD8743A8B3041ED4 /* Ionicons.ttf */; };
-		6C9E51C841715462B09B9EC6 /* libPods-qbplatform.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCD236B5D502BD2FDF535DEF /* libPods-qbplatform.a */; };
+		6C9E51C841715462B09B9EC6 /* libPods-svfadmin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCD236B5D502BD2FDF535DEF /* libPods-svfadmin.a */; };
 		8847C4B99EB24E2FA0C0036C /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 35E9950ECD9D4147A87EE2F5 /* FontAwesome5_Regular.ttf */; };
 		88F8D51C5A13494C9DAA83B8 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EF5E1A5D45E1483580F5164B /* Feather.ttf */; };
 		92B1266DBBF346B6921A656E /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A43B5840748144B087F8786F /* Zocial.ttf */; };
@@ -33,38 +33,38 @@
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* qbplatformTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = qbplatformTests.m; sourceTree = "<group>"; };
-		0CAED5E132C3C6B0328493BE /* Pods-qbplatform.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-qbplatform.release.xcconfig"; path = "Target Support Files/Pods-qbplatform/Pods-qbplatform.release.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* qbplatform.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = qbplatform.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = qbplatform/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = qbplatform/AppDelegate.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* svfadminTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = svfadminTests.m; sourceTree = "<group>"; };
+		0CAED5E132C3C6B0328493BE /* Pods-svfadmin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-svfadmin.release.xcconfig"; path = "Target Support Files/Pods-svfadmin/Pods-svfadmin.release.xcconfig"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* svfadmin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = svfadmin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = svfadmin/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = svfadmin/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = qbplatform/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = qbplatform/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = qbplatform/main.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = svfadmin/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = svfadmin/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = svfadmin/main.m; sourceTree = "<group>"; };
 		22BC1B77572F4EDD9CCB115C /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
-		2E5933A72FDF52D79784EFAD /* Pods-qbplatform-qbplatformTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-qbplatform-qbplatformTests.release.xcconfig"; path = "Target Support Files/Pods-qbplatform-qbplatformTests/Pods-qbplatform-qbplatformTests.release.xcconfig"; sourceTree = "<group>"; };
+		2E5933A72FDF52D79784EFAD /* Pods-svfadmin-svfadminTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-svfadmin-svfadminTests.release.xcconfig"; path = "Target Support Files/Pods-svfadmin-svfadminTests/Pods-svfadmin-svfadminTests.release.xcconfig"; sourceTree = "<group>"; };
 		328C8485522C4F628F668E68 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		35E9950ECD9D4147A87EE2F5 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
-		38655271709B3397EA3D7FB1 /* Pods-qbplatform-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-qbplatform-tvOS.release.xcconfig"; path = "Target Support Files/Pods-qbplatform-tvOS/Pods-qbplatform-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		38655271709B3397EA3D7FB1 /* Pods-svfadmin-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-svfadmin-tvOS.release.xcconfig"; path = "Target Support Files/Pods-svfadmin-tvOS/Pods-svfadmin-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		4415CA422A7D49AE93DEA757 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		4FEB459B504D445684437FC6 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		610A35CC2BA4418EA464E0FF /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		6884D420146B4E4FBD7687C5 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		6B472F8DDA75E38006E5DEA9 /* Pods-qbplatform-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-qbplatform-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-qbplatform-tvOS/Pods-qbplatform-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		76C8787DC2A268B5581312C2 /* Pods-qbplatform-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-qbplatform-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-qbplatform-tvOSTests/Pods-qbplatform-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		6B472F8DDA75E38006E5DEA9 /* Pods-svfadmin-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-svfadmin-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-svfadmin-tvOS/Pods-svfadmin-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		76C8787DC2A268B5581312C2 /* Pods-svfadmin-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-svfadmin-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-svfadmin-tvOSTests/Pods-svfadmin-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		7A675B67AD8743A8B3041ED4 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		7C6363B3BFBF48978A9AD01C /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		7FC9D3501F148DBB4BC1B2B1 /* Pods-qbplatform.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-qbplatform.debug.xcconfig"; path = "Target Support Files/Pods-qbplatform/Pods-qbplatform.debug.xcconfig"; sourceTree = "<group>"; };
-		831368476FC4A0352569E62F /* Pods-qbplatform-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-qbplatform-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-qbplatform-tvOSTests/Pods-qbplatform-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		7FC9D3501F148DBB4BC1B2B1 /* Pods-svfadmin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-svfadmin.debug.xcconfig"; path = "Target Support Files/Pods-svfadmin/Pods-svfadmin.debug.xcconfig"; sourceTree = "<group>"; };
+		831368476FC4A0352569E62F /* Pods-svfadmin-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-svfadmin-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-svfadmin-tvOSTests/Pods-svfadmin-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8A7FE7E546064A81819B3E91 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		A20162CB3A6048F2ACE57603 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		A43B5840748144B087F8786F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		A742D8C1608C47EE9FC5F755 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		AAED61F595FA5E846C8B702C /* Pods-qbplatform-qbplatformTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-qbplatform-qbplatformTests.debug.xcconfig"; path = "Target Support Files/Pods-qbplatform-qbplatformTests/Pods-qbplatform-qbplatformTests.debug.xcconfig"; sourceTree = "<group>"; };
+		AAED61F595FA5E846C8B702C /* Pods-svfadmin-svfadminTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-svfadmin-svfadminTests.debug.xcconfig"; path = "Target Support Files/Pods-svfadmin-svfadminTests/Pods-svfadmin-svfadminTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ACE823FD44D94D26826EE43D /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		C2E5B838AC0E463CA120DABD /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		CCD236B5D502BD2FDF535DEF /* libPods-qbplatform.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-qbplatform.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCD236B5D502BD2FDF535DEF /* libPods-svfadmin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-svfadmin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EF5E1A5D45E1483580F5164B /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -75,20 +75,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C9E51C841715462B09B9EC6 /* libPods-qbplatform.a in Frameworks */,
+				6C9E51C841715462B09B9EC6 /* libPods-svfadmin.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* qbplatformTests */ = {
+		00E356EF1AD99517003FC87E /* svfadminTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* qbplatformTests.m */,
+				00E356F21AD99517003FC87E /* svfadminTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = qbplatformTests;
+			path = svfadminTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -99,7 +99,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* qbplatform */ = {
+		13B07FAE1A68108700A75B9A /* svfadmin */ = {
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -110,7 +110,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = qbplatform;
+			name = svfadmin;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -118,7 +118,7 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				CCD236B5D502BD2FDF535DEF /* libPods-qbplatform.a */,
+				CCD236B5D502BD2FDF535DEF /* libPods-svfadmin.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -126,14 +126,14 @@
 		45C06CEB9EFDE3AECBBCAF19 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7FC9D3501F148DBB4BC1B2B1 /* Pods-qbplatform.debug.xcconfig */,
-				0CAED5E132C3C6B0328493BE /* Pods-qbplatform.release.xcconfig */,
-				AAED61F595FA5E846C8B702C /* Pods-qbplatform-qbplatformTests.debug.xcconfig */,
-				2E5933A72FDF52D79784EFAD /* Pods-qbplatform-qbplatformTests.release.xcconfig */,
-				6B472F8DDA75E38006E5DEA9 /* Pods-qbplatform-tvOS.debug.xcconfig */,
-				38655271709B3397EA3D7FB1 /* Pods-qbplatform-tvOS.release.xcconfig */,
-				831368476FC4A0352569E62F /* Pods-qbplatform-tvOSTests.debug.xcconfig */,
-				76C8787DC2A268B5581312C2 /* Pods-qbplatform-tvOSTests.release.xcconfig */,
+				7FC9D3501F148DBB4BC1B2B1 /* Pods-svfadmin.debug.xcconfig */,
+				0CAED5E132C3C6B0328493BE /* Pods-svfadmin.release.xcconfig */,
+				AAED61F595FA5E846C8B702C /* Pods-svfadmin-svfadminTests.debug.xcconfig */,
+				2E5933A72FDF52D79784EFAD /* Pods-svfadmin-svfadminTests.release.xcconfig */,
+				6B472F8DDA75E38006E5DEA9 /* Pods-svfadmin-tvOS.debug.xcconfig */,
+				38655271709B3397EA3D7FB1 /* Pods-svfadmin-tvOS.release.xcconfig */,
+				831368476FC4A0352569E62F /* Pods-svfadmin-tvOSTests.debug.xcconfig */,
+				76C8787DC2A268B5581312C2 /* Pods-svfadmin-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -148,9 +148,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* qbplatform */,
+				13B07FAE1A68108700A75B9A /* svfadmin */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* qbplatformTests */,
+				00E356EF1AD99517003FC87E /* svfadminTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				DC122A1E424A4CE3B7685520 /* Resources */,
@@ -164,7 +164,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* qbplatform.app */,
+				13B07F961A680F5B00A75B9A /* svfadmin.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -195,9 +195,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* qbplatform */ = {
+		13B07F861A680F5B00A75B9A /* svfadmin */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "qbplatform" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "svfadmin" */;
 			buildPhases = (
 				8FA6E7753AAC4DA12D371088 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -211,9 +211,9 @@
 			);
 			dependencies = (
 			);
-			name = qbplatform;
-			productName = qbplatform;
-			productReference = 13B07F961A680F5B00A75B9A /* qbplatform.app */;
+			name = svfadmin;
+			productName = svfadmin;
+			productReference = 13B07F961A680F5B00A75B9A /* svfadmin.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -230,7 +230,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "qbplatform" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "svfadmin" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -243,7 +243,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* qbplatform */,
+				13B07F861A680F5B00A75B9A /* svfadmin */,
 			);
 		};
 /* End PBXProject section */
@@ -297,7 +297,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-qbplatform/Pods-qbplatform-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-svfadmin/Pods-svfadmin-resources.sh",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -336,7 +336,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-qbplatform/Pods-qbplatform-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-svfadmin/Pods-svfadmin-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8FA6E7753AAC4DA12D371088 /* [CP] Check Pods Manifest.lock */ = {
@@ -354,7 +354,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-qbplatform-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-svfadmin-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -401,7 +401,7 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = qbplatform;
+			path = svfadmin;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -409,7 +409,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7FC9D3501F148DBB4BC1B2B1 /* Pods-qbplatform.debug.xcconfig */;
+			baseConfigurationReference = 7FC9D3501F148DBB4BC1B2B1 /* Pods-svfadmin.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -421,7 +421,7 @@
 					"$(inherited)",
 					"FB_SONARKIT_ENABLED=1",
 				);
-				INFOPLIST_FILE = qbplatform/Info.plist;
+				INFOPLIST_FILE = svfadmin/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -429,7 +429,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = qbplatform;
+				PRODUCT_NAME = svfadmin;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -439,14 +439,14 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0CAED5E132C3C6B0328493BE /* Pods-qbplatform.release.xcconfig */;
+			baseConfigurationReference = 0CAED5E132C3C6B0328493BE /* Pods-svfadmin.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = qbplatform/Info.plist;
+				INFOPLIST_FILE = svfadmin/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -454,7 +454,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = qbplatform;
+				PRODUCT_NAME = svfadmin;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -577,7 +577,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "qbplatform" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "svfadmin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -586,7 +586,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "qbplatform" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "svfadmin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

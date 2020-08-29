@@ -44,8 +44,8 @@ def flipper_post_install(installer)
   end
 end
 
-target 'qbplatform' do
-  # Pods for qbplatform
+target 'svfadmin' do
+  # Pods for svfadmin
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -80,7 +80,7 @@ target 'qbplatform' do
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
-  target 'qbplatformTests' do
+  target 'svfadminTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -97,10 +97,10 @@ target 'qbplatform' do
   end
 end
 
-target 'qbplatform-tvOS' do
-  # Pods for qbplatform-tvOS
+target 'svfadmin-tvOS' do
+  # Pods for svfadmin-tvOS
 
-  target 'qbplatform-tvOSTests' do
+  target 'svfadmin-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

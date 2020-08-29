@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.qbplatform"
+        applicationId "com.svfadmin"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

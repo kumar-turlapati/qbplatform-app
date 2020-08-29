@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "qbplatform-tvOS.app"
-               BlueprintName = "qbplatform-tvOS"
-               ReferencedContainer = "container:qbplatform.xcodeproj">
+               BuildableName = "svfadmin-tvOS.app"
+               BlueprintName = "svfadmin-tvOS"
+               ReferencedContainer = "container:svfadmin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "qbplatform-tvOSTests.xctest"
-               BlueprintName = "qbplatform-tvOSTests"
-               ReferencedContainer = "container:qbplatform.xcodeproj">
+               BuildableName = "svfadmin-tvOSTests.xctest"
+               BlueprintName = "svfadmin-tvOSTests"
+               ReferencedContainer = "container:svfadmin.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "qbplatform-tvOS.app"
-            BlueprintName = "qbplatform-tvOS"
-            ReferencedContainer = "container:qbplatform.xcodeproj">
+            BuildableName = "svfadmin-tvOS.app"
+            BlueprintName = "svfadmin-tvOS"
+            ReferencedContainer = "container:svfadmin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "qbplatform-tvOS.app"
-            BlueprintName = "qbplatform-tvOS"
-            ReferencedContainer = "container:qbplatform.xcodeproj">
+            BuildableName = "svfadmin-tvOS.app"
+            BlueprintName = "svfadmin-tvOS"
+            ReferencedContainer = "container:svfadmin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
