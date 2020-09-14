@@ -35,7 +35,7 @@ export const restEndPoints = {
       `${apiBaseUrl}/crm-object/update/appointment/${appointmentCode}`,
   },
   LIST_APPOINTMENTS: {
-    URL: `${apiBaseUrl}/crm-object/list/appointment`,
+    URL: (pageNo, perPage, appointmentTime) => `${apiBaseUrl}/crm-object/list/appointment?pageNo=${pageNo}&perPage=${perPage}&appointmentTime=${appointmentTime}`,
   },
   CUSTOMER_NAMES: {
     URL: name => `${apiBaseUrl}/customers/ac/get-names?q=${name}`,
