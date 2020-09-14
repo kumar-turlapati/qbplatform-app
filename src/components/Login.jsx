@@ -1,104 +1,145 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { Button } from 'react-native-elements';
+import { StyleSheet, Text, TextInput, View, Keyboard } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { ScreenNamesMarketing } from '../helpers/ScreenNames';
-import { BackIcon, QLogo } from '../icons/Icons';
-import { isMobileNumberValid } from '../utils/Validators';
+import { Logo } from '../icons/Icons';
+import { getToken, loginAPI } from '../networkcalls/apiCalls';
+import { colors } from '../theme/colors';
+import { theme } from '../theme/theme';
+import { storeItem, getValue } from '../utils/asyncStorage';
+import CommonButton from './MarketingExecutive/UI/CommonButton';
+import CommonSpinner from './MarketingExecutive/UI/CommonSpinner';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'white'
+    ...theme.viewStyles.container,
   },
-  textInputStyles: {
+  changeButtonStyles: {
     marginHorizontal: 35,
-    height: 56,
-    borderRadius: 5,
-    borderColor: '#4A4A4A',
-    borderWidth: 1.5,
-    paddingLeft: 16
-  },
-  headerTextStyles: {
     marginTop: 16,
-    marginHorizontal: 35,
-    color: '#0081CE',
-    fontSize: 15,
-    lineHeight: 20,
-    letterSpacing: -0.24,
-    marginBottom: 5
+    height: 50,
   }
 })
 
 export const Login = ({ navigation }) => {
-  const [mobileNumber, setMobileNumber] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [orgCode, setOrgCode] = useState(null);
+  const [mobileNumber, setMobileNumber] = useState('');
   const [isMobileNumberError, setIsMobileNumberError] = useState(false);
+  const [showOTPView, setShowOTPView] = useState(false);
+  const [apiErrorText, setApiErrorText] = useState('');
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [uuid, setUuid] = useState('');
+  const [OTP, setOTP] = useState('');
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [isOrgCodeError, setIsOrgCodeError] = useState(false);
-  const [mobileNumberError, setMobileNumberError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [orgCodeError, setOrgCodeError] = useState('');
-  const [showOTPView, setShowOTPView] = useState(false);
 
   useEffect(() => {
-    SplashScreen.hide();
+    loginHappened()
   }, [])
 
-  const disableSubmit =
-    isMobileNumberError || isPasswordError || isOrgCodeError;
+  const loginHappened = async () => {
+    const loginHappened = await getValue('accessToken')
+
+    if (loginHappened) {
+      navigation.navigate(ScreenNamesMarketing.DASHBOARD)
+    }
+    SplashScreen.hide();
+  }
+
+  const disableLoginButton = !(mobileNumber.length === 10);
+  const disableOTPButton = !(OTP.length === 4);
+
+  const getOTP = () => {
+    setShowSpinner(true)
+
+    loginAPI(mobileNumber)
+      .then((apiResponse) => {
+        setShowSpinner(false)
+        console.log('apiResponse', apiResponse)
+        if (apiResponse.data.status === 'success') {
+
+          setApiErrorText('');
+          const UUID = apiResponse.data.response.response.uuid
+          setUuid(UUID);
+          setShowOTPView(true)
+          storeItem('UUID', UUID)
+
+        } else {
+          const errorMessage = apiResponse.data.errortext
+          errorMethod(errorMessage)
+        }
+      })
+      .catch(() => {
+        errorMethod('Network error. Please try again after some time.')
+      })
+  }
+
+  const getAccessToken = () => {
+    setShowSpinner(true)
+    console.log('getAccessToken')
+
+    getToken(uuid, OTP)
+      .then((apiResponse) => {
+        setShowSpinner(false)
+        if (apiResponse.data.status === 'success') {
+
+          setApiErrorText('');
+          setShowOTPView(false)
+          const accessToken = apiResponse.data.response.accessToken;
+          storeItem('accessToken', accessToken)
+
+          navigation.navigate(ScreenNamesMarketing.DASHBOARD)
+
+        } else {
+          const errorMessage = apiResponse.data.errortext
+          errorMethod(errorMessage)
+        }
+      })
+      .catch(() => {
+        errorMethod('Network error. Please try again after some time.')
+      })
+  }
+
+  const errorMethod = (errorMessage) => {
+    setShowSpinner(false)
+    Keyboard.dismiss()
+    setApiErrorText(errorMessage);
+    setTimeout(() => {
+      setApiErrorText('');
+    }, 1000);
+  }
 
   const renderMobileView = () => {
     return (
       <View>
-        <Text style={styles.headerTextStyles}>Mobile Number</Text>
+        <Text style={theme.viewStyles.headerTextStyles}>Mobile Number</Text>
         <TextInput
-          style={styles.textInputStyles}
-          placeholder="Mobile number"
-          onChangeText={changedText => {
+          style={[theme.viewStyles.textInputStyles, { letterSpacing: 2 }]}
+          value={mobileNumber}
+          onChangeText={(changedText) => {
+            setApiErrorText('');
             setMobileNumber(changedText);
           }}
           maxLength={10}
           keyboardType="number-pad"
-          onEndEditing={e => {
-            const validateMobileNumber = isMobileNumberValid(e.nativeEvent.text);
-            if (validateMobileNumber && !validateMobileNumber.status) {
-              setMobileNumberError(validateMobileNumber.reason);
-              setIsMobileNumberError(true);
-            } else {
-              setMobileNumberError('');
-              setIsMobileNumberError(false);
-            }
+          onEndEditing={(e) => {
+            const validateMobileNumber = isMobileNumberValidWithReason(
+              e.nativeEvent.text,
+            );
+            if (validateMobileNumber && !validateMobileNumber.status)
+              setApiErrorText(validateMobileNumber.reason);
           }}
           textContentType="telephoneNumber"
           dataDetectorTypes="phoneNumber"
+          placeholder="Mobile number"
         />
 
-        {isMobileNumberError ? <Text style={styles.headerTextStyles}>{mobileNumberError}</Text> : null}
-        <Text style={[styles.headerTextStyles, { marginTop: 23 }]}>Organization code</Text>
-        <TextInput
-          style={styles.textInputStyles}
-          placeholder="Organization code"
-          maxLength={15}
-          onChangeText={changedText => {
-            setOrgCode(changedText);
+        <CommonButton
+          buttonTitle={'Get OTP'}
+          disableButton={disableLoginButton}
+          onPressButton={() => {
+            getOTP()
           }}
-        />
-        <Button
-          title="Get OTP"
-          disabled={disableSubmit}
-          loading={false}
-          style={{ marginHorizontal: 35, marginTop: 16, borderRadius: 10, height: 50 }}
-          activeOpacity={0.8}
-          buttonStyle={{
-            backgroundColor: '#0081CE'
-          }}
-          onPress={() => {
-            if (!disableSubmit) {
-              setShowOTPView(true)
-            }
-          }}
+          propStyle={theme.viewStyles.buttonStyles}
         />
       </View>
     )
@@ -107,147 +148,58 @@ export const Login = ({ navigation }) => {
   const renderOTPView = () => {
     return (
       <>
-        <Text style={styles.headerTextStyles}>Please enter OTP</Text>
-        <View style={{ flexDirection: 'row' }}>
-          <TextInput
-            style={[styles.textInputStyles, {
-              paddingLeft: 0, height: 56, width: 45, paddingLeft: 16, marginHorizontal: 0, marginLeft: 35
-            }]}
-            placeholder="1"
-            maxLength={1}
-            keyboardType="number-pad"
-            onChangeText={changedText => {
-              setOrgCode(changedText);
-            }}
-          />
-          <TextInput
-            style={[styles.textInputStyles, {
-              paddingLeft: 0, height: 56, width: 45, paddingLeft: 16, marginHorizontal: 0, marginLeft: 35
-            }]}
-            placeholder="2"
-            maxLength={1}
-            keyboardType="number-pad"
-            onChangeText={changedText => {
-              setOrgCode(changedText);
-            }}
-          />
-          <TextInput
-            style={[styles.textInputStyles, {
-              paddingLeft: 0, height: 56, width: 45, paddingLeft: 16, marginHorizontal: 0, marginLeft: 35
-            }]}
-            placeholder="3"
-            maxLength={1}
-            keyboardType="number-pad"
-            onChangeText={changedText => {
-              setOrgCode(changedText);
-            }}
-          />
-          <TextInput
-            style={[styles.textInputStyles, {
-              paddingLeft: 0, height: 56, width: 45, paddingLeft: 16, marginHorizontal: 0, marginLeft: 35
-            }]}
-            placeholder="4"
-            maxLength={1}
-            keyboardType="number-pad"
-            onChangeText={changedText => {
-              setOrgCode(changedText);
-            }}
-          />
-        </View>
-        <Button
-          title="Submit OTP"
-          disabled={disableSubmit}
-          loading={false}
-          activeOpacity={0.8}
-          style={{ marginHorizontal: 35, marginTop: 16, borderRadius: 10, height: 50 }}
-          titleStyle={{ color: "#FFFFFF", fontWeight: '600', fontSize: 17, lineHeight: 22, letterSpacing: -0.408 }}
-          buttonStyle={{
-            backgroundColor: '#0081CE'
+        <Text style={theme.viewStyles.headerTextStyles}>Please enter OTP</Text>
+        <TextInput
+          style={[theme.viewStyles.textInputStyles, { letterSpacing: 10 }]}
+          onChangeText={(changedText) => {
+            setApiErrorText('');
+            setOTP(changedText);
           }}
-          onPress={() => {
-            if (!disableSubmit) {
-              navigation.navigate(ScreenNamesMarketing.DASHBOARD)
-              setShowOTPView(false)
-            }
-          }}
+          maxLength={4}
+          keyboardType="number-pad"
+          placeholder="1234"
         />
-        <Button
-          title="Change details ?"
-          icon={<BackIcon style={{ width: 14, height: 14 }} />}
-          activeOpacity={0.8}
-          loading={false}
-          style={{ marginHorizontal: 35, marginTop: 16, height: 50, }}
-          titleStyle={{ color: "#0081CE", fontSize: 17, lineHeight: 20, letterSpacing: -0.24, marginLeft: 8 }}
-          buttonStyle={{
-            backgroundColor: 'transparent'
+
+        <CommonButton
+          buttonTitle={'Submit OTP'}
+          disableButton={disableOTPButton}
+          onPressButton={() => {
+            getAccessToken()
           }}
-          onPress={() => {
+          propStyle={theme.viewStyles.buttonStyles}
+        />
+
+
+        <CommonButton
+          buttonTitle={'<- Change details ?'}
+          onPressButton={() => {
             setShowOTPView(false)
           }}
+          propStyle={[styles.changeButtonStyles, { backgroundColor: 'white' }]}
+          buttonStyle={{ color: colors.RED }}
         />
       </>
     );
   }
 
+  const renderSpinnerView = () => {
+    return (
+      showSpinner && <CommonSpinner animating={showSpinner} />
+    )
+  }
+
   return (
     <View style={styles.container}>
-      <QLogo style={{ width: 204, height: 90, marginHorizontal: 85, marginTop: 164 }} />
+      <Logo style={{ width: 55, height: 74, marginLeft: 40, marginTop: 164 }} />
       {!showOTPView && renderMobileView()}
       {showOTPView && renderOTPView()}
+      {renderSpinnerView()}
+      {apiErrorText.length > 0 ? (
+        <View style={{ position: 'absolute', width: '100%', height: '100%', alignItems: 'center', backgroundColor: colors.SEPERATOR_COLOR }}>
+          <Text style={theme.viewStyles.errorTextStyles}>{apiErrorText}</Text>
+        </View>
+      ) : null}
     </View>
   );
 };
 
-
-
-//   return (
-//     <View style={styles.container}>
-//       <QLogo style={{ width: 204, height: 90 }} />
-//       <Input
-//         placeholder="Mobile number"
-//         leftIcon={{ type: 'font-awesome', name: 'user' }}
-//         onChangeText={changedText => {
-//           setMobileNumber(changedText);
-//         }}
-//         maxLength={10}
-//         keyboardType="number-pad"
-//         onEndEditing={e => {
-//           const validateMobileNumber = isMobileNumberValid(e.nativeEvent.text);
-//           if (validateMobileNumber && !validateMobileNumber.status) {
-//             setMobileNumberError(validateMobileNumber.reason);
-//             setIsMobileNumberError(true);
-//           } else {
-//             setMobileNumberError('');
-//             setIsMobileNumberError(false);
-//           }
-//         }}
-//         textContentType="telephoneNumber"
-//         dataDetectorTypes="phoneNumber"
-//       />
-//       {isMobileNumberError ? <Text>{mobileNumberError}</Text> : null}
-//       <Input
-//         placeholder="Password"
-//         leftIcon={{ type: 'font-awesome', name: 'key' }}
-//         secureTextEntry
-//         maxLength={30}
-//         onChangeText={changedText => {
-//           setPassword(changedText);
-//         }}
-//       />
-//       <Input
-//         placeholder="Organization code"
-//         leftIcon={{ type: 'font-awesome', name: 'building' }}
-//         maxLength={15}
-//         onChangeText={changedText => {
-//           setOrgCode(changedText);
-//         }}
-//       />
-//       <Button
-//         title="Sign in"
-//         icon={<Icon name="arrow-right" size={15} color="white" />}
-//         disabled={disableSubmit}
-//         loading={false}
-//       />
-//     </View>
-//   );
-// };

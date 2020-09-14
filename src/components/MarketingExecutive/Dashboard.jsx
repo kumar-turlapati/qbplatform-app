@@ -3,6 +3,8 @@ import { View, StyleSheet, Dimensions, Text, FlatList, TouchableOpacity, Image }
 import { ScreenNamesMarketing } from '../../helpers/ScreenNames';
 import { MenuIcon, AppointmentsIcon, GalleryIcon, CustomersIcon, ReceiptsIcon, DispatchIcon, OrdersIcon, LogoutIcon } from '../../icons/Icons';
 import { useState } from 'react';
+import { colors } from '../../theme/colors';
+import { theme } from '../../theme/theme';
 
 const { height, width } = Dimensions.get('window')
 
@@ -10,24 +12,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'rgb(245,245,245)'
-  },
-  headerTextStyles: {
-    marginTop: 54,
-    height: 20,
-    fontSize: 17,
-    lineHeight: 22,
-    fontWeight: '600',
-    marginLeft: -20
-  },
-  headerStyles: {
-    width: width,
-    height: 88,
-    backgroundColor: 'white',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.3)'
   },
   iconStyles: {
     width: 22,
@@ -50,9 +34,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
     paddingHorizontal: 16,
   },
-  separatorStyle: {
-    backgroundColor: 'black', height: 1, marginHorizontal: 0, marginTop: 26, opacity: 0.1
-  },
+
   countStyle: {
     marginTop: 6,
     fontSize: 45,
@@ -115,27 +97,27 @@ const styles = StyleSheet.create({
 })
 
 const list = [{
-  icon: <AppointmentsIcon style={{ width: 36, height: 30, marginTop: 16 }} />,
+  icon: <AppointmentsIcon style={{ width: 36, height: 30 }} />,
   title: 'Appointments'
 },
 {
-  icon: <OrdersIcon style={{ width: 31, height: 30, marginTop: 16 }} />,
+  icon: <OrdersIcon style={{ width: 31, height: 30 }} />,
   title: 'Orders'
 },
 {
-  icon: <DispatchIcon style={{ width: 27, height: 29, marginTop: 16, marginLeft: 1 }} />,
+  icon: <DispatchIcon style={{ width: 27, height: 29 }} />,
   title: 'Dispatches'
 },
 {
-  icon: <ReceiptsIcon style={{ width: 23, height: 30, marginTop: 16, marginLeft: 3 }} />,
+  icon: <ReceiptsIcon style={{ width: 23, height: 30 }} />,
   title: 'Receipts'
 },
 {
-  icon: <CustomersIcon style={{ width: 28, height: 29, marginTop: 16, marginLeft: 1 }} />,
+  icon: <CustomersIcon style={{ width: 28, height: 29 }} />,
   title: 'Customers'
 },
 {
-  icon: <GalleryIcon style={{ width: 36, height: 29, marginTop: 16 }} />,
+  icon: <GalleryIcon style={{ width: 36, height: 29 }} />,
   title: 'Gallery'
 }
 ]
@@ -147,7 +129,7 @@ export const Dashboard = ({ navigation }) => {
 
   const renderHeader = () => {
     return (
-      <View style={styles.headerStyles}>
+      <View style={theme.viewStyles.headerDashboardStyles}>
         <TouchableOpacity onPress={() => {
           console.log('heasder pressed')
           setShowSideMenu(true)
@@ -156,8 +138,8 @@ export const Dashboard = ({ navigation }) => {
             <MenuIcon style={styles.iconStyles} />
           </View>
         </TouchableOpacity>
-        <Text style={styles.headerTextStyles}>Qwick Bills</Text>
-        <View />
+        <Text style={theme.viewStyles.textDashboardHeaderStyles}>Qwick Bills</Text>
+        <View style={{ width: 40, height: 1 }} />
       </View>
     );
   }
@@ -167,7 +149,7 @@ export const Dashboard = ({ navigation }) => {
       <FlatList
         data={list}
         bounces={false}
-        keyExtractor={(item, index) => item.id}
+        keyExtractor={(item) => item.title}
         contentContainerStyle={{
           marginHorizontal: 16,
           marginTop: 14,
@@ -180,8 +162,10 @@ export const Dashboard = ({ navigation }) => {
               rowPressed(index)
             }}>
               <View style={styles.listItem}>
-                {item.icon}
-                <View style={styles.separatorStyle} />
+                <View style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
+                  {item.icon}
+                </View>
+                <View style={theme.viewStyles.separatorStyle} />
                 <Text style={styles.countStyle}>45</Text>
                 <Text style={styles.titleStyle}>{item.title}</Text>
               </View>
@@ -225,7 +209,7 @@ export const Dashboard = ({ navigation }) => {
       <FlatList
         data={list}
         bounces={false}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.title}
         contentContainerStyle={{
           flex: 1
         }}
@@ -237,7 +221,9 @@ export const Dashboard = ({ navigation }) => {
                 rowPressed(index)
               }}>
                 <View style={{ marginLeft: 14, flexDirection: 'row', paddingBottom: 10 }}>
-                  {item.icon}
+                  <View style={{ width: 40, height: 58, alignItems: 'center', justifyContent: 'center', }}>
+                    {item.icon}
+                  </View>
                   <Text style={{
                     marginLeft: 18,
                     marginTop: 20,

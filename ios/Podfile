@@ -44,7 +44,7 @@ def flipper_post_install(installer)
   end
 end
 
-target 'svfadmin' do
+target 'qbplatform' do
   # Pods for svfadmin
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
@@ -80,11 +80,6 @@ target 'svfadmin' do
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
-  target 'svfadminTests' do
-    inherit! :complete
-    # Pods for testing
-  end
-
   use_native_modules!
 
   # Enables Flipper.
@@ -94,14 +89,5 @@ target 'svfadmin' do
   add_flipper_pods!
   post_install do |installer|
     flipper_post_install(installer)
-  end
-end
-
-target 'svfadmin-tvOS' do
-  # Pods for svfadmin-tvOS
-
-  target 'svfadmin-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
   end
 end

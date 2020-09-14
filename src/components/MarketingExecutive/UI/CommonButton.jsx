@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const styles = StyleSheet.create({
   mainButtonStyle: {
@@ -23,6 +23,7 @@ export default (CommonButton = ({
   onPressButton,
   propStyle,
   disableButton,
+  buttonStyle
 }) => {
   const renderButtom = () => {
     return (
@@ -36,9 +37,9 @@ export default (CommonButton = ({
             style={[
               styles.mainButtonStyle,
               propStyle,
-              {opacity: disableButton ? 0.5 : 1},
+              { opacity: disableButton ? 0.5 : 1 },
             ]}>
-            <Text style={styles.buttonTextStyles} textAlign={'center'}>
+            <Text style={[styles.buttonTextStyles, buttonStyle]} textAlign={'center'}>
               {buttonTitle}
             </Text>
           </View>

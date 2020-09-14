@@ -1,190 +1,55 @@
-import React from 'react';
-import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, FlatList, Keyboard, StyleSheet, Text, View } from 'react-native';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
-import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
-
-const {height, width} = Dimensions.get('window');
+import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import { getCatalogList, getProductSearch } from '../../../networkcalls/apiCalls';
+import { getValue } from '../../../utils/asyncStorage';
+import { theme } from '../../../theme/theme';
+import _ from 'lodash'
+import CommonSpinner from '../UI/CommonSpinner';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'rgb(245,245,245)',
-  },
-  mainDescriptionStyle: {
-    fontSize: 13,
-    lineHeight: 18,
-    letterSpacing: -0.078,
-    color: 'rgba(60, 60, 67, 0.6)',
-    paddingTop: 6,
-    paddingHorizontal: 16,
-    paddingBottom: 14,
-  },
-  rowView: {
-    marginLeft: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.3)',
-  },
-  textStyle: {
-    paddingVertical: 11,
-    fontSize: 17,
-    lineHeight: 22,
-    letterSpacing: -0.408,
-    color: '#000000',
+    ...theme.viewStyles.restContainer
   },
 });
 
-const productData = [
-  {
-    id: '1',
-    title: 'Product 01',
-  },
-  {
-    id: '2',
-    title: 'Product 02',
-  },
-  {
-    id: '3',
-    title: 'Product 03',
-  },
-  {
-    id: '4',
-    title: 'Product 04',
-  },
-  {
-    id: '5',
-    title: 'Product 05',
-  },
-  {
-    id: '6',
-    title: 'Product 06',
-  },
-  {
-    id: '7',
-    title: 'Product 07',
-  },
-  {
-    id: '8',
-    title: 'Product 08',
-  },
-  {
-    id: '9',
-    title: 'Product 09',
-  },
-  {
-    id: '1',
-    title: 'Product 01',
-  },
-  {
-    id: '2',
-    title: 'Product 02',
-  },
-  {
-    id: '3',
-    title: 'Product 03',
-  },
-  {
-    id: '4',
-    title: 'Product 04',
-  },
-  {
-    id: '5',
-    title: 'Product 05',
-  },
-  {
-    id: '6',
-    title: 'Product 06',
-  },
-  {
-    id: '7',
-    title: 'Product 07',
-  },
-  {
-    id: '8',
-    title: 'Product 08',
-  },
-  {
-    id: '9',
-    title: 'Product 09',
-  },
-  {
-    id: '1',
-    title: 'Product 01',
-  },
-  {
-    id: '2',
-    title: 'Product 02',
-  },
-  {
-    id: '3',
-    title: 'Product 03',
-  },
-  {
-    id: '4',
-    title: 'Product 04',
-  },
-  {
-    id: '5',
-    title: 'Product 05',
-  },
-  {
-    id: '6',
-    title: 'Product 06',
-  },
-  {
-    id: '7',
-    title: 'Product 07',
-  },
-  {
-    id: '8',
-    title: 'Product 08',
-  },
-  {
-    id: '9',
-    title: 'Product 09',
-  },
-  {
-    id: '1',
-    title: 'Product 01',
-  },
-  {
-    id: '2',
-    title: 'Product 02',
-  },
-  {
-    id: '3',
-    title: 'Product 03',
-  },
-  {
-    id: '4',
-    title: 'Product 04',
-  },
-  {
-    id: '5',
-    title: 'Product 05',
-  },
-  {
-    id: '6',
-    title: 'Product 06',
-  },
-  {
-    id: '7',
-    title: 'Product 07',
-  },
-  {
-    id: '8',
-    title: 'Product 08',
-  },
-  {
-    id: '9',
-    title: 'Product 09',
-  },
-  {
-    id: '10',
-    title: 'Product 10',
-  },
-];
+export const OrdersProductSearch = ({ navigation }) => {
 
-export const OrdersProductSearch = ({navigation}) => {
+  const [productData, setProductData] = useState([])
+  const [showSpinner, setShowSpinner] = useState(false)
+
+  useEffect(() => {
+    setShowSpinner(true)
+    catalogListCalling('a')
+  }, [])
+
+  // const catalogListCalling = async () => {
+  //   const accessToken = await getValue('accessToken')
+  //   console.log('accessToken', accessToken)
+
+  //   getCatalogList(accessToken)
+  //     .then((apiResponse) => {
+  //       console.log('apiResponse', apiResponse)
+  //     })
+  //     .catch((error) => {
+  //       console.log('error', error)
+  //     })
+  // }
+
+  const catalogListCalling = async (stringSearch) => {
+    const accessToken = await getValue('accessToken')
+
+    getProductSearch(accessToken, stringSearch)
+      .then((apiResponse) => {
+        setShowSpinner(false)
+        setProductData(apiResponse.data)
+      })
+      .catch((error) => {
+        console.log('error', error)
+      })
+  }
+
   const renderHeader = () => {
     return (
       <CommonSearchHeader
@@ -193,7 +58,13 @@ export const OrdersProductSearch = ({navigation}) => {
           navigation.goBack();
         }}
         onSearchValue={searchValue => {
-          console.log('searchValue', searchValue);
+          if (searchValue.length > 2) {
+            setTimeout(() => {
+              Keyboard.dismiss()
+              setShowSpinner(true)
+              catalogListCalling(searchValue)
+            }, 1000);
+          }
         }}
       />
     );
@@ -201,14 +72,14 @@ export const OrdersProductSearch = ({navigation}) => {
 
   const renderRow = (rowData, index) => {
     return (
-      <View style={styles.rowView}>
+      <View style={theme.viewStyles.listRowViewStyle}>
         <Text
           onPress={() => {
-            console.log('text cliched', index);
-            navigation.navigate(ScreenNamesMarketing.ORDERPRODUCTDETAILS);
+            console.log('text cliched', rowData);
+            navigation.navigate(ScreenNamesMarketing.ORDERPRODUCTDETAILS, { selectedProduct: rowData });
           }}
-          style={styles.textStyle}>
-          {rowData.title}
+          style={theme.viewStyles.commonTextStyles}>
+          {rowData}
         </Text>
       </View>
     );
@@ -216,7 +87,7 @@ export const OrdersProductSearch = ({navigation}) => {
 
   const renderListView = () => {
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <FlatList
           style={{
             flex: 1,
@@ -225,18 +96,27 @@ export const OrdersProductSearch = ({navigation}) => {
             marginBottom: 0,
           }}
           data={productData}
-          renderItem={({item, index}) => renderRow(item, index)}
-          keyExtractor={item => item.id}
+          renderItem={({ item, index }) => renderRow(item, index)}
+          keyExtractor={item => item.index}
           removeClippedSubviews={true}
         />
       </View>
     );
   };
 
+  const renderSpinner = () => {
+    return (
+      <CommonSpinner
+        animating={showSpinner}
+      />
+    )
+  }
+
   return (
     <View style={styles.container}>
       {renderHeader()}
       {renderListView()}
+      {renderSpinner()}
     </View>
   );
 };

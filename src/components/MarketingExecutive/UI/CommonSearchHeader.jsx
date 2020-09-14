@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -7,9 +7,9 @@ import {
   View,
   TextInput,
 } from 'react-native';
-import {SearchBlackIcon} from '../../../icons/Icons';
+import { SearchBlackIcon } from '../../../icons/Icons';
 
-const {height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -76,13 +76,14 @@ export default (CommonSearchHeader = ({
       <View style={styles.headerStyles}>
         <View style={styles.searchViewStyle}>
           <SearchBlackIcon
-            style={{width: 16, height: 17, marginLeft: 9, marginTop: 9}}
+            style={{ width: 16, height: 17, marginLeft: 9, marginTop: 9 }}
           />
           <TextInput
             style={styles.textInputStyle}
             placeholder="Search"
             onChangeText={updateSearch}
             value={search}
+            autoCorrect={false}
           />
         </View>
         <TouchableOpacity

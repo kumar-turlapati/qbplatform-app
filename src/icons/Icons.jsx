@@ -17,6 +17,10 @@ export const IconBase = ({ size, style, ...props }) => (
 //   <IconBase size="sm" {...props} source={require('./icons/ic_arrow_disabled.png')} />
 // );
 
+export const Logo = (props) => (
+  <IconBase {...props} source={require('./Logo.png')} resizeMode={'contain'} />
+);
+
 export const QLogo = (props) => (
   <IconBase {...props} source={require('./Qlogo.png')} resizeMode={'contain'} />
 );
@@ -46,7 +50,7 @@ export const CustomersIcon = (props) => (
 );
 
 export const GalleryIcon = (props) => (
-  <IconBase {...props} source={require('./Gallery.png')} resizeMode={'contain'} />
+  <IconBase {...props} style={{ width: 40, height: 40, marginTop: 16, alignItems: 'center', justifyContent: 'center' }} source={require('./Gallery.png')} resizeMode={'contain'} />
 );
 
 export const MenuIcon = (props) => (
