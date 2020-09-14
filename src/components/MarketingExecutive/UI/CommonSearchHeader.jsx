@@ -8,21 +8,21 @@ import {
   TextInput,
 } from 'react-native';
 import { SearchBlackIcon } from '../../../icons/Icons';
+import { colors } from '../../../theme/colors';
+import { theme } from '../../../theme/theme';
 
 const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: colors.WHITE,
   },
   headerStyles: {
+    ...theme.viewStyles.flexDirection,
     width: width,
-    backgroundColor: 'white',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    flexDirection: 'row',
+    backgroundColor: colors.WHITE,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.3)',
+    borderBottomColor: colors.BLACK_WITH_OPACITY_3,
   },
   mainHeaderStyle: {
     marginHorizontal: 16,
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 22,
     marginRight: 20,
-    color: '#0081CE',
+    color: colors.RED,
     height: 44,
     marginTop: 5,
   },

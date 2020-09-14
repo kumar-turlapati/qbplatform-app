@@ -1,160 +1,79 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet,
-  View,
+  Dimensions,
   FlatList,
   ImageBackground,
+  StyleSheet,
   TouchableOpacity,
-  Dimensions,
+  View
 } from 'react-native';
+import { cdnUrl, clientCode } from '../../../../qbconfig';
+import { MenuSmall } from '../../../icons/Icons';
+import { getCatalogDetails } from '../../../networkcalls/apiCalls';
+import { theme } from '../../../theme/theme';
+import { getValue } from '../../../utils/asyncStorage';
 import CommonHeader from '../UI/CommonHeader';
-import {MenuSmall} from '../../../icons/Icons';
+import _find from 'lodash/find';
 
-const {width, height} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'rgb(245,245,245)',
+    ...theme.viewStyles.restContainer
   },
   rowStyle: {
-    marginBottom: 10,
-    borderRadius: 13,
-    overflow: 'hidden',
-    marginRight: 6,
-  },
-  textStyle: {
-    fontWeight: '600',
-    fontSize: 21,
-    lineHeight: 18,
-    letterSpacing: -0.078,
-    color: '#FFFFFF',
-    marginTop: 25,
-    marginLeft: 21,
-  },
-  descriptionStyles: {
-    fontSize: 19,
-    lineHeight: 18,
-    letterSpacing: -0.078,
-    color: '#FFFFFF',
-    marginTop: 11,
-    marginLeft: 21,
-    opacity: 0.5,
+    ...theme.viewStyles.galleryDetailsRowStyle
   },
 });
 
-const clothes = [
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-  {
-    id: 4,
-  },
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-  {
-    id: 4,
-  },
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-  {
-    id: 4,
-  },
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-  {
-    id: 4,
-  },
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-  {
-    id: 4,
-  },
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-  {
-    id: 4,
-  },
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-  {
-    id: 4,
-  },
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-  {
-    id: 4,
-  },
-];
+export const GalleryDetailView = ({ navigation, route }) => {
+  const { catalogName, catalogCode } = route.params;
 
-export const GalleryDetailView = ({navigation, route}) => {
-  const {type} = route.params;
+  const [clothes, setClothes] = useState([])
+  const [showSpinner, setShowSpinner] = useState(false)
+  const [businessLocations, setBusinessLocations] = useState([]);
+
+  useEffect(() => {
+    setShowSpinner(true)
+    getCatalogueDetails()
+  }, [])
+
+  const getCatalogueDetails = async () => {
+    const accessToken = await getValue('accessToken')
+
+    getCatalogDetails(accessToken, catalogCode)
+      .then((apiResponse) => {
+        setShowSpinner(false)
+        console.log('apiResponse', apiResponse)
+        if (apiResponse.data.status === 'success') {
+          const businessLocations =
+            apiResponse.data.response.businessLocations;
+          setBusinessLocations(businessLocations);
+          console.log('businessLocations', businessLocations)
+
+          const catalogs =
+            apiResponse.data.response.catalogItems;
+          setClothes(catalogs)
+          console.log('catalogs', catalogs)
+
+        }
+      })
+      .catch((error) => {
+        setShowSpinner(false)
+        console.log('error', error)
+      })
+  }
 
   const renderHeader = () => {
     return (
       <CommonHeader
-        mainViewHeading={type}
+        mainViewHeading={catalogName}
         leftSideText={'Back'}
         onPressLeftButton={() => {
           navigation.goBack();
         }}
-        onAddIconPress={() => {}}
-        searchIcon={true}
+        onAddIconPress={() => { }}
+        searchIcon={false}
         onPressSearchIcon={() => {
           console.log('search clicked');
         }}
@@ -163,29 +82,38 @@ export const GalleryDetailView = ({navigation, route}) => {
   };
 
   const renderRow = (item, index) => {
+
+    const imageLocation = _find(
+      businessLocations,
+      (locationDetails) =>
+        parseInt(locationDetails.locationID, 10) ===
+        parseInt(item.locationID, 10),
+    );
+
+    let imageUrl;
+    if (item.images.length > 0) {
+      imageUrl = imageLocation
+        ? encodeURI(
+          `${cdnUrl}/${clientCode}/${imageLocation.locationCode}/${item.images[0].imageName}`,
+        )
+        : '';
+    }
+
     return (
-      <TouchableOpacity activeOpacity={1} onPress={() => {}}>
+      <TouchableOpacity activeOpacity={1} onPress={() => { }}>
         <ImageBackground
           style={[
             styles.rowStyle,
             {
               height: width / 3 - 11,
               width: width / 3 - 11,
+              borderWidth: 0.1
             },
           ]}
-          source={
-            type === 'Uppada pattu sarees'
-              ? require('../../../icons/Upada.png')
-              : require('../../../icons/Aravinda.png')
-          }>
+          source={{ uri: imageUrl }}
+        >
           <MenuSmall
-            style={{
-              position: 'absolute',
-              top: 8,
-              right: 8,
-              width: 18,
-              height: 18,
-            }}
+            style={theme.viewStyles.galleryMenuSmallIconStyle}
           />
         </ImageBackground>
       </TouchableOpacity>
@@ -195,25 +123,31 @@ export const GalleryDetailView = ({navigation, route}) => {
   const renderListView = () => {
     return (
       <FlatList
-        style={{
-          flex: 1,
-          marginTop: 8,
-          marginBottom: 0,
-          marginHorizontal: 10,
-        }}
+        style={theme.viewStyles.galleryDetailsFlatListStyles}
         numColumns={3}
         data={clothes}
-        renderItem={({item, index}) => renderRow(item, index)}
-        keyExtractor={item => item.id}
+        renderItem={({ item, index }) => renderRow(item, index)}
+        keyExtractor={item => item.itemName}
         removeClippedSubviews={true}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
       />
     );
   };
+
+  const renderSpinner = () => {
+    return (
+      <CommonSpinner
+        animating={showSpinner}
+      />
+    )
+  }
 
   return (
     <View style={styles.container}>
       {renderHeader()}
       {renderListView()}
+      {renderSpinner()}
     </View>
   );
 };

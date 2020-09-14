@@ -17,3 +17,13 @@ export const getValue = async (storageKey) => {
     return false;
   }
 };
+
+export const removeValue = async (storageKey) => {
+  try {
+    const storageValue = await AsyncStorage.removeItem(`@${storageKey}`);
+    if (storageValue != null) return storageValue;
+    else return false;
+  } catch (e) {
+    return false;
+  }
+};

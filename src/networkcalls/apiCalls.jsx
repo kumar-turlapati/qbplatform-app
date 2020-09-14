@@ -3,7 +3,7 @@ import Axios, { AxiosResponse, Canceler } from 'axios';
 import { restEndPoints, requestHeaders, qbUrl, clientCode, requestHeadersWoOrg } from '../../qbconfig';
 
 
-const { LOGIN, RESEND_OTP, GET_TOKEN, CATALOGS, PRODUCT_NAMES } = restEndPoints;
+const { LOGIN, RESEND_OTP, GET_TOKEN, CATALOGS, PRODUCT_NAMES, CATALOG_DETAILS, CUSTOMER_NAMES } = restEndPoints;
 
 export const loginAPI = (
     mobileNumber,
@@ -44,18 +44,6 @@ export const resendOTP = (
     );
 };
 
-export const getCatalogList = async (
-    accessToken,
-) => {
-    requestHeadersWoOrg['Access-Token'] = accessToken;
-    return await Axios.get(
-        CATALOGS.URL,
-        {
-            headers: requestHeadersWoOrg
-        },
-    );
-};
-
 export const getProductSearch = async (
     accessToken,
     searchString
@@ -78,6 +66,31 @@ export const getCustomerName = async (
         CUSTOMER_NAMES.URL(name),
         {
             headers: requestHeadersWoOrg
+        },
+    );
+};
+
+export const getCatalogList = async (
+    accessToken,
+) => {
+    requestHeadersWoOrg['Access-Token'] = accessToken;
+    return await Axios.get(
+        CATALOGS.URL,
+        {
+            headers: requestHeadersWoOrg
+        },
+    );
+};
+
+export const getCatalogDetails = async (
+    accessToken,
+    catalogCode
+) => {
+    requestHeaders['Access-Token'] = accessToken;
+    return await Axios.get(
+        CATALOG_DETAILS.URL(catalogCode),
+        {
+            headers: requestHeaders
         },
     );
 };

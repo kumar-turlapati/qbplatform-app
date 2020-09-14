@@ -58,7 +58,9 @@ const Common = {
   ERROR_TEXT_BACKGROUND_COLOR: errorText,
   WHITE_SNOW: whiteSnow,
   BLACK_WITH_OPACITY_3: blackOpacity3,
-  BLACK_WITH_OPACITY_1: blackOpacity1
+  BLACK_WITH_OPACITY_1: blackOpacity1,
+  BLACK_RUSSIAN: '#1C1C1E',
+  VIVID_BLUE: '#0081CE'
 };
 
 const Product = {

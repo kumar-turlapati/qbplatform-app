@@ -24,19 +24,6 @@ export const OrdersProductSearch = ({ navigation }) => {
     catalogListCalling('a')
   }, [])
 
-  // const catalogListCalling = async () => {
-  //   const accessToken = await getValue('accessToken')
-  //   console.log('accessToken', accessToken)
-
-  //   getCatalogList(accessToken)
-  //     .then((apiResponse) => {
-  //       console.log('apiResponse', apiResponse)
-  //     })
-  //     .catch((error) => {
-  //       console.log('error', error)
-  //     })
-  // }
-
   const catalogListCalling = async (stringSearch) => {
     const accessToken = await getValue('accessToken')
 

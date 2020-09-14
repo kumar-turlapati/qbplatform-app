@@ -1,36 +1,48 @@
-import React from 'react';
-import {Text, View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
 import CommonHeader from '../UI/CommonHeader';
-import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import { getValue } from '../../../utils/asyncStorage';
+import { getCustomerName } from '../../../networkcalls/apiCalls';
+import { colors } from '../../../theme/colors';
+import { theme } from '../../../theme/theme';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'rgb(245,245,245)',
-  },
-  textStyle: {
-    marginLeft: 16,
-    fontSize: 17,
-    lineHeight: 22,
-    letterSpacing: -0.5,
-    color: '#000000',
-    borderBottomColor: 'rgba(0,0,0,0.1)',
-    borderTopWidth: 1,
-    overflow: 'hidden',
-    paddingTop: 11,
+    ...theme.viewStyles.restContainer
   },
 });
-const names = [
-  {name: 'Sai'},
-  {name: 'Alpha'},
-  {name: 'Beta'},
-  {name: 'India'},
-  {name: 'Yashwant Rana'},
-  {name: 'Suraj Chouhan'},
-];
 
-export const Customers = ({navigation}) => {
+export const Customers = ({ navigation }) => {
+
+  const [names, setNames] = useState([])
+  const [showSpinner, setShowSpinner] = useState(false)
+
+  useEffect(() => {
+    setShowSpinner(true)
+    getCustomerNames('a')
+  }, [])
+
+  const getCustomerNames = async (searchString) => {
+    const accessToken = await getValue('accessToken')
+    getCustomerName(accessToken, searchString)
+      .then((apiResponse) => {
+        setShowSpinner(false)
+        console.log('apiResponse', apiResponse)
+        if (apiResponse.status === 200) {
+          const names =
+            apiResponse.data;
+          setNames(names)
+
+        }
+      })
+      .catch((error) => {
+        setShowSpinner(false)
+        console.log('error', error)
+      })
+  }
+
   const renderHeader = () => {
     return (
       <CommonHeader
@@ -40,8 +52,10 @@ export const Customers = ({navigation}) => {
           navigation.goBack();
         }}
         rightIcon={true}
-        onPressSearchIcon={() => {}}
-        onPressPlusIcon={() => {}}
+        onPressSearchIcon={() => {
+          navigation.navigate(ScreenNamesMarketing.CUSTOMERNAMESEARCH);
+        }}
+        onPressPlusIcon={() => { }}
       />
     );
   };
@@ -53,20 +67,13 @@ export const Customers = ({navigation}) => {
           activeOpacity={1}
           onPress={() => {
             navigation.navigate(ScreenNamesMarketing.CUSTOMERDETAILSUPDATE, {
-              name: item.name,
+              name: item,
             });
           }}>
-          <View style={{backgroundColor: 'white', height: 46}}>
-            <Text style={styles.textStyle}>{item.name}</Text>
+          <View style={{ backgroundColor: colors.WHITE, height: 46 }}>
+            <Text style={theme.viewStyles.customerRowTextStyles}>{item}</Text>
             <View
-              style={{
-                backgroundColor: 'black',
-                height: 1,
-                opacity: 0.2,
-                marginLeft: 15,
-                marginRight: 0,
-                marginTop: 11,
-              }}
+              style={theme.viewStyles.customerSperatorColor}
             />
           </View>
         </TouchableOpacity>
@@ -83,17 +90,26 @@ export const Customers = ({navigation}) => {
           marginBottom: 0,
         }}
         data={names}
-        renderItem={({item, index}) => renderRow(item, index)}
-        keyExtractor={item => item.id}
+        renderItem={({ item, index }) => renderRow(item, index)}
+        keyExtractor={item => item}
         removeClippedSubviews={true}
       />
     );
   };
 
+  const renderSpinner = () => {
+    return (
+      <CommonSpinner
+        animating={showSpinner}
+      />
+    )
+  }
+
   return (
     <View style={styles.container}>
       {renderHeader()}
       {renderListView()}
+      {renderSpinner()}
     </View>
   );
 };

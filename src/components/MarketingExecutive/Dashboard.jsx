@@ -5,6 +5,7 @@ import { MenuIcon, AppointmentsIcon, GalleryIcon, CustomersIcon, ReceiptsIcon, D
 import { useState } from 'react';
 import { colors } from '../../theme/colors';
 import { theme } from '../../theme/theme';
+import { removeValue } from '../../utils/asyncStorage';
 
 const { height, width } = Dimensions.get('window')
 
@@ -105,10 +106,6 @@ const list = [{
   title: 'Orders'
 },
 {
-  icon: <DispatchIcon style={{ width: 27, height: 29 }} />,
-  title: 'Dispatches'
-},
-{
   icon: <ReceiptsIcon style={{ width: 23, height: 30 }} />,
   title: 'Receipts'
 },
@@ -187,15 +184,12 @@ export const Dashboard = ({ navigation }) => {
         navigation.navigate(ScreenNamesMarketing.ORDERS)
         break;
       case 2:
-        navigation.navigate(ScreenNamesMarketing.DISPATCHES)
-        break;
-      case 3:
         navigation.navigate(ScreenNamesMarketing.RECEIPTS)
         break;
-      case 4:
+      case 3:
         navigation.navigate(ScreenNamesMarketing.CUSTOMERS)
         break;
-      case 5:
+      case 4:
         navigation.navigate(ScreenNamesMarketing.GALLERIES)
         break;
       default:
@@ -233,7 +227,7 @@ export const Dashboard = ({ navigation }) => {
                   }}>{item.title}</Text>
                 </View>
               </TouchableOpacity>
-              {index === 5 ? <View style={{ marginHorizontal: 0, backgroundColor: 'rgba(0,0,0,0.1)', height: 1, marginTop: 0 }} /> : null}
+              {index === 4 ? <View style={{ marginHorizontal: 0, backgroundColor: 'rgba(0,0,0,0.1)', height: 1, marginTop: 0 }} /> : null}
             </View>
           )
         }
@@ -269,6 +263,7 @@ export const Dashboard = ({ navigation }) => {
               </View>
               <View style={{ borderTopColor: 'rgba(0,0,0,0.1)', borderTopWidth: 1, }}>
                 <TouchableOpacity activeOpacity={1} onPress={() => {
+                  removeValue('accessToken')
                   navigation.pop(ScreenNamesMarketing.LOGIN)
                 }}>
                   <View >

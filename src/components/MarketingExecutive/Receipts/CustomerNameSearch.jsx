@@ -1,190 +1,59 @@
-import React from 'react';
-import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, FlatList, Keyboard, StyleSheet, Text, View } from 'react-native';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
-import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import { getValue } from '../../../utils/asyncStorage';
+import { getCustomerName } from '../../../networkcalls/apiCalls';
+import { colors } from '../../../theme/colors';
+import { theme } from '../../../theme/theme';
 
-const {height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: 'rgb(245,245,245)',
+    ...theme.viewStyles.restContainer
   },
   mainDescriptionStyle: {
-    fontSize: 13,
-    lineHeight: 18,
-    letterSpacing: -0.078,
-    color: 'rgba(60, 60, 67, 0.6)',
-    paddingTop: 6,
-    paddingHorizontal: 16,
-    paddingBottom: 14,
+    ...theme.viewStyles.descriptionStyles,
   },
   rowView: {
-    marginLeft: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.3)',
+    ...theme.viewStyles.listRowViewStyle
   },
   textStyle: {
-    paddingVertical: 11,
-    fontSize: 17,
-    lineHeight: 22,
-    letterSpacing: -0.408,
-    color: '#000000',
+    ...theme.viewStyles.commonTextStyles,
+    fontSize: 15
   },
 });
 
-const productData = [
-  {
-    id: '1',
-    title: 'Customer 01',
-  },
-  {
-    id: '2',
-    title: 'Customer 02',
-  },
-  {
-    id: '3',
-    title: 'Customer 03',
-  },
-  {
-    id: '4',
-    title: 'Customer 04',
-  },
-  {
-    id: '5',
-    title: 'Customer 05',
-  },
-  {
-    id: '6',
-    title: 'Customer 06',
-  },
-  {
-    id: '7',
-    title: 'Customer 07',
-  },
-  {
-    id: '8',
-    title: 'Customer 08',
-  },
-  {
-    id: '9',
-    title: 'Customer 09',
-  },
-  {
-    id: '1',
-    title: 'Customer 01',
-  },
-  {
-    id: '2',
-    title: 'Customer 02',
-  },
-  {
-    id: '3',
-    title: 'Customer 03',
-  },
-  {
-    id: '4',
-    title: 'Customer 04',
-  },
-  {
-    id: '5',
-    title: 'Customer 05',
-  },
-  {
-    id: '6',
-    title: 'Customer 06',
-  },
-  {
-    id: '7',
-    title: 'Customer 07',
-  },
-  {
-    id: '8',
-    title: 'Customer 08',
-  },
-  {
-    id: '9',
-    title: 'Customer 09',
-  },
-  {
-    id: '1',
-    title: 'Customer 01',
-  },
-  {
-    id: '2',
-    title: 'Customer 02',
-  },
-  {
-    id: '3',
-    title: 'Customer 03',
-  },
-  {
-    id: '4',
-    title: 'Customer 04',
-  },
-  {
-    id: '5',
-    title: 'Customer 05',
-  },
-  {
-    id: '6',
-    title: 'Customer 06',
-  },
-  {
-    id: '7',
-    title: 'Customer 07',
-  },
-  {
-    id: '8',
-    title: 'Customer 08',
-  },
-  {
-    id: '9',
-    title: 'Customer 09',
-  },
-  {
-    id: '1',
-    title: 'Customer 01',
-  },
-  {
-    id: '2',
-    title: 'Customer 02',
-  },
-  {
-    id: '3',
-    title: 'Customer 03',
-  },
-  {
-    id: '4',
-    title: 'Customer 04',
-  },
-  {
-    id: '5',
-    title: 'Customer 05',
-  },
-  {
-    id: '6',
-    title: 'Customer 06',
-  },
-  {
-    id: '7',
-    title: 'Customer 07',
-  },
-  {
-    id: '8',
-    title: 'Customer 08',
-  },
-  {
-    id: '9',
-    title: 'Customer 09',
-  },
-  {
-    id: '10',
-    title: 'Customer 10',
-  },
-];
+export const CustomerNameSearch = ({ navigation }) => {
 
-export const CustomerNameSearch = ({navigation}) => {
+  const [names, setNames] = useState([])
+  const [showSpinner, setShowSpinner] = useState(false)
+
+  useEffect(() => {
+    setShowSpinner(true)
+    getCustomerNames('a')
+  }, [])
+
+  const getCustomerNames = async (searchString) => {
+    const accessToken = await getValue('accessToken')
+    getCustomerName(accessToken, searchString)
+      .then((apiResponse) => {
+        setShowSpinner(false)
+        console.log('apiResponse', apiResponse)
+        if (apiResponse.status === 200) {
+          const names =
+            apiResponse.data;
+          setNames(names)
+
+        }
+      })
+      .catch((error) => {
+        setShowSpinner(false)
+        console.log('error', error)
+      })
+  }
+
   const renderHeader = () => {
     return (
       <CommonSearchHeader
@@ -193,7 +62,13 @@ export const CustomerNameSearch = ({navigation}) => {
           navigation.goBack();
         }}
         onSearchValue={searchValue => {
-          console.log('searchValue', searchValue);
+          if (searchValue.length > 2) {
+            !showSpinner && setShowSpinner(true)
+            setTimeout(() => {
+              getCustomerNames(searchValue)
+              Keyboard.dismiss()
+            }, 1000);
+          }
         }}
       />
     );
@@ -204,11 +79,12 @@ export const CustomerNameSearch = ({navigation}) => {
       <View style={styles.rowView}>
         <Text
           onPress={() => {
-            console.log('text cliched', index);
-            navigation.navigate(ScreenNamesMarketing.RECEIPTORDERLIST);
+            navigation.navigate(ScreenNamesMarketing.CUSTOMERDETAILSUPDATE, {
+              name: rowData,
+            });
           }}
           style={styles.textStyle}>
-          {rowData.title}
+          {rowData}
         </Text>
       </View>
     );
@@ -216,27 +92,38 @@ export const CustomerNameSearch = ({navigation}) => {
 
   const renderListView = () => {
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <FlatList
           style={{
             flex: 1,
             marginTop: 31,
-            backgroundColor: 'white',
+            backgroundColor: colors.WHITE,
             marginBottom: 0,
           }}
-          data={productData}
-          renderItem={({item, index}) => renderRow(item, index)}
-          keyExtractor={item => item.id}
+          data={names}
+          renderItem={({ item, index }) => renderRow(item, index)}
+          keyExtractor={item => item}
           removeClippedSubviews={true}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
         />
       </View>
     );
   };
 
+  const renderSpinner = () => {
+    return (
+      <CommonSpinner
+        animating={showSpinner}
+      />
+    )
+  }
+
   return (
     <View style={styles.container}>
       {renderHeader()}
       {renderListView()}
+      {renderSpinner()}
     </View>
   );
 };
