@@ -118,15 +118,17 @@ export const Appointments = ({ navigation }) => {
         scrollEnabled={true}
         // Enable or disable vertical scroll indicator. Default = false
         showScrollIndicator={true}
+        current={selectedData} // remove this if you don't want to show the selected date back to calender list
         firstDay={1}
         onDayPress={(day) => {
           console.log('day pressed', day)
           setSelectedCalendar(true)
           onDayClicked(day)
         }}
-        markedDates={
-          datesMarked
-        }
+        markedDates={{
+          ...datesMarked,
+          [selectedData]: { selected: true, marked: true, dotColor: theme.colors.WHITE },
+        }}
         theme={{
           'stylesheet.day.basic': {
             today: {
@@ -134,6 +136,14 @@ export const Appointments = ({ navigation }) => {
               backgroundColor: theme.colors.VIVID_BLUE
             },
             todayText: {
+              color: theme.colors.WHITE,
+              fontWeight: '500',
+            },
+            selected: {
+              borderRadius: 16,
+              backgroundColor: theme.colors.RED
+            },
+            selectedText: {
               color: theme.colors.WHITE,
               fontWeight: '500',
             },
@@ -150,6 +160,7 @@ export const Appointments = ({ navigation }) => {
           ref={(ref) => {
             calendarRef.current = ref;
           }}
+          current={selectedData}
           onMonthChange={(m) => {
             const monthDate = new Date(m.dateString);
             setCalendarDate(monthDate);
@@ -177,7 +188,7 @@ export const Appointments = ({ navigation }) => {
               },
               selected: {
                 borderRadius: 16,
-                backgroundColor: theme.colors.VIVID_BLUE
+                backgroundColor: theme.colors.RED
               },
               selectedText: {
                 color: theme.colors.WHITE,
@@ -202,7 +213,6 @@ export const Appointments = ({ navigation }) => {
   }
 
   const onDayClicked = (day) => {
-    console.log('day pressed', day)
     setCalendarDate(new Date(day.timestamp));
     setSelectedData(day.dateString)
 
@@ -210,9 +220,12 @@ export const Appointments = ({ navigation }) => {
       const appointmentDate = moment(item.appointmentStartDate).format('YYYY-MM-DD')
       return appointmentDate === day.dateString
     })
-    setFilterList(dataFiltered)
-    console.log('dataFiltered', dataFiltered)
 
+    const sortedActivities = dataFiltered.sort(function (a, b) {
+      return new Date('1970/01/01 ' + moment(a.appointmentStartDate).format('hh:mm a')) - new Date('1970/01/01 ' + moment(b.appointmentStartDate).format('hh:mm a'));
+    });
+
+    setFilterList(sortedActivities)
   }
 
   const renderListView = () => {
@@ -243,11 +256,6 @@ export const Appointments = ({ navigation }) => {
   const renderRow = (item, index) => {
     const startTime = moment(item.appointmentStartDate).format('hh:mm A')
     const endTime = moment(item.appointmentEndDate).format('hh:mm A')
-
-    console.log('startTime', startTime)
-    console.log('endTime', endTime)
-
-
     return (
       <View>
         <TouchableOpacity
@@ -256,7 +264,7 @@ export const Appointments = ({ navigation }) => {
 
           }}>
           <View style={{ backgroundColor: theme.colors.WHITE_SNOW, flexDirection: 'row' }}>
-            <View style={{ marginLeft: 17, marginHorizontal: 3, marginRight: 10 }}>
+            <View style={{ marginLeft: 17, marginHorizontal: 3, width: 70 }}>
               <Text style={[styles.timeStyles, { marginTop: 5 }]}>{startTime}</Text>
               <Text style={[styles.timeStyles, { marginBottom: 5 }]}>{endTime}</Text>
             </View>
