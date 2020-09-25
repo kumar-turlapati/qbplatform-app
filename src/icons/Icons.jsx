@@ -120,3 +120,11 @@ export const MenuBig = (props) => (
 export const MenuSmall = (props) => (
   <IconBase {...props} source={require('./MenuSmall.png')} resizeMode={'contain'} />
 );
+
+export const ArrowLeft = (props) => (
+  <IconBase {...props} source={require('./ic_arrow_left.png')} resizeMode={'contain'} />
+);
+
+export const ArrowRight = (props) => (
+  <IconBase {...props} source={require('./ic_arrow_right.png')} resizeMode={'contain'} />
+);
