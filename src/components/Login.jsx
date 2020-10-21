@@ -81,6 +81,7 @@ export const Login = ({ navigation }) => {
       .then((apiResponse) => {
         setShowSpinner(false)
         if (apiResponse.data.status === 'success') {
+          console.log('apiResponse', apiResponse)
 
           setApiErrorText('');
           setShowOTPView(false)

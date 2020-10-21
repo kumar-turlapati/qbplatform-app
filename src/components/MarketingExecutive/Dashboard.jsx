@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Dimensions, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import { ScreenNamesMarketing } from '../../helpers/ScreenNames';
 import { MenuIcon, AppointmentsIcon, GalleryIcon, CustomersIcon, ReceiptsIcon, DispatchIcon, OrdersIcon, LogoutIcon } from '../../icons/Icons';
 import { useState } from 'react';
 import { colors } from '../../theme/colors';
 import { theme } from '../../theme/theme';
-import { removeValue } from '../../utils/asyncStorage';
+import { getValue, removeValue } from '../../utils/asyncStorage';
 
 const { height, width } = Dimensions.get('window')
 
@@ -123,6 +123,15 @@ const list = [{
 export const Dashboard = ({ navigation }) => {
 
   const [showSideMenu, setShowSideMenu] = useState(false);
+
+  useEffect(() => {
+    getaccessToken()
+  }, [])
+
+  const getaccessToken = async () => {
+    const accessToken = await getValue('accessToken')
+    console.log('accessToken', accessToken)
+  }
 
   const renderHeader = () => {
     return (

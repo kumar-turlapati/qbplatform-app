@@ -58,6 +58,12 @@ export const restEndPoints = {
   CATALOG_DETAILS: {
     URL: catalogCode => `${apiBaseUrl}/app/v1/catalog/details/${catalogCode}`,
   },
+  CATS_SUBCATS: {
+    URL: `${apiBaseUrl}/app/v1/cats-subcats`,
+  },
+  DETAILS_BY_NAME: {
+    URL: productName => `${apiBaseUrl}/inventory/get-item-details-by-name?itemName=${productName}`,
+  },
 };
 
 // appointment statuses
@@ -88,4 +94,10 @@ export const apptPurposeList = {
 export const paymentMethods = {
   c: 'Cash',
   b: 'Bank',
+};
+
+// payment methods
+export const paymentTypes = {
+  wholesale: 'wholesale',
+  retail: 'retail',
 };

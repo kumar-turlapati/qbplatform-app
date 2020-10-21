@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Keyboard, StyleSheet, Text, View } from 'react-native';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
 import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
-import { getCatalogList, getProductSearch } from '../../../networkcalls/apiCalls';
+import { getCatalogList, getProductSearch, getItemDetailsByName } from '../../../networkcalls/apiCalls';
 import { getValue } from '../../../utils/asyncStorage';
 import { theme } from '../../../theme/theme';
 import _ from 'lodash'
@@ -37,6 +37,26 @@ export const OrdersProductSearch = ({ navigation }) => {
       })
   }
 
+  const callAPIOnClick = async (itemName) => {
+    const accessToken = await getValue('accessToken')
+
+    setShowSpinner(true)
+
+    getItemDetailsByName(accessToken, itemName)
+      .then((apiResponse) => {
+        setShowSpinner(false)
+
+        if (apiResponse.data.status === 'success') {
+          navigation.navigate(ScreenNamesMarketing.ORDERPRODUCTDETAILS, { selectedProduct: apiResponse.data.response });
+        }
+
+      })
+      .catch((error) => {
+        setShowSpinner(false)
+        console.log('error callAPIOnClick--->', error)
+      })
+  }
+
   const renderHeader = () => {
     return (
       <CommonSearchHeader
@@ -63,7 +83,7 @@ export const OrdersProductSearch = ({ navigation }) => {
         <Text
           onPress={() => {
             console.log('text cliched', rowData);
-            navigation.navigate(ScreenNamesMarketing.ORDERPRODUCTDETAILS, { selectedProduct: rowData });
+            callAPIOnClick(rowData)
           }}
           style={theme.viewStyles.commonTextStyles}>
           {rowData}

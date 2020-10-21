@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
 import CommonHeader from '../UI/CommonHeader';
-import {SideArrow} from '../../../icons/Icons';
+import { SideArrow } from '../../../icons/Icons';
 import CommonButton from '../UI/CommonButton';
-import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
 
-const {height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const OrderDetailsView = ({navigation}) => {
+export const OrderDetailsView = ({ navigation }) => {
   const [orderQuantity, setOrderQuantity] = useState('10');
 
   const renderHeader = () => {
@@ -86,7 +86,7 @@ export const OrderDetailsView = ({navigation}) => {
           navigation.goBack();
         }}
         rightSingleIcon={true}
-        onPressEditIcon={() => {}}
+        onPressEditIcon={() => { }}
       />
     );
   };
@@ -98,7 +98,7 @@ export const OrderDetailsView = ({navigation}) => {
         onPress={() => {
           console.log('add new customer');
         }}>
-        <View style={{backgroundColor: 'white', height: 44}}>
+        <View style={{ backgroundColor: 'white', height: 44 }}>
           <View
             style={{
               marginHorizontal: 16,
@@ -107,8 +107,8 @@ export const OrderDetailsView = ({navigation}) => {
               justifyContent: 'space-between',
             }}>
             <Text style={styles.titleStyle}>Customer</Text>
-            <Text style={[styles.titleStyle, {marginRight: 24, opacity: 1}]}>
-              Yashwanth Rana
+            <Text style={[styles.titleStyle, { marginRight: 24, opacity: 1 }]}>
+              Octet Logic OPC Pvt Ltd
             </Text>
             <SideArrow
               style={{
@@ -139,15 +139,15 @@ export const OrderDetailsView = ({navigation}) => {
 
   const renderOrderDetails = () => {
     return (
-      <View style={{backgroundColor: 'white', marginTop: 17}}>
+      <View style={{ backgroundColor: 'white', marginTop: 17 }}>
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
             console.log('add new customer');
           }}>
-          <View style={[styles.viewStyle, {height: 48}]}>
+          <View style={[styles.viewStyle, { height: 48 }]}>
             <Text style={styles.titleStyle}>Order date</Text>
-            <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+            <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
               05 Jun 2020
             </Text>
             <SideArrow
@@ -165,7 +165,7 @@ export const OrderDetailsView = ({navigation}) => {
 
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Order ID</Text>
-          <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+          <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
             23456789
           </Text>
         </View>
@@ -175,28 +175,28 @@ export const OrderDetailsView = ({navigation}) => {
 
   const renderDetails = () => {
     return (
-      <View style={{backgroundColor: 'white', marginTop: 17}}>
+      <View style={{ backgroundColor: 'white', marginTop: 17 }}>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Product</Text>
-          <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+          <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
             Product 01
           </Text>
         </View>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Order Quantity</Text>
-          <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+          <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
             10
           </Text>
         </View>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Rate</Text>
-          <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+          <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
             100 Rs
           </Text>
         </View>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Amount</Text>
-          <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+          <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
             1000 Rs
           </Text>
         </View>
@@ -205,7 +205,7 @@ export const OrderDetailsView = ({navigation}) => {
           <Text
             style={[
               styles.titleStyle,
-              {marginRight: 40, opacity: 1, color: '#34C759'},
+              { marginRight: 40, opacity: 1, color: '#34C759' },
             ]}>
             5
           </Text>
@@ -215,7 +215,7 @@ export const OrderDetailsView = ({navigation}) => {
           <Text
             style={[
               styles.titleStyle,
-              {marginRight: 40, opacity: 1, color: '#FF3B30'},
+              { marginRight: 40, opacity: 1, color: '#FF3B30' },
             ]}>
             5
           </Text>

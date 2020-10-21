@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -7,6 +7,9 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  KeyboardAvoidingView,
+  ScrollView,
+  Alert
 } from 'react-native';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
 import CommonHeader from '../UI/CommonHeader';
@@ -15,6 +18,7 @@ import CommonButton from '../UI/CommonButton';
 import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
 import { theme } from '../../../theme/theme';
 import { colors } from '../../../theme/colors';
+import { ShoppingCartContext } from '../../context/ShoppingCartProvider';
 
 const { height, width } = Dimensions.get('window');
 
@@ -43,7 +47,16 @@ export const OrdersProductDetails = ({ navigation, route }) => {
 
   const { selectedProduct } = route.params;
 
-  const [orderQuantity, setOrderQuantity] = useState('10');
+  const [orderQuantity, setOrderQuantity] = useState('');
+
+  const {
+    addToCart
+  } = useContext(ShoppingCartContext);
+
+  useEffect(() => {
+    console.log('selectedProduct', selectedProduct)
+
+  }, [])
 
   const renderHeader = () => {
     return (
@@ -55,7 +68,7 @@ export const OrdersProductDetails = ({ navigation, route }) => {
           navigation.goBack();
         }}
         onPressRightButton={() => {
-          console.log('Create button pressed');
+          addMoreClicked()
         }}
       />
     );
@@ -73,18 +86,8 @@ export const OrdersProductDetails = ({ navigation, route }) => {
             style={theme.viewStyles.viewMainStyles}>
             <Text style={styles.titleStyle}>Customer</Text>
             <Text style={[styles.titleStyle, { marginRight: 24, opacity: 1 }]}>
-              Yashwanth Rana
+              Octet Logic OPC Pvt Ltd
             </Text>
-            <SideArrow
-              style={{
-                width: 9,
-                height: 16,
-                top: 14,
-                right: 0,
-                position: 'absolute',
-              }}
-              resizeMode={'contain'}
-            />
           </View>
           <View
             style={{
@@ -108,25 +111,31 @@ export const OrdersProductDetails = ({ navigation, route }) => {
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Selected Product</Text>
           <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1, fontSize: 15 }]}>
-            {selectedProduct}
+            {selectedProduct.itemName}
           </Text>
         </View>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Category</Text>
           <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
-            Category 01
+            {selectedProduct.categoryName}
           </Text>
         </View>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Brand</Text>
           <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
-            Reymonds
+            {selectedProduct.brandName}
           </Text>
         </View>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Available Quantity</Text>
           <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
-            125
+            {Math.trunc(selectedProduct.closingQty)}
+          </Text>
+        </View>
+        <View style={styles.viewStyle}>
+          <Text style={styles.titleStyle}>UOM Name</Text>
+          <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
+            {selectedProduct.uomName}
           </Text>
         </View>
         <View style={styles.viewStyle}>
@@ -144,6 +153,7 @@ export const OrdersProductDetails = ({ navigation, route }) => {
               },
             ]}
             value={orderQuantity}
+            returnKeyType="done"
             placeholder="10"
             onChangeText={changedQuantity => {
               setOrderQuantity(changedQuantity);
@@ -167,6 +177,16 @@ export const OrdersProductDetails = ({ navigation, route }) => {
       <CommonButton
         buttonTitle={'Add to cart'}
         onPressButton={() => {
+          if (!orderQuantity) {
+            showGenericAlert('Please enter quantity')
+            return;
+          }
+          if (Math.trunc(selectedProduct.closingQty) < orderQuantity) {
+            showGenericAlert('The order limit is more than items in the stock')
+            return;
+          }
+
+          updateCart()
           navigation.navigate(ScreenNamesMarketing.ORDERCARTDETAILS);
         }}
         propStyle={{ marginHorizontal: 16, marginTop: 26 }}
@@ -174,12 +194,45 @@ export const OrdersProductDetails = ({ navigation, route }) => {
     );
   };
 
+  const addMoreClicked = () => {
+    if (!orderQuantity) {
+      showGenericAlert('Please enter quantity')
+      return;
+    }
+    if (Math.trunc(selectedProduct.closingQty) < orderQuantity) {
+      showGenericAlert('The order limit is more than items in the stock')
+      return;
+    }
+
+    updateCart()
+    navigation.goBack();
+  }
+
+  const updateCart = () => {
+
+    const orderDetails = { "itemID": selectedProduct.itemID, "itemQty": Math.trunc(selectedProduct.closingQty), "packedQty": orderQuantity, "itemRate": 300, "itemName": selectedProduct.itemName }
+    console.log('orderDetails', orderDetails)
+    addToCart(orderDetails)
+  }
+
+  const showGenericAlert = (message) => {
+    Alert.alert('Uh oh.. :(', message);
+  };
+
   return (
     <View style={styles.container}>
       {renderHeader()}
-      {renderCustomerName()}
-      {renderDetails()}
-      {renderButton()}
+      <KeyboardAvoidingView style={{ flex: 1 }}
+        {...(Platform.OS === 'ios' && { behavior: 'padding' })}
+        enabled
+      >
+        <ScrollView style={{ flex: 1 }} bounces={false}>
+          {renderCustomerName()}
+          {renderDetails()}
+          {renderButton()}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
+
   );
 };

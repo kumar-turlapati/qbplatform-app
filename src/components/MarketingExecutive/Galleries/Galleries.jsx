@@ -10,7 +10,7 @@ import {
 import CommonHeader from '../UI/CommonHeader';
 import { MenuBig } from '../../../icons/Icons';
 import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
-import { getCatalogList } from '../../../networkcalls/apiCalls';
+import { getCatsSubcats } from '../../../networkcalls/apiCalls';
 import { theme } from '../../../theme/theme';
 import { getValue } from '../../../utils/asyncStorage';
 import _find from 'lodash/find';
@@ -46,21 +46,43 @@ export const Galleries = ({ navigation }) => {
     catalogListCalling()
   }, [])
 
+  // const catalogListCalling = async () => {
+  //   const accessToken = await getValue('accessToken')
+  //   getCatalogList(accessToken)
+  //     .then((apiResponse) => {
+  //       setShowSpinner(false)
+  //       console.log('apiResponse', apiResponse)
+  //       if (apiResponse.data.status === 'success') {
+  //         const businessLocations =
+  //           apiResponse.data.response.businessLocations;
+  //         setBusinessLocations(businessLocations);
+  //         const catalogs =
+  //           apiResponse.data.response.catalogs;
+  //         setClothes(catalogs)
+
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setShowSpinner(false)
+  //       console.log('error', error)
+  //     })
+  // }
+
   const catalogListCalling = async () => {
     const accessToken = await getValue('accessToken')
-    getCatalogList(accessToken)
+    getCatsSubcats(accessToken)
       .then((apiResponse) => {
         setShowSpinner(false)
         console.log('apiResponse', apiResponse)
-        if (apiResponse.data.status === 'success') {
-          const businessLocations =
-            apiResponse.data.response.businessLocations;
-          setBusinessLocations(businessLocations);
-          const catalogs =
-            apiResponse.data.response.catalogs;
-          setClothes(catalogs)
+        // if (apiResponse.data.status === 'success') {
+        //   const businessLocations =
+        //     apiResponse.data.response.businessLocations;
+        //   setBusinessLocations(businessLocations);
+        //   const catalogs =
+        //     apiResponse.data.response.catalogs;
+        //   setClothes(catalogs)
 
-        }
+        // }
       })
       .catch((error) => {
         setShowSpinner(false)

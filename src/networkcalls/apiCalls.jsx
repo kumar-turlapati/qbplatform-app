@@ -3,7 +3,7 @@ import Axios, { AxiosResponse, Canceler } from 'axios';
 import { restEndPoints, requestHeaders, qbUrl, clientCode, requestHeadersWoOrg } from '../../qbconfig';
 
 
-const { LOGIN, RESEND_OTP, GET_TOKEN, CATALOGS, PRODUCT_NAMES, CATALOG_DETAILS, CUSTOMER_NAMES, LIST_APPOINTMENTS } = restEndPoints;
+const { LOGIN, RESEND_OTP, GET_TOKEN, CATALOGS, PRODUCT_NAMES, CATALOG_DETAILS, CUSTOMER_NAMES, LIST_APPOINTMENTS, CATS_SUBCATS, DETAILS_BY_NAME } = restEndPoints;
 
 export const loginAPI = (
     mobileNumber,
@@ -110,3 +110,18 @@ export const getAppointmentList = async (
         },
     );
 };
+
+export const getCatsSubcats = async (accessToken) => {
+    requestHeaders['Access-Token'] = accessToken;
+    return await Axios
+        .get(CATS_SUBCATS.URL, { headers: requestHeaders })
+}
+
+export const getItemDetailsByName = async (accessToken, productName) => {
+    requestHeadersWoOrg['Access-Token'] = accessToken;
+    return await Axios
+        .get(DETAILS_BY_NAME.URL(productName),
+            {
+                headers: requestHeadersWoOrg
+            })
+}

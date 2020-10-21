@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -7,14 +7,16 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
 import CommonHeader from '../UI/CommonHeader';
-import {SideArrow, DeleteIcon} from '../../../icons/Icons';
+import { SideArrow, DeleteIcon } from '../../../icons/Icons';
 import CommonButton from '../UI/CommonButton';
-import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import { ShoppingCartContext } from '../../context/ShoppingCartProvider';
 
-const {height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -66,8 +68,31 @@ const styles = StyleSheet.create({
   },
 });
 
-export const OrderCartDetails = ({navigation}) => {
+export const OrderCartDetails = ({ navigation }) => {
+
+  const {
+    cartItems,
+    updateCart,
+    updated
+  } = useContext(ShoppingCartContext);
+
   const [onEditClicked, setOnEditClicked] = useState(false);
+  const [showItems, setShowItems] = useState(cartItems);
+
+  useEffect(() => {
+    setShowItems(cartItems)
+    console.log('updated', updated)
+    if (cartItems.length === 0) {
+      showGenericAlert("Your cart is empty, please add more")
+    }
+
+  }, [cartItems, updated])
+
+  const showGenericAlert = (message) => {
+    Alert.alert('Uh oh.. :(', message, [
+      { text: "OK", onPress: () => { navigation.goBack() } }
+    ]);
+  };
 
   const renderHeader = () => {
     return (
@@ -92,7 +117,7 @@ export const OrderCartDetails = ({navigation}) => {
         onPress={() => {
           console.log('add new customer');
         }}>
-        <View style={{backgroundColor: 'white', height: 44}}>
+        <View style={{ backgroundColor: 'white', height: 44 }}>
           <View
             style={{
               marginHorizontal: 16,
@@ -118,18 +143,8 @@ export const OrderCartDetails = ({navigation}) => {
                   color: '#3C3C43',
                 },
               ]}>
-              Yashwanth Rana
+              Octet Logic OPC Pvt Ltd
             </Text>
-            <SideArrow
-              style={{
-                width: 9,
-                height: 16,
-                top: 14,
-                right: 0,
-                position: 'absolute',
-              }}
-              resizeMode={'contain'}
-            />
           </View>
           <View
             style={{
@@ -147,13 +162,15 @@ export const OrderCartDetails = ({navigation}) => {
     );
   };
 
-  const renderDetails = () => {
+  const renderRow = (item, index) => {
     return (
-      <View style={{backgroundColor: 'white', marginTop: 17}}>
+      <View style={{ backgroundColor: 'white', marginTop: 0 }}>
         <View style={styles.viewStyle}>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             {onEditClicked && (
-              <TouchableOpacity onPress={() => {}}>
+              <TouchableOpacity onPress={() => {
+                updateCart(index)
+              }}>
                 <DeleteIcon
                   style={{
                     width: 22,
@@ -166,9 +183,9 @@ export const OrderCartDetails = ({navigation}) => {
               </TouchableOpacity>
             )}
             <View>
-              <Text style={styles.titleStyle}>Product 01</Text>
+              <Text style={styles.titleStyle}>{item.itemName}</Text>
               <Text style={styles.descriptionStyle}>
-                Rate 125 Rs, Quantity 15
+                Rate {item.itemRate} Rs, Quantity {item.packedQty}
               </Text>
             </View>
           </View>
@@ -176,113 +193,104 @@ export const OrderCartDetails = ({navigation}) => {
             style={[
               styles.titleStyle,
               {
-                marginRight: onEditClicked ? 10 : 40,
+                marginRight: onEditClicked ? 20 : 40,
                 color: '#3C3C43',
                 paddingTop: 19,
               },
             ]}>
-            ₹ 1,875
-          </Text>
-        </View>
-        <View style={styles.viewStyle}>
-          <View style={{flexDirection: 'row'}}>
-            {onEditClicked && (
-              <TouchableOpacity onPress={() => {}}>
-                <DeleteIcon
-                  style={{
-                    width: 22,
-                    height: 22,
-                    marginLeft: 2,
-                    marginRight: 18,
-                    marginTop: 21,
-                  }}
-                />
-              </TouchableOpacity>
-            )}
-            <View>
-              <Text style={styles.titleStyle}>Product 02</Text>
-              <Text style={styles.descriptionStyle}>
-                Rate 100 Rs, Quantity 100
-              </Text>
-            </View>
-          </View>
-          <Text
-            style={[
-              styles.titleStyle,
-              {
-                marginRight: onEditClicked ? 10 : 40,
-                color: '#3C3C43',
-                paddingTop: 19,
-              },
-            ]}>
-            ₹ 1000
+            ₹ {calculatePrice(item.packedQty, item.itemRate)}
           </Text>
         </View>
       </View>
     );
   };
 
+  const calculatePrice = (quantity, price) => {
+    let calPrice = quantity * price;
+    return calPrice;
+  }
+
   const renderBillingType = () => {
     return (
-      <TouchableOpacity
-        activeOpacity={1}
-        onPress={() => {
-          console.log('add new customer');
-        }}>
-        <View style={{backgroundColor: 'white', height: 44, marginTop: 21}}>
-          <View
-            style={{
-              marginHorizontal: 16,
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              justifyContent: 'space-between',
-            }}>
-            <Text
-              style={[
-                styles.titleStyle,
-                {
-                  color: '#3C3C43',
-                  opacity: 0.5,
-                },
-              ]}>
-              Billing Type
-            </Text>
-            <Text
-              style={[
-                styles.titleStyle,
-                {
-                  marginRight: 24,
-                  color: '#3C3C43',
-                },
-              ]}>
-              Wholesale
-            </Text>
-            <SideArrow
+      <View>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            console.log('add new customer');
+          }}>
+          <View style={{ backgroundColor: 'white', height: 44, marginTop: 21 }}>
+            <View
               style={{
-                width: 9,
-                height: 16,
-                top: 12,
+                marginHorizontal: 16,
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+                justifyContent: 'space-between',
+              }}>
+              <Text
+                style={[
+                  styles.titleStyle,
+                  {
+                    color: '#3C3C43',
+                    opacity: 0.5,
+                  },
+                ]}>
+                Billing Type
+            </Text>
+              <Text
+                style={[
+                  styles.titleStyle,
+                  {
+                    marginRight: 24,
+                    color: '#3C3C43',
+                  },
+                ]}>
+                Wholesale
+            </Text>
+              <SideArrow
+                style={{
+                  width: 9,
+                  height: 16,
+                  top: 12,
+                  right: 0,
+                  position: 'absolute',
+                }}
+                resizeMode={'contain'}
+              />
+            </View>
+            <View
+              style={{
+                left: 16,
                 right: 0,
+                height: 1,
+                backgroundColor: 'black',
+                opacity: 0.1,
+                top: 43,
                 position: 'absolute',
               }}
-              resizeMode={'contain'}
             />
           </View>
-          <View
-            style={{
-              left: 16,
-              right: 0,
-              height: 1,
-              backgroundColor: 'black',
-              opacity: 0.1,
-              top: 43,
-              position: 'absolute',
-            }}
-          />
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+        {renderButton()}
+      </View>
     );
   };
+
+  const renderFlatList = () => {
+    return (
+      <FlatList
+        style={{
+          flex: 1,
+          marginTop: 17,
+          marginBottom: 0,
+        }}
+        data={showItems}
+        renderItem={({ item, index }) => renderRow(item, index)}
+        keyExtractor={item => item}
+        removeClippedSubviews={true}
+        ListFooterComponent={!onEditClicked && renderBillingType()}
+      />
+    )
+  }
 
   const renderButton = () => {
     return (
@@ -291,7 +299,7 @@ export const OrderCartDetails = ({navigation}) => {
         onPressButton={() => {
           navigation.navigate(ScreenNamesMarketing.ORDERAVAILABILITYCHECK);
         }}
-        propStyle={{marginHorizontal: 16, marginTop: 26}}
+        propStyle={{ marginHorizontal: 16, marginTop: 26 }}
       />
     );
   };
@@ -300,9 +308,7 @@ export const OrderCartDetails = ({navigation}) => {
     <View style={styles.container}>
       {renderHeader()}
       {renderCustomerName()}
-      {renderDetails()}
-      {!onEditClicked && renderBillingType()}
-      {renderButton()}
+      {renderFlatList()}
     </View>
   );
 };
