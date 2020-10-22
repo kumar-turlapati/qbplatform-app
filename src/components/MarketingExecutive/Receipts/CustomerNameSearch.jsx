@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Dimensions, FlatList, Keyboard, StyleSheet, Text, View } from 'react-native';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
 import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
@@ -6,6 +6,7 @@ import { getValue } from '../../../utils/asyncStorage';
 import { getCustomerName } from '../../../networkcalls/apiCalls';
 import { colors } from '../../../theme/colors';
 import { theme } from '../../../theme/theme';
+import { ShoppingCartContext } from '../../context/ShoppingCartProvider';
 
 const { height, width } = Dimensions.get('window');
 
@@ -29,6 +30,10 @@ export const CustomerNameSearch = ({ navigation }) => {
 
   const [names, setNames] = useState([])
   const [showSpinner, setShowSpinner] = useState(false)
+
+  const {
+    setSelectedCustomerName
+  } = useContext(ShoppingCartContext);
 
   useEffect(() => {
     setShowSpinner(true)
@@ -79,9 +84,13 @@ export const CustomerNameSearch = ({ navigation }) => {
       <View style={styles.rowView}>
         <Text
           onPress={() => {
-            navigation.navigate(ScreenNamesMarketing.CUSTOMERDETAILSUPDATE, {
-              name: rowData,
-            });
+            console.log('rowData', rowData)
+            setSelectedCustomerName(rowData)
+            navigation.goBack();
+
+            // navigation.navigate(ScreenNamesMarketing.CUSTOMERDETAILSUPDATE, {
+            //   name: rowData,
+            // });
           }}
           style={styles.textStyle}>
           {rowData}

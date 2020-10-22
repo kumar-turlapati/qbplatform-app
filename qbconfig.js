@@ -97,7 +97,7 @@ export const paymentMethods = {
 };
 
 // payment methods
-export const paymentTypes = {
-  wholesale: 'wholesale',
-  retail: 'retail',
-};
+export const paymentTypes = [
+  'wholesale',
+  'retail',
+];

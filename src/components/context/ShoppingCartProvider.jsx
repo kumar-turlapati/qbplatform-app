@@ -7,6 +7,8 @@ export const ShoppingCartContext = createContext({
   setCartItems: null,
   updated: false,
   setUpdated: null,
+  selectedCustomerName: '',
+  setSelectedCustomerName: null,
 
   clearCartInfo: null,
   addToCart: null,
@@ -17,6 +19,7 @@ export const ShoppingCartProvider = (props) => {
 
   const [cartItems, setCartItems] = useState([]);
   const [updated, setUpdated] = useState(false);
+  const [selectedCustomerName, setSelectedCustomerName] = useState('');
 
   const clearCartInfo = () => {
     setCartItems([]);
@@ -42,6 +45,8 @@ export const ShoppingCartProvider = (props) => {
         setCartItems,
         updated,
         setUpdated,
+        selectedCustomerName,
+        setSelectedCustomerName,
 
         clearCartInfo,
         addToCart,

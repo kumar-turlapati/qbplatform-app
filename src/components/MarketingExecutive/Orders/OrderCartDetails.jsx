@@ -15,6 +15,8 @@ import { SideArrow, DeleteIcon } from '../../../icons/Icons';
 import CommonButton from '../UI/CommonButton';
 import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
 import { ShoppingCartContext } from '../../context/ShoppingCartProvider';
+import { paymentTypes } from '../../../../qbconfig';
+import ActionSheet from 'react-native-action-sheet';
 
 const { height, width } = Dimensions.get('window');
 
@@ -73,13 +75,16 @@ export const OrderCartDetails = ({ navigation }) => {
   const {
     cartItems,
     updateCart,
-    updated
+    updated,
+    selectedCustomerName
   } = useContext(ShoppingCartContext);
 
   const [onEditClicked, setOnEditClicked] = useState(false);
   const [showItems, setShowItems] = useState(cartItems);
+  const [paymentIndex, setPaymentIndex] = useState(0)
 
   useEffect(() => {
+    console.log('options', options)
     setShowItems(cartItems)
     console.log('updated', updated)
     if (cartItems.length === 0) {
@@ -143,7 +148,7 @@ export const OrderCartDetails = ({ navigation }) => {
                   color: '#3C3C43',
                 },
               ]}>
-              Octet Logic OPC Pvt Ltd
+              {selectedCustomerName.length > 0 ? selectedCustomerName : 'Octet Logic OPC Pvt Ltd'}
             </Text>
           </View>
           <View
@@ -210,13 +215,21 @@ export const OrderCartDetails = ({ navigation }) => {
     return calPrice;
   }
 
+  const options = paymentTypes;
+
   const renderBillingType = () => {
     return (
       <View>
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
-            console.log('add new customer');
+            ActionSheet.showActionSheetWithOptions({
+              options: options,
+            },
+              (buttonIndex) => {
+                console.log('button clicked :', buttonIndex);
+                setPaymentIndex(buttonIndex)
+              });
           }}>
           <View style={{ backgroundColor: 'white', height: 44, marginTop: 21 }}>
             <View
@@ -244,8 +257,8 @@ export const OrderCartDetails = ({ navigation }) => {
                     color: '#3C3C43',
                   },
                 ]}>
-                Wholesale
-            </Text>
+                {options[paymentIndex]}
+              </Text>
               <SideArrow
                 style={{
                   width: 9,

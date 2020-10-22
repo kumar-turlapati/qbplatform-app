@@ -50,7 +50,8 @@ export const OrdersProductDetails = ({ navigation, route }) => {
   const [orderQuantity, setOrderQuantity] = useState('');
 
   const {
-    addToCart
+    addToCart,
+    selectedCustomerName
   } = useContext(ShoppingCartContext);
 
   useEffect(() => {
@@ -79,15 +80,25 @@ export const OrdersProductDetails = ({ navigation, route }) => {
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
-          console.log('add new customer');
+          navigation.navigate(ScreenNamesMarketing.CUSTOMERNAMESEARCH);
         }}>
         <View style={{ backgroundColor: colors.WHITE, height: 44 }}>
           <View
             style={theme.viewStyles.viewMainStyles}>
             <Text style={styles.titleStyle}>Customer</Text>
             <Text style={[styles.titleStyle, { marginRight: 24, opacity: 1 }]}>
-              Octet Logic OPC Pvt Ltd
+              {selectedCustomerName.length > 0 ? selectedCustomerName : 'Octet Logic OPC Pvt Ltd'}
             </Text>
+            <SideArrow
+              style={{
+                width: 9,
+                height: 16,
+                top: 15,
+                right: 0,
+                position: 'absolute',
+              }}
+              resizeMode={'contain'}
+            />
           </View>
           <View
             style={{

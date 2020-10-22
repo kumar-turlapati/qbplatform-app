@@ -1,11 +1,12 @@
-import React from 'react';
-import {View, StyleSheet, Text, Dimensions} from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
-import {SearchIcon, SideArrow, BarCodeIcon} from '../../../icons/Icons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+import { SearchIcon, SideArrow, BarCodeIcon } from '../../../icons/Icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import { RNCamera } from 'react-native-camera';
 
-const {height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -59,7 +60,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Orders = ({navigation}) => {
+export const Orders = ({ navigation }) => {
+
+  const [showBarcode, setShowBarcode] = useState(false)
+
   const renderHeader = () => {
     return (
       <CommonHeader
@@ -106,13 +110,15 @@ export const Orders = ({navigation}) => {
             />
           </View>
         </TouchableOpacity>
-        <View style={{backgroundColor: 'black', opacity: 0.1, height: 1}} />
-        <TouchableOpacity activeOpacity={1} onPress={() => {}}>
+        <View style={{ backgroundColor: 'black', opacity: 0.1, height: 1 }} />
+        <TouchableOpacity activeOpacity={1} onPress={() => {
+          setShowBarcode(true)
+        }}>
           <View style={styles.productViewStyles}>
             <View
               style={[
                 styles.iconBackgroundStyle,
-                {backgroundColor: 'rgb(191,39,228)'},
+                { backgroundColor: 'rgb(191,39,228)' },
               ]}>
               <BarCodeIcon />
             </View>
@@ -138,6 +144,26 @@ export const Orders = ({navigation}) => {
     );
   };
 
+  const onBarCodeRead = (scanResult) => {
+    console.log('Note', scanResult)
+  }
+
+  // const onReadBarCodeByGalleryFailure = () => {
+  //   console.log('Note', 'Not found barcode!')
+  // }
+
+  const renderBarCodeScanner = () => {
+    return (
+      <RNCamera
+        style={styles.cameraStyle}
+        type={RNCamera.Constants.Type.back}
+        flashMode={RNCamera.Constants.FlashMode.on}
+        onBarCodeRead={onBarCodeRead()}
+        captureAudio={false}
+      />
+    )
+  }
+
   return (
     <View style={styles.container}>
       {renderHeader()}
@@ -145,6 +171,7 @@ export const Orders = ({navigation}) => {
         Start placing order using any of below options
       </Text>
       {renderListView()}
+      {showBarcode && renderBarCodeScanner()}
     </View>
   );
 };
