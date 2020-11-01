@@ -23,7 +23,8 @@ export const viewStyles = {
     borderWidth: 1.5,
     paddingLeft: 16,
     fontSize: 17,
-    lineHeight: 22
+    lineHeight: 22,
+    color: colors.BLACK
   },
   headerTextStyles: {
     marginTop: 16,

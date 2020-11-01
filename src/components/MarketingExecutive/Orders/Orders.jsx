@@ -58,6 +58,12 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(0,0,0,0.1)',
     borderBottomWidth: 1,
   },
+  cameraStyle: {
+    flex: 1,
+    position: 'absolute',
+    width: '100%',
+    height: '100%'
+  },
 });
 
 export const Orders = ({ navigation }) => {
@@ -154,13 +160,16 @@ export const Orders = ({ navigation }) => {
 
   const renderBarCodeScanner = () => {
     return (
-      <RNCamera
-        style={styles.cameraStyle}
-        type={RNCamera.Constants.Type.back}
-        flashMode={RNCamera.Constants.FlashMode.on}
-        onBarCodeRead={onBarCodeRead()}
-        captureAudio={false}
-      />
+      <View style={styles.cameraStyle}>
+        <RNCamera
+          style={{ flex: 1 }}
+          type={RNCamera.Constants.Type.back}
+          flashMode={RNCamera.Constants.FlashMode.on}
+          onBarCodeRead={onBarCodeRead}
+          captureAudio={false}
+        />
+        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 80, backgroundColor: 'green', width: '100%' }} />
+      </View>
     )
   }
 

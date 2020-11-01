@@ -19,7 +19,7 @@
     "lodash": "^4.17.20",
     "moment": "^2.29.0",
     "react": "16.11.0",
-    "react-native": "0.62.2",
+    "react-native": "0.63.3",
     "react-native-action-sheet": "^2.2.0",
     "react-native-alphabetlistview": "^0.3.1",
     "react-native-calendars": "^1.403.0",
