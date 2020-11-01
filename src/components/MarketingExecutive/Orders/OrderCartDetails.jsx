@@ -17,6 +17,9 @@ import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
 import { ShoppingCartContext } from '../../context/ShoppingCartProvider';
 import { paymentTypes } from '../../../../qbconfig';
 import ActionSheet from 'react-native-action-sheet';
+import { getValue } from '../../../utils/asyncStorage';
+import { postNewOrder } from '../../../networkcalls/apiCalls';
+import CommonAlertView from '../UI/CommonAlertView';
 
 const { height, width } = Dimensions.get('window');
 
@@ -82,11 +85,14 @@ export const OrderCartDetails = ({ navigation }) => {
   const [onEditClicked, setOnEditClicked] = useState(false);
   const [showItems, setShowItems] = useState(cartItems);
   const [paymentIndex, setPaymentIndex] = useState(0)
+  const [showSpinner, setShowSpinner] = useState(false)
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [showFailAlert, setShowFailAlert] = useState(false);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   useEffect(() => {
-    console.log('options', options)
     setShowItems(cartItems)
-    console.log('updated', updated)
     if (cartItems.length === 0) {
       showGenericAlert("Your cart is empty, please add more")
     }
@@ -305,14 +311,77 @@ export const OrderCartDetails = ({ navigation }) => {
     )
   }
 
+  const callTheNewOrderAPI = async () => {
+    setShowSpinner(true)
+
+    const accessToken = await getValue('accessToken')
+    console.log('showItems', showItems)
+
+    const orderDetails = {
+      "orderDetails": showItems,
+      "couponCode": "",
+      "billingRate": options[paymentIndex],
+      "customerName": selectedCustomerName.length > 0 ? selectedCustomerName : 'Octet Logic OPC Pvt Ltd'
+    }
+
+    postNewOrder(accessToken, orderDetails)
+      .then((apiResponse) => {
+        console.log('apiResponse', apiResponse.data)
+        setShowSpinner(false)
+        setShowSuccessAlert(true);
+        setShowAlert(true);
+      })
+      .catch((error) => {
+        console.log('error', error)
+        setShowSpinner(false)
+        setShowAlert(true);
+        setShowFailAlert(true);
+      })
+  }
+
   const renderButton = () => {
     return (
       <CommonButton
         buttonTitle={'Place Order'}
         onPressButton={() => {
-          navigation.navigate(ScreenNamesMarketing.ORDERAVAILABILITYCHECK);
+          callTheNewOrderAPI()
+          // navigation.navigate(ScreenNamesMarketing.ORDERAVAILABILITYCHECK);
         }}
         propStyle={{ marginHorizontal: 16, marginTop: 26 }}
+      />
+    );
+  };
+
+  const renderSpinner = () => {
+    return (
+      <CommonSpinner
+        animating={showSpinner}
+      />
+    )
+  }
+
+  const renderAlert = () => {
+    return (
+      <CommonAlertView
+        successTitle={'Order Success'}
+        successDescriptionTitle={
+          'Order placed successfully, you will redirected to home'
+        }
+        successButtonTitle={'Place another order'}
+        onPressSuccessButton={() => {
+          setShowAlert(false);
+          setShowSuccessAlert(false);
+          navigation.goBack()
+        }}
+        failTitle={'Oops'}
+        failDescriptionTitle={`Somthing went wrong, \nplease try again`}
+        onPressFailButton={() => {
+          setShowFailAlert(false);
+          setShowAlert(false);
+        }}
+        failButtonTitle={'Ok'}
+        showSuceessPopup={showSuccessAlert}
+        showFailPopup={showFailAlert}
       />
     );
   };
@@ -322,6 +391,8 @@ export const OrderCartDetails = ({ navigation }) => {
       {renderHeader()}
       {renderCustomerName()}
       {renderFlatList()}
+      {renderSpinner()}
+      {showAlert && renderAlert()}
     </View>
   );
 };

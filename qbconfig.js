@@ -64,6 +64,7 @@ export const restEndPoints = {
   DETAILS_BY_NAME: {
     URL: productName => `${apiBaseUrl}/inventory/get-item-details-by-name?itemName=${productName}`,
   },
+  NEW_ORDER: { URL: `${apiBaseUrl}/app/v1/order` },
 };
 
 // appointment statuses
