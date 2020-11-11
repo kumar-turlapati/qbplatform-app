@@ -38,9 +38,9 @@ export const OrdersProductSearch = ({ navigation }) => {
   }
 
   const callAPIOnClick = async (itemName) => {
-    const accessToken = await getValue('accessToken')
-
     setShowSpinner(true)
+
+    const accessToken = await getValue('accessToken')
 
     getItemDetailsByName(accessToken, itemName)
       .then((apiResponse) => {

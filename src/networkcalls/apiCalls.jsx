@@ -3,7 +3,7 @@ import Axios, { AxiosResponse, Canceler } from 'axios';
 import { restEndPoints, requestHeaders, qbUrl, clientCode, requestHeadersWoOrg } from '../../qbconfig';
 
 
-const { LOGIN, RESEND_OTP, GET_TOKEN, CATALOGS, PRODUCT_NAMES, CATALOG_DETAILS, CUSTOMER_NAMES, LIST_APPOINTMENTS, CATS_SUBCATS, DETAILS_BY_NAME, NEW_ORDER } = restEndPoints;
+const { LOGIN, RESEND_OTP, GET_TOKEN, CATALOGS, PRODUCT_NAMES, CATALOG_DETAILS, CUSTOMER_NAMES, LIST_APPOINTMENTS, CATS_SUBCATS, DETAILS_BY_NAME, NEW_ORDER, ITEMS_DETAILS_BY_SCAN_BARCODE } = restEndPoints;
 
 export const loginAPI = (
     mobileNumber,
@@ -136,6 +136,16 @@ export const postNewOrder = (
         {
             ...orderDetails
         },
+        { headers: requestHeadersWoOrg },
+    );
+};
+
+export const getItemsByBarcode = (
+    accessToken, scanCode
+) => {
+    requestHeadersWoOrg['Access-Token'] = accessToken;
+    return Axios.get(
+        ITEMS_DETAILS_BY_SCAN_BARCODE.URL(scanCode),
         { headers: requestHeadersWoOrg },
     );
 };
