@@ -3,6 +3,9 @@ const apiBaseUrl = 'http://api-retail-clothing.qwikbills.com';
 // org id or client code
 export const clientCode = 'nVlnoRYkRCGWulS';
 
+// client name
+export const clientName = 'S V FABRICS';
+
 // this can be used where there is a need for org id
 export const requestHeaders = {
   'Content-Type': 'application/x-www-form-urlencoded',
@@ -22,10 +25,10 @@ export const cdnUrl = 'https://dgufxvy74ps27.cloudfront.net';
 
 // end points
 export const restEndPoints = {
-  LOGIN: { URL: `${apiBaseUrl}/authorize/app` },
-  RESEND_OTP: { URL: `${apiBaseUrl}/app/v1/resend-otp` }, // Org-Id header required
-  GET_TOKEN: { URL: `${apiBaseUrl}/app/v1/get-token` }, // Org-Id header required
-  CREATE_APPOINTMENT: { URL: `${apiBaseUrl}/crm-object/create/appointment` },
+  LOGIN: {URL: `${apiBaseUrl}/authorize/app`},
+  RESEND_OTP: {URL: `${apiBaseUrl}/app/v1/resend-otp`}, // Org-Id header required
+  GET_TOKEN: {URL: `${apiBaseUrl}/app/v1/get-token`}, // Org-Id header required
+  CREATE_APPOINTMENT: {URL: `${apiBaseUrl}/crm-object/create/appointment`},
   UPDATE_APPOINTMENT: {
     URL: appointmentCode =>
       `${apiBaseUrl}/crm-object/update/appointment/${appointmentCode}`,
@@ -35,13 +38,16 @@ export const restEndPoints = {
       `${apiBaseUrl}/crm-object/update/appointment/${appointmentCode}`,
   },
   LIST_APPOINTMENTS: {
-    URL: (pageNo, perPage, appointmentTime) => `${apiBaseUrl}/crm-object/list/appointment?pageNo=${pageNo}&perPage=${perPage}&appointmentTime=${appointmentTime}`,
+    URL: (pageNo, perPage, appointmentTime) =>
+      `${apiBaseUrl}/crm-object/list/appointment?pageNo=${pageNo}&perPage=${perPage}&appointmentTime=${appointmentTime}`,
   },
   CUSTOMER_NAMES: {
     URL: name => `${apiBaseUrl}/customers/ac/get-names?q=${name}`,
   },
-  PRODUCT_NAMES: { URL: searchString => `${apiBaseUrl}/products/ac?q=${searchString}` },
-  CREATE_RECEIPT: { URL: `${apiBaseUrl}/fin/receipts/${clientCode}` },
+  PRODUCT_NAMES: {
+    URL: searchString => `${apiBaseUrl}/products/ac?q=${searchString}`,
+  },
+  CREATE_RECEIPT: {URL: `${apiBaseUrl}/fin/receipts/${clientCode}`},
   UPDATE_RECEIPT: {
     URL: receiptNo => `${apiBaseUrl}/fin/receipts/${receiptNo}/${clientCode}`,
   },
@@ -54,7 +60,7 @@ export const restEndPoints = {
   DELETE_RECEIPT: {
     URL: receiptNo => `${apiBaseUrl}/fin/receipts/${receiptNo}/${clientCode}`,
   },
-  CATALOGS: { URL: `${apiBaseUrl}/app/v1/catalog` },
+  CATALOGS: {URL: `${apiBaseUrl}/app/v1/catalog`},
   CATALOG_DETAILS: {
     URL: catalogCode => `${apiBaseUrl}/app/v1/catalog/details/${catalogCode}`,
   },
@@ -62,11 +68,13 @@ export const restEndPoints = {
     URL: `${apiBaseUrl}/app/v1/cats-subcats`,
   },
   DETAILS_BY_NAME: {
-    URL: productName => `${apiBaseUrl}/inventory/get-item-details-by-name?itemName=${productName}`,
+    URL: productName =>
+      `${apiBaseUrl}/inventory/get-item-details-by-name?itemName=${productName}`,
   },
-  NEW_ORDER: { URL: `${apiBaseUrl}/app/v1/order` },
+  NEW_ORDER: {URL: `${apiBaseUrl}/app/v1/order`},
   ITEMS_DETAILS_BY_SCAN_BARCODE: {
-    URL: scanCode => `${apiBaseUrl}/inventory/get-item-details-by-barcode?scanCode=${scanCode}`,
+    URL: scanCode =>
+      `${apiBaseUrl}/inventory/get-item-details-by-barcode?scanCode=${scanCode}`,
   },
 };
 
@@ -101,7 +109,4 @@ export const paymentMethods = {
 };
 
 // payment methods
-export const paymentTypes = [
-  'wholesale',
-  'retail',
-];
+export const paymentTypes = ['wholesale', 'retail'];
