@@ -1,4 +1,5 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useCallback} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import {
   View,
   StyleSheet,
@@ -7,6 +8,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  BackHandler,
 } from 'react-native';
 import {ScreenNamesMarketing} from '../../helpers/ScreenNames';
 import {
@@ -133,12 +135,24 @@ const list = [
   },
   {
     icon: <GalleryIcon style={{width: 36, height: 29}} />,
-    title: 'Gallery',
+    title: 'Catalogs',
   },
 ];
 
 export const Dashboard = ({navigation}) => {
   const [showSideMenu, setShowSideMenu] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        BackHandler.exitApp();
+        // return true;
+      };
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
 
   useEffect(() => {
     getaccessToken();
@@ -198,7 +212,7 @@ export const Dashboard = ({navigation}) => {
                 {item.icon}
               </View>
               <View style={theme.viewStyles.separatorStyle} />
-              <Text style={styles.countStyle}>45</Text>
+              <Text style={styles.countStyle}>0</Text>
               <Text style={styles.titleStyle}>{item.title}</Text>
             </View>
           </TouchableOpacity>

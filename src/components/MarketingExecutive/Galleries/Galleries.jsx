@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,17 +8,17 @@ import {
   Text,
 } from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
-import { MenuBig } from '../../../icons/Icons';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
-import { getCatsSubcats } from '../../../networkcalls/apiCalls';
-import { theme } from '../../../theme/theme';
-import { getValue } from '../../../utils/asyncStorage';
+import {MenuBig} from '../../../icons/Icons';
+import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+import {getCatsSubcats} from '../../../networkcalls/apiCalls';
+import {theme} from '../../../theme/theme';
+import {getValue} from '../../../utils/asyncStorage';
 import _find from 'lodash/find';
-import { cdnUrl, clientCode } from '../../../../qbconfig';
+import {cdnUrl, clientCode} from '../../../../qbconfig';
 
 const styles = StyleSheet.create({
   container: {
-    ...theme.viewStyles.restContainer
+    ...theme.viewStyles.restContainer,
   },
   rowStyle: {
     marginHorizontal: 16,
@@ -28,23 +28,24 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   textStyle: {
-    ...theme.viewStyles.galleryTextStyles
+    ...theme.viewStyles.galleryTextStyles,
   },
   descriptionStyles: {
-    ...theme.viewStyles.galleryDescriptionStyles
+    ...theme.viewStyles.galleryDescriptionStyles,
   },
 });
 
-export const Galleries = ({ navigation }) => {
-
-  const [clothes, setClothes] = useState([])
+export const Galleries = ({navigation}) => {
+  const [clothes, setClothes] = useState([]);
   const [businessLocations, setBusinessLocations] = useState([]);
-  const [showSpinner, setShowSpinner] = useState(false)
+  const [showSpinner, setShowSpinner] = useState(false);
 
   useEffect(() => {
-    setShowSpinner(true)
-    catalogListCalling()
-  }, [])
+    setShowSpinner(true);
+    catalogListCalling();
+  }, []);
+
+  console.log(clothes, '-----------------');
 
   // const catalogListCalling = async () => {
   //   const accessToken = await getValue('accessToken')
@@ -69,36 +70,33 @@ export const Galleries = ({ navigation }) => {
   // }
 
   const catalogListCalling = async () => {
-    const accessToken = await getValue('accessToken')
+    const accessToken = await getValue('accessToken');
     getCatsSubcats(accessToken)
-      .then((apiResponse) => {
-        setShowSpinner(false)
-        console.log('apiResponse', apiResponse)
-        // if (apiResponse.data.status === 'success') {
-        //   const businessLocations =
-        //     apiResponse.data.response.businessLocations;
-        //   setBusinessLocations(businessLocations);
-        //   const catalogs =
-        //     apiResponse.data.response.catalogs;
-        //   setClothes(catalogs)
-
-        // }
+      .then(apiResponse => {
+        setShowSpinner(false);
+        console.log('apiResponse', apiResponse.data.status);
+        if (apiResponse.data.status === 'success') {
+          const businessLocations = apiResponse.data.response.businessLocations;
+          setBusinessLocations(businessLocations);
+          const catalogs = apiResponse.data.response;
+          setClothes(catalogs);
+        }
       })
-      .catch((error) => {
-        setShowSpinner(false)
-        console.log('error', error)
-      })
-  }
+      .catch(error => {
+        setShowSpinner(false);
+        console.log('error', error);
+      });
+  };
 
   const renderHeader = () => {
     return (
       <CommonHeader
-        mainViewHeading={'Galleries'}
+        mainViewHeading={'Catalogs'}
         leftSideText={'Home'}
         onPressLeftButton={() => {
           navigation.goBack();
         }}
-        onAddIconPress={() => { }}
+        onAddIconPress={() => {}}
         searchIcon={false}
         onPressSearchIcon={() => {
           console.log('search clicked');
@@ -108,18 +106,19 @@ export const Galleries = ({ navigation }) => {
   };
 
   const renderRow = (item, index) => {
-
     const imageLocation = _find(
       businessLocations,
-      (locationDetails) =>
-        parseInt(locationDetails.locationID, 10) === parseInt(12, 10)
+      locationDetails =>
+        parseInt(locationDetails.locationID, 10) === parseInt(12, 10),
       // parseInt(item.locationID, 10),
     );
 
     const imageUrl = imageLocation
       ? encodeURI(
-        `${cdnUrl}/${clientCode}/${imageLocation.locationCode}/${item.imageName}`,
-      )
+          `${cdnUrl}/${clientCode}/${imageLocation.locationCode}/${
+            item.imageName
+          }`,
+        )
       : '';
 
     return (
@@ -128,21 +127,14 @@ export const Galleries = ({ navigation }) => {
         onPress={() => {
           navigation.navigate(ScreenNamesMarketing.GALLERYDETAILVIEW, {
             catalogName: item.catalogName,
-            catalogCode: item.catalogCode
+            catalogCode: item.catalogCode,
           });
         }}>
-        <ImageBackground
-          style={styles.rowStyle}
-          source={{ uri: imageUrl }}
-        >
-          <View
-            style={theme.viewStyles.galleryRowOverlayView}
-          />
+        <ImageBackground style={styles.rowStyle} source={{uri: imageUrl}}>
+          <View style={theme.viewStyles.galleryRowOverlayView} />
           <Text style={styles.textStyle}>{item.catalogName}</Text>
           <Text style={styles.descriptionStyles}>{item.catalogDesc}</Text>
-          <MenuBig
-            style={theme.viewStyles.galleryMenuBigIconStyle}
-          />
+          <MenuBig style={theme.viewStyles.galleryMenuBigIconStyle} />
         </ImageBackground>
       </TouchableOpacity>
     );
@@ -157,7 +149,7 @@ export const Galleries = ({ navigation }) => {
           marginBottom: 0,
         }}
         data={clothes}
-        renderItem={({ item, index }) => renderRow(item, index)}
+        renderItem={({item, index}) => renderRow(item, index)}
         keyExtractor={item => item.catalogName}
         removeClippedSubviews={true}
         showsHorizontalScrollIndicator={false}
@@ -167,12 +159,8 @@ export const Galleries = ({ navigation }) => {
   };
 
   const renderSpinner = () => {
-    return (
-      <CommonSpinner
-        animating={showSpinner}
-      />
-    )
-  }
+    return <CommonSpinner animating={showSpinner} />;
+  };
 
   return (
     <View style={styles.container}>
