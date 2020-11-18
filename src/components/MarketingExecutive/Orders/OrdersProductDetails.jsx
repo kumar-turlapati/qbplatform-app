@@ -232,7 +232,6 @@ export const OrdersProductDetails = ({navigation, route}) => {
     const orderDetails = {
       itemID: selectedProduct.itemID,
       packedQty: selectedProduct.mOq,
-      itemRate: 300,
       itemName: selectedProduct.itemName,
       closingQty: selectedProduct.closingQty,
       orderQty: orderQuantity,
@@ -240,6 +239,7 @@ export const OrdersProductDetails = ({navigation, route}) => {
       wholesalePrice: selectedProduct.wholesalePrice,
       exmillPrice: selectedProduct.exmillPrice,
       mrp: selectedProduct.mrp,
+      lotNo: selectedProduct.lotNo,
     };
     // console.log('orderDetails', orderDetails);
     addToCart(orderDetails);

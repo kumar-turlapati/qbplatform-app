@@ -21,7 +21,7 @@ import {getValue} from '../../../utils/asyncStorage';
 import {postNewOrder} from '../../../networkcalls/apiCalls';
 import CommonAlertView from '../UI/CommonAlertView';
 
-const {height, width} = Dimensions.get('window');
+// const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -78,11 +78,12 @@ export const OrderCartDetails = ({navigation}) => {
     ShoppingCartContext,
   );
 
+  console.log(cartItems, 'cart items......');
+
   const [onEditClicked, setOnEditClicked] = useState(false);
   const [showItems, setShowItems] = useState(cartItems);
   const [paymentIndex, setPaymentIndex] = useState(0);
   const [showSpinner, setShowSpinner] = useState(false);
-
   const [showAlert, setShowAlert] = useState(false);
   const [showFailAlert, setShowFailAlert] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -239,7 +240,7 @@ export const OrderCartDetails = ({navigation}) => {
                 options: options,
               },
               buttonIndex => {
-                console.log('button clicked :', buttonIndex);
+                // console.log('button clicked :', buttonIndex);
                 setPaymentIndex(buttonIndex);
               },
             );
@@ -297,6 +298,7 @@ export const OrderCartDetails = ({navigation}) => {
           </View>
         </TouchableOpacity>
         {renderButton()}
+        {renderButtonAddMore()}
       </View>
     );
   };
@@ -311,7 +313,7 @@ export const OrderCartDetails = ({navigation}) => {
         }}
         data={showItems}
         renderItem={({item, index}) => renderRow(item, index)}
-        keyExtractor={item => item}
+        keyExtractor={item => item.lotNo}
         removeClippedSubviews={true}
         ListFooterComponent={!onEditClicked && renderBillingType()}
       />
@@ -362,6 +364,18 @@ export const OrderCartDetails = ({navigation}) => {
     );
   };
 
+  const renderButtonAddMore = () => {
+    return (
+      <CommonButton
+        buttonTitle="Add more items"
+        onPressButton={() => {
+          navigation.navigate(ScreenNamesMarketing.ORDERS);
+        }}
+        propStyle={{marginHorizontal: 16, marginTop: 26}}
+      />
+    );
+  };
+
   const renderSpinner = () => {
     return <CommonSpinner animating={showSpinner} />;
   };
@@ -371,7 +385,7 @@ export const OrderCartDetails = ({navigation}) => {
       <CommonAlertView
         successTitle={'Order Success'}
         successDescriptionTitle={
-          'Order placed successfully, you will redirected to home'
+          'Order placed successfully, you will be redirected to home'
         }
         successButtonTitle={'Place another order'}
         onPressSuccessButton={() => {
