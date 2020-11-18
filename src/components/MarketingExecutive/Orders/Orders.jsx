@@ -1,16 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Text, Dimensions } from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {View, StyleSheet, Text, Dimensions} from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
-import { SearchIcon, SideArrow, BarCodeIcon, ArrowLeft, BackHome } from '../../../icons/Icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
-import { RNCamera } from 'react-native-camera';
-import { colors } from '../../../theme/colors';
-import { getValue } from '../../../utils/asyncStorage';
-import { getItemsByBarcode } from '../../../networkcalls/apiCalls';
+import {
+  SearchIcon,
+  SideArrow,
+  BarCodeIcon,
+  ArrowLeft,
+  BackHome,
+} from '../../../icons/Icons';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+import {RNCamera} from 'react-native-camera';
+import {colors} from '../../../theme/colors';
+import {getValue} from '../../../utils/asyncStorage';
+import {getItemsByBarcode} from '../../../networkcalls/apiCalls';
 import CommonSpinner from '../UI/CommonSpinner';
 
-const { height, width } = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -66,35 +72,35 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'absolute',
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
 });
 
-export const Orders = ({ navigation }) => {
+export const Orders = ({navigation}) => {
+  const [showBarcode, setShowBarcode] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
 
-  const [showBarcode, setShowBarcode] = useState(false)
-  const [showSpinner, setShowSpinner] = useState(false)
+  const callAPIWithBarcode = async scancode => {
+    setShowSpinner(true);
 
-  const callAPIWithBarcode = async (scancode) => {
-    setShowSpinner(true)
-
-    const accessToken = await getValue('accessToken')
-    console.log('scancode',scancode)
+    const accessToken = await getValue('accessToken');
+    console.log('scancode', scancode);
 
     getItemsByBarcode(accessToken, scancode)
-      .then((apiResponse) => {
-        console.log('apiResponse.data', apiResponse.data)
-        setShowSpinner(false)
+      .then(apiResponse => {
+        console.log('apiResponse.data', apiResponse.data);
+        setShowSpinner(false);
         if (apiResponse.data.status === 'success') {
-          navigation.navigate(ScreenNamesMarketing.ORDERPRODUCTDETAILS, { selectedProduct: apiResponse.data.response });
+          navigation.navigate(ScreenNamesMarketing.ORDERPRODUCTDETAILS, {
+            selectedProduct: apiResponse.data.response,
+          });
         }
       })
-      .catch((error) => {
-        setShowSpinner(false)
-        console.log('error', error)
-      })
-
-  }
+      .catch(error => {
+        setShowSpinner(false);
+        console.log('error', error);
+      });
+  };
 
   const renderHeader = () => {
     return (
@@ -142,17 +148,19 @@ export const Orders = ({ navigation }) => {
             />
           </View>
         </TouchableOpacity>
-        <View style={{ backgroundColor: 'black', opacity: 0.1, height: 1 }} />
-        <TouchableOpacity activeOpacity={1} onPress={() => {
-          setTimeout(() => {
-            setShowBarcode(true)
-          }, 1000);
-        }}>
+        <View style={{backgroundColor: 'black', opacity: 0.1, height: 1}} />
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            setTimeout(() => {
+              setShowBarcode(true);
+            }, 1000);
+          }}>
           <View style={styles.productViewStyles}>
             <View
               style={[
                 styles.iconBackgroundStyle,
-                { backgroundColor: 'rgb(191,39,228)' },
+                {backgroundColor: 'rgb(191,39,228)'},
               ]}>
               <BarCodeIcon />
             </View>
@@ -178,54 +186,63 @@ export const Orders = ({ navigation }) => {
     );
   };
 
-  const onBarCodeRead = (scanResult) => {
-    setShowBarcode(false)
-    callAPIWithBarcode(scanResult.data)
-  }
+  const onBarCodeRead = scanResult => {
+    setShowBarcode(false);
+    callAPIWithBarcode(scanResult.data);
+  };
 
   const renderBarCodeScanner = () => {
     return (
       <View style={styles.cameraStyle}>
         <RNCamera
-          style={{ flex: 1 }}
+          style={{flex: 1}}
           type={RNCamera.Constants.Type.back}
           flashMode={RNCamera.Constants.FlashMode.on}
           barCodeTypes={[RNCamera.Constants.BarCodeType.ean13]}
-          onGoogleVisionBarcodesDetected={
-            (e) => {
-              console.warn(e)
-            }
-          }
+          onGoogleVisionBarcodesDetected={e => {
+            console.warn(e);
+          }}
           onBarCodeRead={onBarCodeRead}
           captureAudio={false}
         />
-        <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 80, backgroundColor: colors.WHITE, width: '100%' }} >
+        <View
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 80,
+            backgroundColor: colors.WHITE,
+            width: '100%',
+          }}>
           <TouchableOpacity
-            style={{ width: 40, height: 40, alignItems: 'center', justifyContent: 'center', marginTop: 35 }}
+            style={{
+              width: 40,
+              height: 40,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 35,
+            }}
             activeOpacity={1}
-            onPress={() => { setShowBarcode(false) }}
-          >
-            <BackHome style={{ width: 13, height: 21, }} />
+            onPress={() => {
+              setShowBarcode(false);
+            }}>
+            <BackHome style={{width: 13, height: 21}} />
           </TouchableOpacity>
         </View>
       </View>
-    )
-  }
+    );
+  };
 
   const renderSpinner = () => {
-    return (
-      <CommonSpinner
-        animating={showSpinner}
-      />
-    )
-  }
-
+    return <CommonSpinner animating={showSpinner} />;
+  };
 
   return (
     <View style={styles.container}>
       {renderHeader()}
       <Text style={styles.mainDescriptionStyle}>
-        Start placing order using any of below options
+        Start placing the order using any one of the below options
       </Text>
       {renderListView()}
       {showBarcode && renderBarCodeScanner()}

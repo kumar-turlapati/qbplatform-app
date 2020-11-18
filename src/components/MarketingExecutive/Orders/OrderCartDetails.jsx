@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -11,17 +11,17 @@ import {
 } from 'react-native';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
 import CommonHeader from '../UI/CommonHeader';
-import { SideArrow, DeleteIcon } from '../../../icons/Icons';
+import {SideArrow, DeleteIcon} from '../../../icons/Icons';
 import CommonButton from '../UI/CommonButton';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
-import { ShoppingCartContext } from '../../context/ShoppingCartProvider';
-import { paymentTypes } from '../../../../qbconfig';
+import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+import {ShoppingCartContext} from '../../context/ShoppingCartProvider';
+import {paymentTypes} from '../../../../qbconfig';
 import ActionSheet from 'react-native-action-sheet';
-import { getValue } from '../../../utils/asyncStorage';
-import { postNewOrder } from '../../../networkcalls/apiCalls';
+import {getValue} from '../../../utils/asyncStorage';
+import {postNewOrder} from '../../../networkcalls/apiCalls';
 import CommonAlertView from '../UI/CommonAlertView';
 
-const { height, width } = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -73,35 +73,37 @@ const styles = StyleSheet.create({
   },
 });
 
-export const OrderCartDetails = ({ navigation }) => {
-
-  const {
-    cartItems,
-    updateCart,
-    updated,
-    selectedCustomerName
-  } = useContext(ShoppingCartContext);
+export const OrderCartDetails = ({navigation}) => {
+  const {cartItems, updateCart, updated, selectedCustomerName} = useContext(
+    ShoppingCartContext,
+  );
 
   const [onEditClicked, setOnEditClicked] = useState(false);
   const [showItems, setShowItems] = useState(cartItems);
-  const [paymentIndex, setPaymentIndex] = useState(0)
-  const [showSpinner, setShowSpinner] = useState(false)
+  const [paymentIndex, setPaymentIndex] = useState(0);
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const [showAlert, setShowAlert] = useState(false);
   const [showFailAlert, setShowFailAlert] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   useEffect(() => {
-    setShowItems(cartItems)
+    setShowItems(cartItems);
     if (cartItems.length === 0) {
-      showGenericAlert("Your cart is empty, please add more")
+      showGenericAlert(
+        'Your cart is empty, please add products to place the order',
+      );
     }
+  }, [cartItems, updated]);
 
-  }, [cartItems, updated])
-
-  const showGenericAlert = (message) => {
-    Alert.alert('Uh oh.. :(', message, [
-      { text: "OK", onPress: () => { navigation.goBack() } }
+  const showGenericAlert = message => {
+    Alert.alert('Oops :(', message, [
+      {
+        text: 'OK',
+        onPress: () => {
+          navigation.goBack();
+        },
+      },
     ]);
   };
 
@@ -128,7 +130,7 @@ export const OrderCartDetails = ({ navigation }) => {
         onPress={() => {
           console.log('add new customer');
         }}>
-        <View style={{ backgroundColor: 'white', height: 44 }}>
+        <View style={{backgroundColor: 'white', height: 44}}>
           <View
             style={{
               marginHorizontal: 16,
@@ -154,7 +156,9 @@ export const OrderCartDetails = ({ navigation }) => {
                   color: '#3C3C43',
                 },
               ]}>
-              {selectedCustomerName.length > 0 ? selectedCustomerName : 'Octet Logic OPC Pvt Ltd'}
+              {selectedCustomerName.length > 0
+                ? selectedCustomerName
+                : 'Select Customer'}
             </Text>
           </View>
           <View
@@ -175,13 +179,14 @@ export const OrderCartDetails = ({ navigation }) => {
 
   const renderRow = (item, index) => {
     return (
-      <View style={{ backgroundColor: 'white', marginTop: 0 }}>
+      <View style={{backgroundColor: 'white', marginTop: 0}}>
         <View style={styles.viewStyle}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             {onEditClicked && (
-              <TouchableOpacity onPress={() => {
-                updateCart(index)
-              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  updateCart(index);
+                }}>
                 <DeleteIcon
                   style={{
                     width: 22,
@@ -196,7 +201,7 @@ export const OrderCartDetails = ({ navigation }) => {
             <View>
               <Text style={styles.titleStyle}>{item.itemName}</Text>
               <Text style={styles.descriptionStyle}>
-                Rate {item.itemRate} Rs, Quantity {item.packedQty}
+                Rate: ₹{item.itemRate}&nbsp;Qty: {item.orderQty}
               </Text>
             </View>
           </View>
@@ -209,7 +214,7 @@ export const OrderCartDetails = ({ navigation }) => {
                 paddingTop: 19,
               },
             ]}>
-            ₹ {calculatePrice(item.packedQty, item.itemRate)}
+            ₹ {calculatePrice(item.orderQty, item.wholesalePrice)}
           </Text>
         </View>
       </View>
@@ -217,9 +222,9 @@ export const OrderCartDetails = ({ navigation }) => {
   };
 
   const calculatePrice = (quantity, price) => {
-    let calPrice = quantity * price;
+    let calPrice = parseFloat(quantity * price).toFixed(2);
     return calPrice;
-  }
+  };
 
   const options = paymentTypes;
 
@@ -229,15 +234,17 @@ export const OrderCartDetails = ({ navigation }) => {
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
-            ActionSheet.showActionSheetWithOptions({
-              options: options,
-            },
-              (buttonIndex) => {
+            ActionSheet.showActionSheetWithOptions(
+              {
+                options: options,
+              },
+              buttonIndex => {
                 console.log('button clicked :', buttonIndex);
-                setPaymentIndex(buttonIndex)
-              });
+                setPaymentIndex(buttonIndex);
+              },
+            );
           }}>
-          <View style={{ backgroundColor: 'white', height: 44, marginTop: 21 }}>
+          <View style={{backgroundColor: 'white', height: 44, marginTop: 21}}>
             <View
               style={{
                 marginHorizontal: 16,
@@ -254,7 +261,7 @@ export const OrderCartDetails = ({ navigation }) => {
                   },
                 ]}>
                 Billing Type
-            </Text>
+              </Text>
               <Text
                 style={[
                   styles.titleStyle,
@@ -303,62 +310,61 @@ export const OrderCartDetails = ({ navigation }) => {
           marginBottom: 0,
         }}
         data={showItems}
-        renderItem={({ item, index }) => renderRow(item, index)}
+        renderItem={({item, index}) => renderRow(item, index)}
         keyExtractor={item => item}
         removeClippedSubviews={true}
         ListFooterComponent={!onEditClicked && renderBillingType()}
       />
-    )
-  }
+    );
+  };
 
   const callTheNewOrderAPI = async () => {
-    setShowSpinner(true)
+    setShowSpinner(true);
 
-    const accessToken = await getValue('accessToken')
-    console.log('showItems', showItems)
+    const accessToken = await getValue('accessToken');
+    console.log('showItems', showItems);
 
     const orderDetails = {
-      "orderDetails": showItems,
-      "couponCode": "",
-      "billingRate": options[paymentIndex],
-      "customerName": selectedCustomerName.length > 0 ? selectedCustomerName : 'Octet Logic OPC Pvt Ltd'
-    }
+      orderDetails: showItems,
+      couponCode: '',
+      billingRate: options[paymentIndex],
+      customerName:
+        selectedCustomerName.length > 0
+          ? selectedCustomerName
+          : 'Select Customer',
+    };
 
     postNewOrder(accessToken, orderDetails)
-      .then((apiResponse) => {
-        console.log('apiResponse', apiResponse.data)
-        setShowSpinner(false)
+      .then(apiResponse => {
+        console.log('apiResponse', apiResponse.data);
+        setShowSpinner(false);
         setShowSuccessAlert(true);
         setShowAlert(true);
       })
-      .catch((error) => {
-        console.log('error', error)
-        setShowSpinner(false)
+      .catch(error => {
+        console.log('error', error);
+        setShowSpinner(false);
         setShowAlert(true);
         setShowFailAlert(true);
-      })
-  }
+      });
+  };
 
   const renderButton = () => {
     return (
       <CommonButton
         buttonTitle={'Place Order'}
         onPressButton={() => {
-          callTheNewOrderAPI()
+          callTheNewOrderAPI();
           // navigation.navigate(ScreenNamesMarketing.ORDERAVAILABILITYCHECK);
         }}
-        propStyle={{ marginHorizontal: 16, marginTop: 26 }}
+        propStyle={{marginHorizontal: 16, marginTop: 26}}
       />
     );
   };
 
   const renderSpinner = () => {
-    return (
-      <CommonSpinner
-        animating={showSpinner}
-      />
-    )
-  }
+    return <CommonSpinner animating={showSpinner} />;
+  };
 
   const renderAlert = () => {
     return (
@@ -371,7 +377,7 @@ export const OrderCartDetails = ({ navigation }) => {
         onPressSuccessButton={() => {
           setShowAlert(false);
           setShowSuccessAlert(false);
-          navigation.goBack()
+          navigation.goBack();
         }}
         failTitle={'Oops'}
         failDescriptionTitle={`Somthing went wrong, \nplease try again`}

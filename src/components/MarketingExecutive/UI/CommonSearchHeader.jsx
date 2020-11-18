@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -7,11 +7,11 @@ import {
   View,
   TextInput,
 } from 'react-native';
-import { SearchBlackIcon } from '../../../icons/Icons';
-import { colors } from '../../../theme/colors';
-import { theme } from '../../../theme/theme';
+import {SearchBlackIcon} from '../../../icons/Icons';
+import {colors} from '../../../theme/colors';
+import {theme} from '../../../theme/theme';
 
-const { height, width } = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -76,7 +76,7 @@ export default (CommonSearchHeader = ({
       <View style={styles.headerStyles}>
         <View style={styles.searchViewStyle}>
           <SearchBlackIcon
-            style={{ width: 16, height: 17, marginLeft: 9, marginTop: 9 }}
+            style={{width: 16, height: 17, marginLeft: 9, marginTop: 9}}
           />
           <TextInput
             style={styles.textInputStyle}
@@ -100,7 +100,7 @@ export default (CommonSearchHeader = ({
   return (
     <View style={styles.container}>
       <Text style={styles.mainHeaderStyle} textAlign="center">
-        This is a prompt message.
+        Start typing product name
       </Text>
       {renderHeader()}
     </View>
