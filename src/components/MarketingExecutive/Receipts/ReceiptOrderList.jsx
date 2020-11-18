@@ -12,6 +12,9 @@ import CommonHeader from '../UI/CommonHeader';
 import {SideArrow} from '../../../icons/Icons';
 import CommonDialogView from '../UI/CommonDialogView';
 import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+import { getValue } from '../../../utils/asyncStorage';
+import CommonSpinner from '../UI/CommonSpinner';
+import { getAllOrders } from '../../../networkcalls/apiCalls';
 
 const {height, width} = Dimensions.get('window');
 
@@ -97,13 +100,41 @@ const orderdata = [
     status: 'Approved',
   },
   {
-    name: 'Suraj Chouhan',
+    name: 'Suraj Reddy',
     id: 'ID 23456799',
     status: 'Shipped',
   },
 ];
 
 export const ReceiptOrderList = ({navigation}) => {
+
+  const [showSpinner, setShowSpinner] = useState(false)
+  const [allOrders, setAllOrders] = useState([])
+
+  useEffect(() => {
+    getOrderList();
+  }, []);
+
+  const getOrderList = async () => {
+    setShowSpinner(true)
+
+    const accessToken = await getValue('accessToken')
+
+    getAllOrders(accessToken, 'Octet Logic OPC Pvt Ltd')
+    .then((apiResponse) => {
+      console.log('apiResponse.data', apiResponse.data.response)
+      setShowSpinner(false)
+      if (apiResponse.data.status === 'success') {
+        setAllOrders(apiResponse.data.response)
+       }
+    })
+    .catch((error) => {
+      setShowSpinner(false)
+      console.log('error', error)
+    })
+
+  }
+
   const renderHeader = () => {
     return (
       <CommonHeader
@@ -132,10 +163,11 @@ export const ReceiptOrderList = ({navigation}) => {
           }}>
           <View style={styles.rowView}>
             <View>
-              <Text style={styles.textStyle}>{rowData.name}</Text>
-              <Text style={styles.descriptionStyle}>{rowData.id}</Text>
+              <Text style={styles.textStyle}>{rowData.customerName}</Text>
+              <Text style={styles.descriptionStyle}>{rowData.indentCode}</Text>
             </View>
-            {rowData.status === 'Shipped' ? (
+            <View style={{ height:21 }}/>
+            {/* {rowData.status === 'Shipped' ? (
               <Text
                 style={[styles.statusTextStyle, {backgroundColor: '#34C759'}]}>
                 {rowData.status}
@@ -164,7 +196,7 @@ export const ReceiptOrderList = ({navigation}) => {
                   </View>
                 )}
               </View>
-            )}
+            )} */}
             <SideArrow
               style={{
                 width: 9,
@@ -174,7 +206,7 @@ export const ReceiptOrderList = ({navigation}) => {
                 position: 'absolute',
               }}
               resizeMode={'contain'}
-            />
+            /> 
           </View>
         </TouchableOpacity>
       </>
@@ -191,9 +223,9 @@ export const ReceiptOrderList = ({navigation}) => {
             backgroundColor: 'white',
             marginBottom: 0,
           }}
-          data={orderdata}
+          data={allOrders}
           renderItem={({item, index}) => renderRow(item, index)}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.indentCode}
           removeClippedSubviews={true}
         />
       </View>
@@ -246,11 +278,21 @@ export const ReceiptOrderList = ({navigation}) => {
     );
   };
 
+  const renderSpinner = () => {
+    return (
+      <CommonSpinner
+        animating={showSpinner}
+      />
+    )
+  }
+
+
   return (
     <View style={styles.container}>
       {renderHeader()}
-      {renderCompanyName()}
+      {/* {renderCompanyName()} */}
       {renderFlatList()}
+      {renderSpinner()}
     </View>
   );
 };
