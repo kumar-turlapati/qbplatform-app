@@ -78,7 +78,7 @@ export const OrderCartDetails = ({navigation}) => {
     ShoppingCartContext,
   );
 
-  console.log(cartItems, 'cart items......');
+  // console.log(cartItems, 'cart items......');
 
   const [onEditClicked, setOnEditClicked] = useState(false);
   const [showItems, setShowItems] = useState(cartItems);
@@ -102,7 +102,7 @@ export const OrderCartDetails = ({navigation}) => {
       {
         text: 'OK',
         onPress: () => {
-          navigation.goBack();
+          navigation.navigate(ScreenNamesMarketing.ORDERS);
         },
       },
     ]);
@@ -179,6 +179,17 @@ export const OrderCartDetails = ({navigation}) => {
   };
 
   const renderRow = (item, index) => {
+    let itemRate = 0;
+    if (paymentIndex === 0) itemRate = item.wholesalePrice;
+    if (paymentIndex === 1) itemRate = item.mrp;
+    if (paymentIndex === 2) itemRate = item.onlinePrice;
+    if (paymentIndex === 3) itemRate = item.exmillPrice;
+    // console.log(
+    //   item,
+    //   'item in RenderRow.........',
+    //   'payment index is......',
+    //   paymentIndex,
+    // );
     return (
       <View style={{backgroundColor: 'white', marginTop: 0}}>
         <View style={styles.viewStyle}>
@@ -202,7 +213,7 @@ export const OrderCartDetails = ({navigation}) => {
             <View>
               <Text style={styles.titleStyle}>{item.itemName}</Text>
               <Text style={styles.descriptionStyle}>
-                Rate: ₹{item.itemRate}&nbsp;Qty: {item.orderQty}
+                Rate: ₹{itemRate}&nbsp;Qty: {item.orderQty}
               </Text>
             </View>
           </View>
@@ -215,7 +226,7 @@ export const OrderCartDetails = ({navigation}) => {
                 paddingTop: 19,
               },
             ]}>
-            ₹ {calculatePrice(item.orderQty, item.wholesalePrice)}
+            ₹ {calculatePrice(item.orderQty, itemRate)}
           </Text>
         </View>
       </View>
@@ -320,16 +331,21 @@ export const OrderCartDetails = ({navigation}) => {
     );
   };
 
+  const getApiPaymentString = paymentString => {
+    if (paymentString === 'Wholesale') return 'wholesale';
+    if (paymentString === 'Online') return 'online';
+    if (paymentString === 'Exmill') return 'ex';
+    if (paymentString === 'Retail') return 'mrp';
+    return 'wholesale';
+  };
+
   const callTheNewOrderAPI = async () => {
     setShowSpinner(true);
-
     const accessToken = await getValue('accessToken');
-    console.log('showItems', showItems);
-
     const orderDetails = {
       orderDetails: showItems,
       couponCode: '',
-      billingRate: options[paymentIndex],
+      billingRate: getApiPaymentString(options[paymentIndex]),
       customerName:
         selectedCustomerName.length > 0
           ? selectedCustomerName
@@ -408,11 +424,17 @@ export const OrderCartDetails = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {renderHeader()}
-      {renderCustomerName()}
-      {renderFlatList()}
-      {renderSpinner()}
-      {showAlert && renderAlert()}
+      {cartItems.length > 0 ? (
+        <>
+          {renderHeader()}
+          {renderCustomerName()}
+          {renderFlatList()}
+          {renderSpinner()}
+          {showAlert && renderAlert()}
+        </>
+      ) : (
+        showAlert && renderAlert()
+      )}
     </View>
   );
 };

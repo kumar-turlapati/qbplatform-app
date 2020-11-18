@@ -109,4 +109,4 @@ export const paymentMethods = {
 };
 
 // payment methods
-export const paymentTypes = ['wholesale', 'retail', 'online', 'exmill'];
+export const paymentTypes = ['Wholesale', 'Retail', 'Online', 'Exmill'];

@@ -194,7 +194,7 @@ export const OrdersProductDetails = ({navigation, route}) => {
   const renderButton = () => {
     return (
       <CommonButton
-        buttonTitle="Add to cart"
+        buttonTitle="Add and View Cart"
         onPressButton={() => {
           if (!orderQuantity) {
             showGenericAlert('Please enter quantity');

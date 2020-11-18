@@ -107,12 +107,12 @@ export const Orders = ({navigation}) => {
       <CommonHeader
         mainViewHeading={'New Order'}
         leftSideText={'Home'}
-        rightSideText={'Create'}
+        rightSideText={'View Cart'}
         onPressLeftButton={() => {
           navigation.goBack();
         }}
         onPressRightButton={() => {
-          console.log('Create button pressed');
+          navigation.navigate(ScreenNamesMarketing.ORDERCARTDETAILS);
         }}
       />
     );
