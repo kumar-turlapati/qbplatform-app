@@ -8,11 +8,11 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import CommonSearchHeader from '../UI/CommonSearchHeader';
+// import CommonSearchHeader from '../UI/CommonSearchHeader';
 import CommonHeader from '../UI/CommonHeader';
 import {SideArrow} from '../../../icons/Icons';
-import CommonButton from '../UI/CommonButton';
-import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+// import CommonButton from '../UI/CommonButton';
+// import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 
 const {height, width} = Dimensions.get('window');
 

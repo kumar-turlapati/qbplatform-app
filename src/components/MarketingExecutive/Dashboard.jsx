@@ -141,12 +141,10 @@ const list = [
 
 export const Dashboard = ({navigation}) => {
   const [showSideMenu, setShowSideMenu] = useState(false);
-
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
         BackHandler.exitApp();
-        // return true;
       };
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
       return () =>
@@ -222,7 +220,7 @@ export const Dashboard = ({navigation}) => {
   };
 
   const rowPressed = index => {
-    console.log('pressed', index);
+    // console.log('pressed', index);
     setShowSideMenu(false);
     switch (index) {
       case 0:

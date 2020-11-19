@@ -3,7 +3,7 @@ import {StyleSheet, Text, TextInput, View, Keyboard} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import {ScreenNamesMarketing} from '../helpers/ScreenNames';
 import {Logo} from '../icons/Icons';
-import {getToken, loginAPI} from '../networkcalls/apiCalls';
+import {getToken, loginAPI, resendOTP} from '../networkcalls/apiCalls';
 import {colors} from '../theme/colors';
 import {theme} from '../theme/theme';
 import {storeItem, getValue} from '../utils/asyncStorage';
@@ -38,7 +38,6 @@ export const Login = ({navigation}) => {
 
   const loginHappened = async () => {
     const loginHappened = await getValue('accessToken');
-
     if (loginHappened) {
       navigation.navigate(ScreenNamesMarketing.DASHBOARD);
     }
@@ -50,11 +49,10 @@ export const Login = ({navigation}) => {
 
   const getOTP = () => {
     setShowSpinner(true);
-
     loginAPI(mobileNumber)
       .then(apiResponse => {
         setShowSpinner(false);
-        console.log('apiResponse', apiResponse);
+        // console.log('apiResponse', apiResponse);
         if (apiResponse.data.status === 'success') {
           setApiErrorText('');
           const UUID = apiResponse.data.response.response.uuid;
@@ -71,21 +69,32 @@ export const Login = ({navigation}) => {
       });
   };
 
+  const resendOtpCall = () => {
+    setShowSpinner(true);
+    resendOTP(uuid)
+      .then(response => {
+        setShowSpinner(false);
+        console.log(response, 'response is........');
+      })
+      .catch(e => {
+        setShowSpinner(false);
+        const errorMessage = apiResponse.data.errortext;
+        errorMethod(errorMessage);
+      });
+  };
+
   const getAccessToken = () => {
     setShowSpinner(true);
-    console.log('getAccessToken');
-
+    // console.log('getAccessToken');
     getToken(uuid, OTP)
       .then(apiResponse => {
         setShowSpinner(false);
         if (apiResponse.data.status === 'success') {
-          console.log('apiResponse', apiResponse);
-
+          // console.log('apiResponse', apiResponse);
           setApiErrorText('');
           setShowOTPView(false);
           const accessToken = apiResponse.data.response.accessToken;
           storeItem('accessToken', accessToken);
-
           navigation.navigate(ScreenNamesMarketing.DASHBOARD);
         } else {
           const errorMessage = apiResponse.data.errortext;
@@ -159,7 +168,6 @@ export const Login = ({navigation}) => {
           keyboardType="number-pad"
           placeholder="1234"
         />
-
         <CommonButton
           buttonTitle={'Submit OTP'}
           disableButton={disableOTPButton}
@@ -168,15 +176,29 @@ export const Login = ({navigation}) => {
           }}
           propStyle={theme.viewStyles.buttonStyles}
         />
-
-        <CommonButton
-          buttonTitle={'<- Change details ?'}
-          onPressButton={() => {
-            setShowOTPView(false);
-          }}
-          propStyle={[styles.changeButtonStyles, {backgroundColor: 'white'}]}
-          buttonStyle={{color: colors.RED}}
-        />
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <CommonButton
+            buttonTitle="<- Change details?"
+            onPressButton={() => {
+              setShowOTPView(false);
+            }}
+            propStyle={[styles.changeButtonStyles, {backgroundColor: 'white'}]}
+            buttonStyle={{color: colors.RED}}
+          />
+          <CommonButton
+            buttonTitle="Resend OTP"
+            onPressButton={() => {
+              resendOtpCall();
+            }}
+            propStyle={[styles.changeButtonStyles, {backgroundColor: 'white'}]}
+            buttonStyle={{color: colors.RED}}
+          />
+        </View>
       </>
     );
   };

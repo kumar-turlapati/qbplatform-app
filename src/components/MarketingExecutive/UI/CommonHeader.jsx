@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Dimensions,
+  // Dimensions,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,10 +13,10 @@ import {
   EditIcon,
   ShareIcon,
 } from '../../../icons/Icons';
-import { colors } from '../../../theme/colors';
-import { theme } from '../../../theme/theme';
+import {colors} from '../../../theme/colors';
+import {theme} from '../../../theme/theme';
 
-const { height, width } = Dimensions.get('window');
+// const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -75,7 +75,9 @@ export default (CommonHeader = ({
           }}>
           <View style={styles.iconViewStyles}>
             <BackHome style={styles.iconStyles} />
-            <Text style={theme.viewStyles.headerLeftTextStyle}>{leftSideText}</Text>
+            <Text style={theme.viewStyles.headerLeftTextStyle}>
+              {leftSideText}
+            </Text>
           </View>
         </TouchableOpacity>
         <Text style={theme.viewStyles.headerTextStyle}>{mainViewHeading}</Text>
@@ -87,7 +89,7 @@ export default (CommonHeader = ({
               onPress={() => {
                 onPressSearchIcon();
               }}>
-              <SearchBlueIcon style={{ width: 17, height: 17 }} />
+              <SearchBlueIcon style={{width: 17, height: 17}} />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.iconTouchStyle}
@@ -95,87 +97,89 @@ export default (CommonHeader = ({
               onPress={() => {
                 onPressPlusIcon();
               }}>
-              <AddIcon style={{ width: 14, height: 15 }} />
+              <AddIcon style={{width: 14, height: 15}} />
             </TouchableOpacity>
           </View>
         ) : (
-            <View>
-              {rightSingleIcon ? (
-                <View style={styles.rightIconViewStyle}>
-                  <TouchableOpacity
-                    style={styles.iconTouchStyle}
-                    activeOpacity={1}
-                    onPress={() => {
-                      onPressEditIcon();
-                    }}>
-                    <EditIcon style={{ width: 17, height: 17 }} />
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                  <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => {
-                      onPressRightButton();
-                    }}>
-                    <Text style={theme.viewStyles.headerRightTextStyle}>{rightSideText}</Text>
-                  </TouchableOpacity>
-                )}
-              {addIcon ? (
-                <View
-                  style={[
-                    styles.rightIconViewStyle,
-                    {
-                      marginTop: -50,
-                    },
-                  ]}>
-                  <TouchableOpacity
-                    style={styles.iconTouchStyle}
-                    activeOpacity={1}
-                    onPress={() => {
-                      onAddIconPress();
-                    }}>
-                    <AddIcon style={{ width: 14, height: 15 }} />
-                  </TouchableOpacity>
-                </View>
-              ) : null}
-              {shareIcon ? (
-                <View
-                  style={[
-                    styles.rightIconViewStyle,
-                    {
-                      marginTop: -50,
-                    },
-                  ]}>
-                  <TouchableOpacity
-                    style={styles.iconTouchStyle}
-                    activeOpacity={1}
-                    onPress={() => {
-                      onShareIconPress();
-                    }}>
-                    <ShareIcon style={{ width: 13, height: 17 }} />
-                  </TouchableOpacity>
-                </View>
-              ) : null}
-              {searchIcon ? (
-                <View
-                  style={[
-                    styles.rightIconViewStyle,
-                    {
-                      marginTop: -50,
-                    },
-                  ]}>
-                  <TouchableOpacity
-                    style={styles.iconTouchStyle}
-                    activeOpacity={1}
-                    onPress={() => {
-                      onPressSearchIcon();
-                    }}>
-                    <SearchBlueIcon style={{ width: 17, height: 17 }} />
-                  </TouchableOpacity>
-                </View>
-              ) : null}
-            </View>
-          )}
+          <View>
+            {rightSingleIcon ? (
+              <View style={styles.rightIconViewStyle}>
+                <TouchableOpacity
+                  style={styles.iconTouchStyle}
+                  activeOpacity={1}
+                  onPress={() => {
+                    onPressEditIcon();
+                  }}>
+                  <EditIcon style={{width: 17, height: 17}} />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={() => {
+                  onPressRightButton();
+                }}>
+                <Text style={theme.viewStyles.headerRightTextStyle}>
+                  {rightSideText}
+                </Text>
+              </TouchableOpacity>
+            )}
+            {addIcon ? (
+              <View
+                style={[
+                  styles.rightIconViewStyle,
+                  {
+                    marginTop: -50,
+                  },
+                ]}>
+                <TouchableOpacity
+                  style={styles.iconTouchStyle}
+                  activeOpacity={1}
+                  onPress={() => {
+                    onAddIconPress();
+                  }}>
+                  <AddIcon style={{width: 14, height: 15}} />
+                </TouchableOpacity>
+              </View>
+            ) : null}
+            {shareIcon ? (
+              <View
+                style={[
+                  styles.rightIconViewStyle,
+                  {
+                    marginTop: -50,
+                  },
+                ]}>
+                <TouchableOpacity
+                  style={styles.iconTouchStyle}
+                  activeOpacity={1}
+                  onPress={() => {
+                    onShareIconPress();
+                  }}>
+                  <ShareIcon style={{width: 13, height: 17}} />
+                </TouchableOpacity>
+              </View>
+            ) : null}
+            {searchIcon ? (
+              <View
+                style={[
+                  styles.rightIconViewStyle,
+                  {
+                    marginTop: -50,
+                  },
+                ]}>
+                <TouchableOpacity
+                  style={styles.iconTouchStyle}
+                  activeOpacity={1}
+                  onPress={() => {
+                    onPressSearchIcon();
+                  }}>
+                  <SearchBlueIcon style={{width: 17, height: 17}} />
+                </TouchableOpacity>
+              </View>
+            ) : null}
+          </View>
+        )}
       </View>
     );
   };

@@ -221,51 +221,51 @@ export const OrdersList = ({navigation}) => {
     );
   };
 
-  const renderCompanyName = () => {
-    return (
-      <View style={{backgroundColor: 'white', height: 44}}>
-        <View
-          style={{
-            marginHorizontal: 16,
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-          }}>
-          <Text
-            style={[
-              styles.titleStyle,
-              {
-                color: '#3C3C43',
-                opacity: 0.5,
-              },
-            ]}>
-            Company
-          </Text>
-          <Text
-            style={[
-              styles.titleStyle,
-              {
-                marginRight: 24,
-                color: '#3C3C43',
-              },
-            ]}>
-            Rana Textiles
-          </Text>
-        </View>
-        <View
-          style={{
-            left: 16,
-            right: 0,
-            height: 1,
-            backgroundColor: 'black',
-            opacity: 0.1,
-            top: 43,
-            position: 'absolute',
-          }}
-        />
-      </View>
-    );
-  };
+  // const renderCompanyName = () => {
+  //   return (
+  //     <View style={{backgroundColor: 'white', height: 44}}>
+  //       <View
+  //         style={{
+  //           marginHorizontal: 16,
+  //           flexDirection: 'row',
+  //           alignItems: 'flex-start',
+  //           justifyContent: 'space-between',
+  //         }}>
+  //         <Text
+  //           style={[
+  //             styles.titleStyle,
+  //             {
+  //               color: '#3C3C43',
+  //               opacity: 0.5,
+  //             },
+  //           ]}>
+  //           Company
+  //         </Text>
+  //         <Text
+  //           style={[
+  //             styles.titleStyle,
+  //             {
+  //               marginRight: 24,
+  //               color: '#3C3C43',
+  //             },
+  //           ]}>
+  //           Rana Textiles
+  //         </Text>
+  //       </View>
+  //       <View
+  //         style={{
+  //           left: 16,
+  //           right: 0,
+  //           height: 1,
+  //           backgroundColor: 'black',
+  //           opacity: 0.1,
+  //           top: 43,
+  //           position: 'absolute',
+  //         }}
+  //       />
+  //     </View>
+  //   );
+  // };
 
   const renderSpinner = () => {
     return <CommonSpinner animating={showSpinner} />;
