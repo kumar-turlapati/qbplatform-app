@@ -82,7 +82,8 @@ export const OrdersProductDetails = ({navigation, route}) => {
         <View style={{backgroundColor: colors.WHITE, height: 44}}>
           <View style={theme.viewStyles.viewMainStyles}>
             <Text style={styles.titleStyle}>Customer</Text>
-            <Text style={[styles.titleStyle, {marginRight: 24, opacity: 1}]}>
+            <Text ellipsizeMode="tail" numberOfLines={1} 
+            style={[styles.titleStyle, {marginRight: 24, opacity: 1, width: 200, textAlign:'right'}]}>
               {selectedCustomerName.length > 0
                 ? selectedCustomerName
                 : 'Select Customer'}

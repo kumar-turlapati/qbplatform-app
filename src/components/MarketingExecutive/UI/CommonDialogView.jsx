@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     position: 'absolute',
-    bottom: 56,
+    bottom: 36,
   },
   buttonStyles: {
     fontWeight: '600',
