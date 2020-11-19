@@ -16,7 +16,7 @@ import {getValue} from '../../../utils/asyncStorage';
 import {getItemsByBarcode} from '../../../networkcalls/apiCalls';
 import CommonSpinner from '../UI/CommonSpinner';
 
-const {height, width} = Dimensions.get('window');
+// const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -82,13 +82,11 @@ export const Orders = ({navigation}) => {
 
   const callAPIWithBarcode = async scancode => {
     setShowSpinner(true);
-
     const accessToken = await getValue('accessToken');
-    console.log('scancode', scancode);
-
+    // console.log('scancode', scancode);
     getItemsByBarcode(accessToken, scancode)
       .then(apiResponse => {
-        console.log('apiResponse.data', apiResponse.data);
+        // console.log('apiResponse.data', apiResponse.data);
         setShowSpinner(false);
         if (apiResponse.data.status === 'success') {
           navigation.navigate(ScreenNamesMarketing.ORDERPRODUCTDETAILS, {
@@ -98,7 +96,7 @@ export const Orders = ({navigation}) => {
       })
       .catch(error => {
         setShowSpinner(false);
-        console.log('error', error);
+        // console.log('error', error);
       });
   };
 

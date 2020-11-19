@@ -77,7 +77,7 @@ export const restEndPoints = {
       `${apiBaseUrl}/inventory/get-item-details-by-barcode?scanCode=${scanCode}`,
   },
   GET_ALL_ORDERS: {
-    URL: customerName => `${apiBaseUrl}/app/v1/orders/069ABCD9-D238-F28F-9F5D-710B37F4DACC?customerName=${customerName}`,
+    URL: executiveId => `${apiBaseUrl}/app/v1/orders/${executiveId}`,
   },
 };
 

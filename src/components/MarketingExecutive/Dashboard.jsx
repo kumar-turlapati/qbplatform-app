@@ -229,7 +229,7 @@ export const Dashboard = ({navigation}) => {
         navigation.navigate(ScreenNamesMarketing.APPOINTMENTS);
         break;
       case 1:
-        navigation.navigate(ScreenNamesMarketing.RECEIPTORDERLIST);
+        navigation.navigate(ScreenNamesMarketing.ORDERSLIST);
         break;
       case 2:
         navigation.navigate(ScreenNamesMarketing.RECEIPTS);

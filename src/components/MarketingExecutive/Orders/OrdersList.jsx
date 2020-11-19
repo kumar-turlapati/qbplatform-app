@@ -88,25 +88,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const orderdata = [
-  {
-    name: 'Yashwanth Rana',
-    id: 'ID 23456789',
-    status: 'Accepted',
-  },
-  {
-    name: 'Suraj Chouhan',
-    id: 'ID 23456799',
-    status: 'Approved',
-  },
-  {
-    name: 'Suraj Reddy',
-    id: 'ID 23456799',
-    status: 'Shipped',
-  },
-];
-
-export const ReceiptOrderList = ({navigation}) => {
+export const OrdersList = ({navigation}) => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [allOrders, setAllOrders] = useState([]);
 
@@ -120,7 +102,7 @@ export const ReceiptOrderList = ({navigation}) => {
     const uuid = await getValue('UUID');
     getAllOrders(accessToken, uuid)
       .then(apiResponse => {
-        console.log('apiResponse.data', apiResponse.data.response);
+        // console.log('apiResponse.data', apiResponse.data.response);
         setShowSpinner(false);
         if (apiResponse.data.status === 'success') {
           setAllOrders(apiResponse.data.response);

@@ -20,7 +20,7 @@ const {
   DETAILS_BY_NAME,
   NEW_ORDER,
   ITEMS_DETAILS_BY_SCAN_BARCODE,
-  GET_ALL_ORDERS
+  GET_ALL_ORDERS,
 } = restEndPoints;
 
 export const loginAPI = mobileNumber => {
@@ -127,22 +127,14 @@ export const postNewOrder = (accessToken, orderDetails) => {
   );
 };
 
-export const getItemsByBarcode = (
-    accessToken, scanCode
-) => {
-    requestHeadersWoOrg['Access-Token'] = accessToken;
-    return Axios.get(
-        ITEMS_DETAILS_BY_SCAN_BARCODE.URL(scanCode),
-        { headers: requestHeadersWoOrg },
-    );
+export const getItemsByBarcode = (accessToken, scanCode) => {
+  requestHeadersWoOrg['Access-Token'] = accessToken;
+  return Axios.get(ITEMS_DETAILS_BY_SCAN_BARCODE.URL(scanCode), {
+    headers: requestHeadersWoOrg,
+  });
 };
 
-export const getAllOrders = (
-    accessToken, customerName
-) => {
-    requestHeadersWoOrg['Access-Token'] = accessToken;
-    return Axios.get(
-        GET_ALL_ORDERS.URL(customerName),
-        { headers: requestHeadersWoOrg },
-    );
+export const getAllOrders = (accessToken, uuid) => {
+  requestHeadersWoOrg['Access-Token'] = accessToken;
+  return Axios.get(GET_ALL_ORDERS.URL(uuid), {headers: requestHeadersWoOrg});
 };
