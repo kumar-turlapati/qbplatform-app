@@ -91,6 +91,8 @@ const styles = StyleSheet.create({
 export const OrdersList = ({navigation}) => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [allOrders, setAllOrders] = useState([]);
+  const [showDialogue, setShowDialogue] = useState(false);
+  const [selectedData, setSelectedData] = useState([]);
 
   useEffect(() => {
     getOrderList();
@@ -136,11 +138,8 @@ export const OrdersList = ({navigation}) => {
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
-            navigation.navigate(ScreenNamesMarketing.RECEIPTORDERDETAILS, {
-              name: rowData.name,
-              invoiceNumber: rowData.id,
-              status: rowData.status,
-            });
+            setSelectedData(rowData)
+            setShowDialogue(true)
           }}>
           <View style={styles.rowView}>
             <View>
@@ -208,7 +207,7 @@ export const OrdersList = ({navigation}) => {
         <FlatList
           style={{
             flex: 1,
-            marginTop: 31,
+            // marginTop: 31,
             backgroundColor: 'white',
             marginBottom: 0,
           }}
@@ -271,12 +270,37 @@ export const OrdersList = ({navigation}) => {
     return <CommonSpinner animating={showSpinner} />;
   };
 
+  const renderCommonDialogue = () => {
+    return (
+    <CommonDialogView  
+        onPressViewDetails={() => {
+           navigation.navigate(ScreenNamesMarketing.RECEIPTORDERDETAILS, {
+              name: selectedData.name,
+              invoiceNumber: selectedData.id,
+              status: selectedData.status,
+            });
+            setShowDialogue(false)
+        }}
+        onPressUpdate={() => {
+          
+        }}
+        onPressDelete={() => {
+          
+        }}
+        onPressCancel={() => {
+          setShowDialogue(false)
+        }}
+    />
+    );
+  };
+
   return (
     <View style={styles.container}>
       {renderHeader()}
       {/* {renderCompanyName()} */}
       {renderFlatList()}
       {renderSpinner()}
+      {showDialogue && renderCommonDialogue()}
     </View>
   );
 };

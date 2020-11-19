@@ -376,8 +376,9 @@ export const ReceiptOrderDetails = ({navigation, route}) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       {renderHeader()}
+    <ScrollView style={styles.container}>
       {showError && renderGlobalError()}
       {renderCustomerName()}
       {renderDetails()}
@@ -387,5 +388,6 @@ export const ReceiptOrderDetails = ({navigation, route}) => {
       {renderButton()}
       <View style={{height: 40}} />
     </ScrollView>
+    </View>
   );
 };
