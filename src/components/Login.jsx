@@ -9,6 +9,7 @@ import {theme} from '../theme/theme';
 import {storeItem, getValue} from '../utils/asyncStorage';
 import CommonButton from './MarketingExecutive/UI/CommonButton';
 import CommonSpinner from './MarketingExecutive/UI/CommonSpinner';
+import isMobileNumberValidWithReason from '../utils/Validators';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,14 +24,14 @@ const styles = StyleSheet.create({
 
 export const Login = ({navigation}) => {
   const [mobileNumber, setMobileNumber] = useState('');
-  const [isMobileNumberError, setIsMobileNumberError] = useState(false);
+  // const [isMobileNumberError, setIsMobileNumberError] = useState(false);
   const [showOTPView, setShowOTPView] = useState(false);
   const [apiErrorText, setApiErrorText] = useState('');
   const [showSpinner, setShowSpinner] = useState(false);
   const [uuid, setUuid] = useState('');
   const [OTP, setOTP] = useState('');
-  const [isPasswordError, setIsPasswordError] = useState(false);
-  const [isOrgCodeError, setIsOrgCodeError] = useState(false);
+  // const [isPasswordError, setIsPasswordError] = useState(false);
+  // const [isOrgCodeError, setIsOrgCodeError] = useState(false);
 
   useEffect(() => {
     loginHappened();
@@ -74,7 +75,7 @@ export const Login = ({navigation}) => {
     resendOTP(uuid)
       .then(response => {
         setShowSpinner(false);
-        console.log(response, 'response is........');
+        // console.log(response, 'response is........');
       })
       .catch(e => {
         setShowSpinner(false);

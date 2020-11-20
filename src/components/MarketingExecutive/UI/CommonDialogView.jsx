@@ -51,9 +51,10 @@ const styles = StyleSheet.create({
 
 export default (CommonDialogView = ({
   onPressViewDetails,
-  onPressUpdate,
+  onPressTrackStatus,
   onPressDelete,
   onPressCancel,
+  showCancelButton,
 }) => {
   const renderButtons = () => {
     return (
@@ -63,28 +64,30 @@ export default (CommonDialogView = ({
           onPress={() => {
             onPressViewDetails();
           }}>
-          View Details
+          View Order
         </Text>
         <Text
           style={styles.buttonStyles}
           onPress={() => {
-            onPressUpdate();
+            onPressTrackStatus();
           }}>
-          Update
+          Track Status
         </Text>
-        <Text
-          style={[styles.buttonStyles, {color: '#FF3B30'}]}
-          onPress={() => {
-            onPressDelete();
-          }}>
-          Delete
-        </Text>
+        {showCancelButton && (
+          <Text
+            style={[styles.buttonStyles, {color: '#FF3B30'}]}
+            onPress={() => {
+              onPressDelete();
+            }}>
+            Cancel Order
+          </Text>
+        )}
         <Text
           style={styles.buttonStyles}
           onPress={() => {
             onPressCancel();
           }}>
-          Cancel
+          {'<< Close'}
         </Text>
       </View>
     );

@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {
-  Dimensions,
+  // Dimensions,
   FlatList,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  TextInput,
+  Alert,
+  // TextInput,
 } from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
 import {SideArrow} from '../../../icons/Icons';
@@ -14,9 +15,14 @@ import CommonDialogView from '../UI/CommonDialogView';
 import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 import {getValue} from '../../../utils/asyncStorage';
 import CommonSpinner from '../UI/CommonSpinner';
-import {getAllOrders} from '../../../networkcalls/apiCalls';
+import {
+  getAllOrders,
+  cancelOrder as cancelOrderApiCall,
+} from '../../../networkcalls/apiCalls';
+import moment from 'moment';
+import {useIsFocused} from '@react-navigation/native';
 
-const {height, width} = Dimensions.get('window');
+// const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -93,10 +99,8 @@ export const OrdersList = ({navigation}) => {
   const [allOrders, setAllOrders] = useState([]);
   const [showDialogue, setShowDialogue] = useState(false);
   const [selectedData, setSelectedData] = useState([]);
-
-  useEffect(() => {
-    getOrderList();
-  }, []);
+  const [reloadComponent, setReloadComponent] = useState(false);
+  const isFocused = useIsFocused();
 
   const getOrderList = async () => {
     setShowSpinner(true);
@@ -116,35 +120,48 @@ export const OrdersList = ({navigation}) => {
       });
   };
 
+  useEffect(() => {
+    getOrderList();
+  }, []);
+
+  useEffect(() => {
+    if (reloadComponent || isFocused) getOrderList();
+  }, [reloadComponent, isFocused]);
+
   const renderHeader = () => {
     return (
       <CommonHeader
         mainViewHeading={'Orders'}
         leftSideText={'Back'}
+        rightSideText={'New Order'}
         onPressLeftButton={() => {
           navigation.goBack();
         }}
-        onShareIconPress={() => {
+        onPressRightButton={() => {
           navigation.navigate(ScreenNamesMarketing.ORDERS);
         }}
-        shareIcon={true}
       />
     );
   };
 
   const renderRow = rowData => {
+    const orderDate = moment(rowData.indentDate, 'YYYY-MM-DD').format(
+      'DD/MM/YYYY',
+    );
     return (
       <>
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
-            setSelectedData(rowData)
-            setShowDialogue(true)
+            setSelectedData(rowData);
+            setShowDialogue(true);
           }}>
           <View style={styles.rowView}>
             <View>
               <Text style={styles.textStyle}>{rowData.customerName}</Text>
-              <Text style={styles.descriptionStyle}>{rowData.indentNo}</Text>
+              <Text style={styles.descriptionStyle}>{`${
+                rowData.indentNo
+              }, ${orderDate}`}</Text>
             </View>
             <View style={{height: 21}} />
             {parseInt(rowData.indentStatus, 10) === 0 ? (
@@ -220,6 +237,56 @@ export const OrdersList = ({navigation}) => {
     );
   };
 
+  const showGenericAlert = (title, message) => {
+    Alert.alert(title, message, [
+      {
+        text: 'OK',
+        onPress: () => {
+          setReloadComponent(true);
+        },
+      },
+    ]);
+  };
+
+  const showYesNoAlert = (title, message) => {
+    Alert.alert(title, message, [
+      {
+        text: 'Yes',
+        onPress: () => {
+          cancelOrder(selectedData.indentCode);
+        },
+      },
+      {
+        text: 'No',
+        onPress: () => {},
+      },
+    ]);
+  };
+
+  const cancelOrder = async indentCode => {
+    setShowSpinner(true);
+    setShowDialogue(false);
+    const accessToken = await getValue('accessToken');
+    cancelOrderApiCall(accessToken, indentCode)
+      .then(apiResponse => {
+        console.log('apiResponse.data', apiResponse.data.response);
+        setShowSpinner(false);
+        if (apiResponse.data.status === 'success') {
+          showGenericAlert(
+            'Cancellation!',
+            `Order No. ${
+              selectedData.indentNo
+            } has been cancelled successfully.`,
+          );
+        }
+      })
+      .catch(error => {
+        setShowSpinner(false);
+        const errorMessage = error.response.data.errortext;
+        showGenericAlert('Oops :(', errorMessage);
+      });
+  };
+
   // const renderCompanyName = () => {
   //   return (
   //     <View style={{backgroundColor: 'white', height: 44}}>
@@ -272,25 +339,25 @@ export const OrdersList = ({navigation}) => {
 
   const renderCommonDialogue = () => {
     return (
-    <CommonDialogView  
+      <CommonDialogView
         onPressViewDetails={() => {
-           navigation.navigate(ScreenNamesMarketing.RECEIPTORDERDETAILS, {
-              name: selectedData.name,
-              invoiceNumber: selectedData.id,
-              status: selectedData.status,
-            });
-            setShowDialogue(false)
+          navigation.navigate(ScreenNamesMarketing.ORDERDETAILSVIEW, {
+            orderCode: selectedData.indentCode,
+          });
+          setShowDialogue(false);
         }}
-        onPressUpdate={() => {
-          
-        }}
+        onPressTrackStatus={() => {}}
         onPressDelete={() => {
-          
+          showYesNoAlert(
+            'Confirm',
+            'Are you sure. You want to cancel this order?',
+          );
         }}
         onPressCancel={() => {
-          setShowDialogue(false)
+          setShowDialogue(false);
         }}
-    />
+        showCancelButton={parseInt(selectedData.indentStatus) === 0}
+      />
     );
   };
 

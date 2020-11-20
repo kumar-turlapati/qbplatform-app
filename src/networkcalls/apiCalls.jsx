@@ -21,6 +21,8 @@ const {
   NEW_ORDER,
   ITEMS_DETAILS_BY_SCAN_BARCODE,
   GET_ALL_ORDERS,
+  ORDER_DETAILS,
+  CANCEL_ORDER,
 } = restEndPoints;
 
 export const loginAPI = mobileNumber => {
@@ -137,4 +139,18 @@ export const getItemsByBarcode = (accessToken, scanCode) => {
 export const getAllOrders = (accessToken, uuid) => {
   requestHeadersWoOrg['Access-Token'] = accessToken;
   return Axios.get(GET_ALL_ORDERS.URL(uuid), {headers: requestHeadersWoOrg});
+};
+
+export const getOrderDetails = (accessToken, orderCode) => {
+  requestHeadersWoOrg['Access-Token'] = accessToken;
+  return Axios.get(ORDER_DETAILS.URL(orderCode), {
+    headers: requestHeadersWoOrg,
+  });
+};
+
+export const cancelOrder = (accessToken, orderCode) => {
+  requestHeadersWoOrg['Access-Token'] = accessToken;
+  return Axios.delete(CANCEL_ORDER.URL(orderCode), {
+    headers: requestHeadersWoOrg,
+  });
 };

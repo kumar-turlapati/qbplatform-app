@@ -1,15 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
-  Dimensions,
+  // Dimensions,
   FlatList,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  TextInput,
+  // TextInput,
   Alert,
 } from 'react-native';
-import CommonSearchHeader from '../UI/CommonSearchHeader';
+// import CommonSearchHeader from '../UI/CommonSearchHeader';
 import CommonHeader from '../UI/CommonHeader';
 import {SideArrow, DeleteIcon} from '../../../icons/Icons';
 import CommonButton from '../UI/CommonButton';
@@ -74,9 +74,13 @@ const styles = StyleSheet.create({
 });
 
 export const OrderCartDetails = ({navigation}) => {
-  const {cartItems, updateCart, updated, selectedCustomerName} = useContext(
-    ShoppingCartContext,
-  );
+  const {
+    cartItems,
+    updateCart,
+    updated,
+    selectedCustomerName,
+    clearCartInfo,
+  } = useContext(ShoppingCartContext);
 
   // console.log(cartItems, 'cart items......');
 
@@ -87,15 +91,16 @@ export const OrderCartDetails = ({navigation}) => {
   const [showAlert, setShowAlert] = useState(false);
   const [showFailAlert, setShowFailAlert] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [newOrderNo, setNewOrderNo] = useState('');
 
   useEffect(() => {
     setShowItems(cartItems);
-    if (cartItems.length === 0) {
+    if (cartItems.length === 0 && newOrderNo.length === 0) {
       showGenericAlert(
         'Your cart is empty, please add products to place the order',
       );
     }
-  }, [cartItems, updated]);
+  }, [cartItems, updated, newOrderNo]);
 
   const showGenericAlert = message => {
     Alert.alert('Oops :(', message, [
@@ -342,8 +347,25 @@ export const OrderCartDetails = ({navigation}) => {
   const callTheNewOrderAPI = async () => {
     setShowSpinner(true);
     const accessToken = await getValue('accessToken');
+    const orderItems = new Array();
+    showItems.forEach(itemDetails => {
+      let itemRate;
+      const itemId = itemDetails.itemID;
+      const itemQty = itemDetails.orderQty;
+      const packedQty = itemDetails.packedQty;
+      if (paymentIndex === 0) itemRate = itemDetails.wholesalePrice;
+      if (paymentIndex === 1) itemRate = itemDetails.mrp;
+      if (paymentIndex === 2) itemRate = itemDetails.onlinePrice;
+      if (paymentIndex === 3) itemRate = itemDetails.exmillPrice;
+      orderItems.push({
+        itemID: itemId,
+        itemQty: itemQty,
+        packedQty: packedQty,
+        itemRate: itemRate,
+      });
+    });
     const orderDetails = {
-      orderDetails: showItems,
+      orderDetails: orderItems,
       couponCode: '',
       billingRate: getApiPaymentString(options[paymentIndex]),
       customerName:
@@ -352,15 +374,18 @@ export const OrderCartDetails = ({navigation}) => {
           : 'Select Customer',
     };
 
+    // console.log(orderDetails, '===================');
     postNewOrder(accessToken, orderDetails)
       .then(apiResponse => {
-        console.log('apiResponse', apiResponse.data);
+        const orderNo = apiResponse.data.response.orderNo;
+        // console.log('apiResponse', apiResponse.data);
         setShowSpinner(false);
+        setNewOrderNo(orderNo);
         setShowSuccessAlert(true);
         setShowAlert(true);
       })
       .catch(error => {
-        console.log('error', error);
+        // console.log('error', error.response.data);
         setShowSpinner(false);
         setShowAlert(true);
         setShowFailAlert(true);
@@ -399,17 +424,16 @@ export const OrderCartDetails = ({navigation}) => {
   const renderAlert = () => {
     return (
       <CommonAlertView
-        successTitle={'Order Success'}
-        successDescriptionTitle={
-          'Order placed successfully, you will be redirected to home'
-        }
-        successButtonTitle={'Place another order'}
+        successTitle={'Order Success :)'}
+        successDescriptionTitle={`Order placed successfully with Order No. ${newOrderNo}`}
+        successButtonTitle={'Ok'}
         onPressSuccessButton={() => {
           setShowAlert(false);
           setShowSuccessAlert(false);
-          navigation.goBack();
+          clearCartInfo();
+          navigation.navigate(ScreenNamesMarketing.ORDERSLIST);
         }}
-        failTitle={'Oops'}
+        failTitle={'Oops :('}
         failDescriptionTitle={`Somthing went wrong, \nplease try again`}
         onPressFailButton={() => {
           setShowFailAlert(false);

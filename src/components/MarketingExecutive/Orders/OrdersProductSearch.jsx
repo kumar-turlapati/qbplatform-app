@@ -1,22 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {
-  Dimensions,
+  // Dimensions,
   FlatList,
   Keyboard,
   StyleSheet,
   Text,
   View,
+  Alert,
 } from 'react-native';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
 import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 import {
-  getCatalogList,
+  // getCatalogList,
   getProductSearch,
   getItemDetailsByName,
 } from '../../../networkcalls/apiCalls';
 import {getValue} from '../../../utils/asyncStorage';
 import {theme} from '../../../theme/theme';
-import _ from 'lodash';
+// import _ from 'lodash';
 import CommonSpinner from '../UI/CommonSpinner';
 
 const styles = StyleSheet.create({
@@ -33,6 +34,14 @@ export const OrdersProductSearch = ({navigation}) => {
     // setShowSpinner(true);
     // catalogListCalling('a');
   }, []);
+
+  const showGenericAlert = () => {
+    Alert.alert('Oops :(', 'Product is out of stock !', [
+      {
+        text: 'OK',
+      },
+    ]);
+  };
 
   const searchProducts = async stringSearch => {
     const accessToken = await getValue('accessToken');
@@ -52,13 +61,17 @@ export const OrdersProductSearch = ({navigation}) => {
     getItemDetailsByName(accessToken, itemName)
       .then(apiResponse => {
         setShowSpinner(false);
+        console.log(apiResponse.data);
         if (apiResponse.data.status === 'success') {
           navigation.replace(ScreenNamesMarketing.ORDERPRODUCTDETAILS, {
             selectedProduct: apiResponse.data.response,
           });
+        } else {
+          showGenericAlert();
         }
       })
       .catch(error => {
+        console.log(error.response.data);
         setShowSpinner(false);
       });
   };
@@ -88,7 +101,7 @@ export const OrdersProductSearch = ({navigation}) => {
       <View style={theme.viewStyles.listRowViewStyle}>
         <Text
           onPress={() => {
-            console.log('text cliched', rowData);
+            // console.log('text cliched', rowData);
             callAPIOnClick(rowData);
           }}
           style={theme.viewStyles.commonTextStyles}>

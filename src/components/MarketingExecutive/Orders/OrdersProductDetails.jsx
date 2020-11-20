@@ -45,7 +45,9 @@ const styles = StyleSheet.create({
 
 export const OrdersProductDetails = ({navigation, route}) => {
   const {selectedProduct} = route.params;
-  const [orderQuantity, setOrderQuantity] = useState(selectedProduct.mOq);
+  const [orderQuantity, setOrderQuantity] = useState(
+    selectedProduct.closingQty,
+  );
   const {addToCart, selectedCustomerName} = useContext(ShoppingCartContext);
 
   // useEffect(() => {
@@ -82,8 +84,13 @@ export const OrdersProductDetails = ({navigation, route}) => {
         <View style={{backgroundColor: colors.WHITE, height: 44}}>
           <View style={theme.viewStyles.viewMainStyles}>
             <Text style={styles.titleStyle}>Customer</Text>
-            <Text ellipsizeMode="tail" numberOfLines={1} 
-            style={[styles.titleStyle, {marginRight: 24, opacity: 1, width: 200, textAlign:'right'}]}>
+            <Text
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={[
+                styles.titleStyle,
+                {marginRight: 24, opacity: 1, width: 200, textAlign: 'right'},
+              ]}>
               {selectedCustomerName.length > 0
                 ? selectedCustomerName
                 : 'Select Customer'}

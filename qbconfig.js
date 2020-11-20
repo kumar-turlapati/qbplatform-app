@@ -72,12 +72,18 @@ export const restEndPoints = {
       `${apiBaseUrl}/inventory/get-item-details-by-name?itemName=${productName}`,
   },
   NEW_ORDER: {URL: `${apiBaseUrl}/app/v1/order`},
+  ORDER_DETAILS: {
+    URL: orderCode => `${apiBaseUrl}/app/v1/order/${orderCode}`,
+  },
+  CANCEL_ORDER: {
+    URL: orderCode => `${apiBaseUrl}/app/v1/order/${orderCode}`,
+  },
   ITEMS_DETAILS_BY_SCAN_BARCODE: {
     URL: scanCode =>
       `${apiBaseUrl}/inventory/get-item-details-by-barcode?scanCode=${scanCode}`,
   },
   GET_ALL_ORDERS: {
-    URL: executiveId => `${apiBaseUrl}/app/v1/orders/${executiveId}`,
+    URL: executiveId => `${apiBaseUrl}/app/v1/orders/${executiveId}?by=exe`,
   },
 };
 

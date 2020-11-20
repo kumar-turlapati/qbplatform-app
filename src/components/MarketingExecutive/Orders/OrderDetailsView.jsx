@@ -1,20 +1,27 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  Dimensions,
-  FlatList,
+  // Dimensions,
+  // FlatList,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  TextInput,
+  FlatList,
+  // TextInput,
 } from 'react-native';
 // import CommonSearchHeader from '../UI/CommonSearchHeader';
 import CommonHeader from '../UI/CommonHeader';
-import {SideArrow} from '../../../icons/Icons';
+import {getValue} from '../../../utils/asyncStorage';
+import {getOrderDetails} from '../../../networkcalls/apiCalls';
+import moment from 'moment';
+import {colors} from '../../../theme/colors';
+// import {theme} from '../../../theme/theme';
+
+// import {SideArrow} from '../../../icons/Icons';
 // import CommonButton from '../UI/CommonButton';
 // import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 
-const {height, width} = Dimensions.get('window');
+// const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -74,19 +81,52 @@ const styles = StyleSheet.create({
   },
 });
 
-export const OrderDetailsView = ({navigation}) => {
-  const [orderQuantity, setOrderQuantity] = useState('10');
+export const OrderDetailsView = ({navigation, route}) => {
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [orderDetails, setOrderDetails] = useState([]);
+  const [orderItems, setOrderItems] = useState([]);
+  const orderCode = route.params.orderCode;
+
+  // console.log(orderDetails, orderItems, '--------------------------------');
+
+  useEffect(() => {
+    const orderDetails = async orderCode => {
+      setShowSpinner(true);
+      const accessToken = await getValue('accessToken');
+      getOrderDetails(accessToken, orderCode)
+        .then(apiResponse => {
+          // console.log('apiResponse.data', apiResponse.data.response);
+          setShowSpinner(false);
+          if (apiResponse.data.status === 'success') {
+            const orderDetails =
+              apiResponse.data.response.orderDetails.tranDetails;
+            const orderItems =
+              apiResponse.data.response.orderDetails.itemDetails;
+            setOrderDetails(orderDetails);
+            setOrderItems(orderItems);
+          }
+        })
+        .catch(error => {
+          setShowSpinner(false);
+        });
+    };
+    if (orderCode.length > 0) {
+      orderDetails(orderCode);
+    }
+  }, [orderCode]);
+
+  const renderSpinner = () => {
+    return <CommonSpinner animating={showSpinner} />;
+  };
 
   const renderHeader = () => {
     return (
       <CommonHeader
-        mainViewHeading={'New Order'}
+        mainViewHeading={'Order Details'}
         leftSideText={'Back'}
         onPressLeftButton={() => {
           navigation.goBack();
         }}
-        rightSingleIcon={true}
-        onPressEditIcon={() => {}}
       />
     );
   };
@@ -108,9 +148,9 @@ export const OrderDetailsView = ({navigation}) => {
             }}>
             <Text style={styles.titleStyle}>Customer</Text>
             <Text style={[styles.titleStyle, {marginRight: 24, opacity: 1}]}>
-              Octet Logic OPC Pvt Ltd
+              {orderDetails.customerName}
             </Text>
-            <SideArrow
+            {/* <SideArrow
               style={{
                 width: 9,
                 height: 16,
@@ -119,7 +159,7 @@ export const OrderDetailsView = ({navigation}) => {
                 position: 'absolute',
               }}
               resizeMode={'contain'}
-            />
+            /> */}
           </View>
           <View
             style={{
@@ -140,17 +180,15 @@ export const OrderDetailsView = ({navigation}) => {
   const renderOrderDetails = () => {
     return (
       <View style={{backgroundColor: 'white', marginTop: 17}}>
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={() => {
-            console.log('add new customer');
-          }}>
+        <TouchableOpacity activeOpacity={1} onPress={() => {}}>
           <View style={[styles.viewStyle, {height: 48}]}>
-            <Text style={styles.titleStyle}>Order date</Text>
+            <Text style={styles.titleStyle}>Order Date</Text>
             <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
-              05 Jun 2020
+              {moment(orderDetails.indentDate, 'YYYY-MM-DD').format(
+                'DD/MM/YYYY',
+              )}
             </Text>
-            <SideArrow
+            {/* <SideArrow
               style={{
                 width: 9,
                 height: 16,
@@ -159,77 +197,100 @@ export const OrderDetailsView = ({navigation}) => {
                 position: 'absolute',
               }}
               resizeMode={'contain'}
-            />
+            /> */}
           </View>
         </TouchableOpacity>
 
         <View style={styles.viewStyle}>
-          <Text style={styles.titleStyle}>Order ID</Text>
+          <Text style={styles.titleStyle}>Order No.</Text>
           <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
-            23456789
+            {orderDetails.indentNo}
+          </Text>
+        </View>
+
+        <View style={styles.viewStyle}>
+          <Text style={styles.titleStyle}>Order Value</Text>
+          <Text
+            style={[
+              styles.titleStyle,
+              {marginRight: 40, opacity: 1, color: colors.RED, fontSize: 20},
+            ]}>
+            {`₹ ${parseFloat(orderDetails.netpay).toFixed(2)}`}
           </Text>
         </View>
       </View>
     );
   };
 
-  const renderDetails = () => {
+  const renderItemDetails = orderItemDetails => {
+    const itemAmount = (
+      parseFloat(orderItemDetails.itemRateIndent) *
+      parseFloat(orderItemDetails.itemQty)
+    ).toFixed(2);
     return (
       <View style={{backgroundColor: 'white', marginTop: 17}}>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Product</Text>
           <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
-            Product 01
+            {orderItemDetails.itemName}
           </Text>
         </View>
         <View style={styles.viewStyle}>
-          <Text style={styles.titleStyle}>Order Quantity</Text>
+          <Text style={styles.titleStyle}>Brand</Text>
           <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
-            10
+            {orderItemDetails.brandName}
+          </Text>
+        </View>
+        <View style={styles.viewStyle}>
+          <Text style={styles.titleStyle}>Order Qty.</Text>
+          <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+            {parseFloat(orderItemDetails.itemQty).toFixed(2)} /{' '}
+            {orderItemDetails.uomName}
           </Text>
         </View>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Rate</Text>
           <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
-            100 Rs
+            {`₹ ${parseFloat(orderItemDetails.itemRateIndent).toFixed(2)}`}
           </Text>
         </View>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Amount</Text>
           <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
-            1000 Rs
-          </Text>
-        </View>
-        <View style={styles.viewStyle}>
-          <Text style={styles.titleStyle}>Dispatched Qty</Text>
-          <Text
-            style={[
-              styles.titleStyle,
-              {marginRight: 40, opacity: 1, color: '#34C759'},
-            ]}>
-            5
-          </Text>
-        </View>
-        <View style={styles.viewStyle}>
-          <Text style={styles.titleStyle}>Pending Qty</Text>
-          <Text
-            style={[
-              styles.titleStyle,
-              {marginRight: 40, opacity: 1, color: '#FF3B30'},
-            ]}>
-            5
+            {`₹ ${itemAmount}`}
           </Text>
         </View>
       </View>
     );
   };
 
-  return (
+  const renderListView = () => {
+    return (
+      <FlatList
+        style={{
+          flex: 1,
+          marginBottom: 20,
+          marginTop: 5,
+        }}
+        data={orderItems.length > 0 ? orderItems : null}
+        renderItem={({item}) => renderItemDetails(item)}
+        keyExtractor={item => item.lotNo}
+        removeClippedSubviews={false}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+      />
+    );
+  };
+
+  return showSpinner ? (
+    <>{renderSpinner()}</>
+  ) : (
     <View style={styles.container}>
       {renderHeader()}
       {renderCustomerName()}
       {renderOrderDetails()}
-      {renderDetails()}
+      {renderListView()}
+      {renderSpinner()}
     </View>
   );
 };
