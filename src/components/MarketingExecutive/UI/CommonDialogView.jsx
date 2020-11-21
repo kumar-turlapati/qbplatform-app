@@ -87,7 +87,7 @@ export default (CommonDialogView = ({
           onPress={() => {
             onPressCancel();
           }}>
-          {'<< Close'}
+          {'<< Back'}
         </Text>
       </View>
     );

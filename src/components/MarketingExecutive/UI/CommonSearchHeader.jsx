@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   textInputStyle: {
     paddingLeft: 8,
-    height: 36,
+    height: 39,
     width: 254,
     fontSize: 17,
     lineHeight: 22,
@@ -76,7 +76,7 @@ export default (CommonSearchHeader = ({
       <View style={styles.headerStyles}>
         <View style={styles.searchViewStyle}>
           <SearchBlackIcon
-            style={{width: 16, height: 17, marginLeft: 9, marginTop: 9}}
+            style={{width: 16, height: 17, marginLeft: 9, marginTop: 10}}
           />
           <TextInput
             style={styles.textInputStyle}
@@ -100,7 +100,7 @@ export default (CommonSearchHeader = ({
   return (
     <View style={styles.container}>
       <Text style={styles.mainHeaderStyle} textAlign="center">
-        Start typing product name
+        Start typing the product name
       </Text>
       {renderHeader()}
     </View>

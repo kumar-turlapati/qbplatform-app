@@ -15,6 +15,8 @@ import {getValue} from '../../../utils/asyncStorage';
 import {getOrderDetails} from '../../../networkcalls/apiCalls';
 import moment from 'moment';
 import {colors} from '../../../theme/colors';
+import CommonSpinner from '../UI/CommonSpinner';
+
 // import {theme} from '../../../theme/theme';
 
 // import {SideArrow} from '../../../icons/Icons';

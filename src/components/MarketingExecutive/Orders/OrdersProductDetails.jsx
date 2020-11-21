@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {
-  Dimensions,
-  FlatList,
+  // Dimensions,
+  // FlatList,
   StyleSheet,
   Text,
   View,
@@ -92,7 +92,9 @@ export const OrdersProductDetails = ({navigation, route}) => {
                 {marginRight: 24, opacity: 1, width: 200, textAlign: 'right'},
               ]}>
               {selectedCustomerName.length > 0
-                ? selectedCustomerName
+                ? selectedCustomerName.length >= 25
+                  ? `${selectedCustomerName.substr(0, 25)}...`
+                  : selectedCustomerName
                 : 'Select Customer'}
             </Text>
             <SideArrow
@@ -222,17 +224,28 @@ export const OrdersProductDetails = ({navigation, route}) => {
     );
   };
 
-  const addMoreClicked = () => {
-    if (!orderQuantity) {
-      showGenericAlert('Please enter quantity');
-      return;
-    }
-    if (parseFloat(selectedProduct.closingQty) < parseFloat(orderQuantity)) {
-      showGenericAlert('The order limit is more than items in the stock');
-      return;
-    }
+  const renderButtonViewCart = () => {
+    return (
+      <CommonButton
+        buttonTitle="View Cart"
+        onPressButton={() => {
+          navigation.navigate(ScreenNamesMarketing.ORDERCARTDETAILS);
+        }}
+        propStyle={{marginHorizontal: 16, marginTop: 15, marginBottom: 20}}
+      />
+    );
+  };
 
-    updateCart();
+  const addMoreClicked = () => {
+    // if (!orderQuantity) {
+    //   showGenericAlert('Please enter quantity!');
+    //   return;
+    // }
+    // if (parseFloat(selectedProduct.closingQty) < parseFloat(orderQuantity)) {
+    //   showGenericAlert('The order qty. is more than the available qty.!');
+    //   return;
+    // }
+    // updateCart();
     navigation.goBack();
   };
 
@@ -268,6 +281,7 @@ export const OrdersProductDetails = ({navigation, route}) => {
           {renderCustomerName()}
           {renderDetails()}
           {renderButton()}
+          {renderButtonViewCart()}
         </ScrollView>
       </KeyboardAvoidingView>
     </View>

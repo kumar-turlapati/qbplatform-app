@@ -189,13 +189,21 @@ export const OrdersList = ({navigation}) => {
                         ]}>
                         Cancelled
                       </Text>
+                    ) : parseInt(rowData.indentStatus, 10) === 2 ? (
+                      <Text
+                        style={[
+                          styles.statusTextStyle,
+                          {backgroundColor: '#4A4A4A'},
+                        ]}>
+                        Rejected
+                      </Text>
                     ) : (
                       <Text
                         style={[
                           styles.statusTextStyle,
                           {backgroundColor: '#FF9500'},
                         ]}>
-                        Rejected
+                        On Hold
                       </Text>
                     )}
                   </View>
@@ -269,7 +277,7 @@ export const OrdersList = ({navigation}) => {
     const accessToken = await getValue('accessToken');
     cancelOrderApiCall(accessToken, indentCode)
       .then(apiResponse => {
-        console.log('apiResponse.data', apiResponse.data.response);
+        // console.log('apiResponse.data', apiResponse.data.response);
         setShowSpinner(false);
         if (apiResponse.data.status === 'success') {
           showGenericAlert(
@@ -346,7 +354,11 @@ export const OrdersList = ({navigation}) => {
           });
           setShowDialogue(false);
         }}
-        onPressTrackStatus={() => {}}
+        onPressTrackStatus={() => {
+          navigation.navigate(ScreenNamesMarketing.DISPATCHTRACKSTATUS, {
+            orderCode: selectedData.indentCode,
+          });
+        }}
         onPressDelete={() => {
           showYesNoAlert(
             'Confirm',

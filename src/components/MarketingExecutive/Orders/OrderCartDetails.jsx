@@ -20,6 +20,7 @@ import ActionSheet from 'react-native-action-sheet';
 import {getValue} from '../../../utils/asyncStorage';
 import {postNewOrder} from '../../../networkcalls/apiCalls';
 import CommonAlertView from '../UI/CommonAlertView';
+import CommonSpinner from '../UI/CommonSpinner';
 
 // const {height, width} = Dimensions.get('window');
 
@@ -134,7 +135,7 @@ export const OrderCartDetails = ({navigation}) => {
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
-          console.log('add new customer');
+          navigation.navigate(ScreenNamesMarketing.CUSTOMERNAMESEARCH);
         }}>
         <View style={{backgroundColor: 'white', height: 44}}>
           <View
@@ -163,7 +164,9 @@ export const OrderCartDetails = ({navigation}) => {
                 },
               ]}>
               {selectedCustomerName.length > 0
-                ? selectedCustomerName
+                ? selectedCustomerName.length >= 25
+                  ? `${selectedCustomerName.substr(0, 25)}...`
+                  : selectedCustomerName
                 : 'Select Customer'}
             </Text>
           </View>

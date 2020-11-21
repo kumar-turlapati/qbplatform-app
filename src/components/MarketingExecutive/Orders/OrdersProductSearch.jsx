@@ -30,6 +30,8 @@ export const OrdersProductSearch = ({navigation}) => {
   const [productData, setProductData] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
 
+  console.log(productData, 'product data is.........');
+
   useEffect(() => {
     // setShowSpinner(true);
     // catalogListCalling('a');
@@ -90,6 +92,8 @@ export const OrdersProductSearch = ({navigation}) => {
               setShowSpinner(true);
               searchProducts(searchValue);
             }, 1000);
+          } else {
+            setProductData([]);
           }
         }}
       />
@@ -137,7 +141,7 @@ export const OrdersProductSearch = ({navigation}) => {
   return (
     <View style={styles.container}>
       {renderHeader()}
-      {renderListView()}
+      {productData.length > 2 && renderListView()}
       {renderSpinner()}
     </View>
   );
