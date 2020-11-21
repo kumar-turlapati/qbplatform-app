@@ -158,7 +158,11 @@ export const OrdersList = ({navigation}) => {
           }}>
           <View style={styles.rowView}>
             <View>
-              <Text style={styles.textStyle}>{rowData.customerName}</Text>
+              <Text style={styles.textStyle}>
+                {rowData.customerName.length > 25
+                  ? `${rowData.customerName.substr(0, 25)}...`
+                  : rowData.customerName}
+              </Text>
               <Text style={styles.descriptionStyle}>{`${
                 rowData.indentNo
               }, ${orderDate}`}</Text>

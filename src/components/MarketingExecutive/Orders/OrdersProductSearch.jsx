@@ -30,7 +30,7 @@ export const OrdersProductSearch = ({navigation}) => {
   const [productData, setProductData] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
 
-  console.log(productData, 'product data is.........');
+  // console.log(productData, 'product data is.........');
 
   useEffect(() => {
     // setShowSpinner(true);

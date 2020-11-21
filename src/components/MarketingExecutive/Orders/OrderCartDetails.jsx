@@ -80,6 +80,7 @@ export const OrderCartDetails = ({navigation}) => {
     updateCart,
     updated,
     selectedCustomerName,
+    setSelectedCustomerName,
     clearCartInfo,
   } = useContext(ShoppingCartContext);
 
@@ -434,6 +435,7 @@ export const OrderCartDetails = ({navigation}) => {
           setShowAlert(false);
           setShowSuccessAlert(false);
           clearCartInfo();
+          setSelectedCustomerName('');
           navigation.navigate(ScreenNamesMarketing.ORDERSLIST);
         }}
         failTitle={'Oops :('}

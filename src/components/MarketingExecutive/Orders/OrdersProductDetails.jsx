@@ -19,6 +19,7 @@ import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 import {theme} from '../../../theme/theme';
 import {colors} from '../../../theme/colors';
 import {ShoppingCartContext} from '../../context/ShoppingCartProvider';
+import _find from 'lodash/find';
 
 // const {height, width} = Dimensions.get('window');
 
@@ -48,7 +49,11 @@ export const OrdersProductDetails = ({navigation, route}) => {
   const [orderQuantity, setOrderQuantity] = useState(
     selectedProduct.closingQty,
   );
-  const {addToCart, selectedCustomerName} = useContext(ShoppingCartContext);
+  const {addToCart, selectedCustomerName, cartItems} = useContext(
+    ShoppingCartContext,
+  );
+
+  console.log('cart items...', cartItems);
 
   // useEffect(() => {
   //   console.log(
@@ -216,8 +221,9 @@ export const OrdersProductDetails = ({navigation, route}) => {
             showGenericAlert('The order limit is more than items in the stock');
             return;
           }
-          updateCart();
-          navigation.navigate(ScreenNamesMarketing.ORDERCARTDETAILS);
+          const isItemAdded = updateCart();
+          if (isItemAdded)
+            navigation.navigate(ScreenNamesMarketing.ORDERCARTDETAILS);
         }}
         propStyle={{marginHorizontal: 16, marginTop: 26}}
       />
@@ -262,8 +268,21 @@ export const OrdersProductDetails = ({navigation, route}) => {
       mrp: selectedProduct.mrp,
       lotNo: selectedProduct.lotNo,
     };
-    // console.log('orderDetails', orderDetails);
-    addToCart(orderDetails);
+
+    const istLotNoExists = _find(cartItems, cartItemDetails => {
+      console.log(cartItemDetails, 'inside _find lodash');
+      return cartItemDetails.lotNo === selectedProduct.lotNo;
+    });
+
+    // console.log(istLotNoExists, 'lot no exists.......', cartItems);
+
+    if (istLotNoExists) {
+      Alert.alert('Oops.. :(', 'The Item was already added to Cart');
+      return false;
+    } else {
+      addToCart(orderDetails);
+      return true;
+    }
   };
 
   const showGenericAlert = message => {
