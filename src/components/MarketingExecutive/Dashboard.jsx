@@ -24,7 +24,7 @@ import {
 import {useState} from 'react';
 // import {colors} from '../../theme/colors';
 import {theme} from '../../theme/theme';
-import {getValue, removeValue} from '../../utils/asyncStorage';
+import {clearAllData, getValue, removeValue} from '../../utils/asyncStorage';
 import {clientName} from '../../../qbconfig';
 
 const {height, width} = Dimensions.get('window');
@@ -366,8 +366,10 @@ export const Dashboard = ({navigation}) => {
                 <TouchableOpacity
                   activeOpacity={1}
                   onPress={() => {
-                    removeValue('accessToken');
-                    navigation.pop(ScreenNamesMarketing.LOGIN);
+                    const removeKeys = clearAllData();
+                    if (removeKeys) {
+                      navigation.pop(ScreenNamesMarketing.LOGIN);
+                    }
                   }}>
                   <View>
                     <View

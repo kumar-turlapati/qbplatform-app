@@ -8,7 +8,7 @@ export const storeItem = async (storageKey, storageValue) => {
   }
 };
 
-export const getValue = async (storageKey) => {
+export const getValue = async storageKey => {
   try {
     const storageValue = await AsyncStorage.getItem(`@${storageKey}`);
     if (storageValue != null) return storageValue;
@@ -18,7 +18,7 @@ export const getValue = async (storageKey) => {
   }
 };
 
-export const removeValue = async (storageKey) => {
+export const removeValue = async storageKey => {
   try {
     const storageValue = await AsyncStorage.removeItem(`@${storageKey}`);
     if (storageValue != null) return storageValue;
@@ -26,4 +26,10 @@ export const removeValue = async (storageKey) => {
   } catch (e) {
     return false;
   }
+};
+
+export const clearAllData = async () => {
+  AsyncStorage.getAllKeys()
+    .then(keys => AsyncStorage.multiRemove(keys))
+    .then(() => true);
 };

@@ -351,6 +351,7 @@ export const OrderCartDetails = ({navigation}) => {
   const callTheNewOrderAPI = async () => {
     setShowSpinner(true);
     const accessToken = await getValue('accessToken');
+    const exeMobileNo = await getValue('exeMobileNo');
     const orderItems = new Array();
     showItems.forEach(itemDetails => {
       let itemRate;
@@ -372,6 +373,7 @@ export const OrderCartDetails = ({navigation}) => {
       orderDetails: orderItems,
       couponCode: '',
       billingRate: getApiPaymentString(options[paymentIndex]),
+      exeMobileNo: exeMobileNo,
       customerName:
         selectedCustomerName.length > 0
           ? selectedCustomerName

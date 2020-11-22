@@ -108,7 +108,7 @@ export const OrdersList = ({navigation}) => {
     const uuid = await getValue('UUID');
     getAllOrders(accessToken, uuid)
       .then(apiResponse => {
-        console.log('apiResponse.data', apiResponse.data.response);
+        // console.log('apiResponse.data', apiResponse.data.response);
         setShowSpinner(false);
         if (apiResponse.data.status === 'success') {
           setAllOrders(apiResponse.data.response);

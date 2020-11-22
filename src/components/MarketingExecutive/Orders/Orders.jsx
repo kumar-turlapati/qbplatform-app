@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {View, StyleSheet, Text, Dimensions} from 'react-native';
+import {View, StyleSheet, Text, Dimensions, Alert} from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
 import {
   SearchIcon,
@@ -92,11 +92,21 @@ export const Orders = ({navigation}) => {
           navigation.navigate(ScreenNamesMarketing.ORDERPRODUCTDETAILS, {
             selectedProduct: apiResponse.data.response,
           });
+        } else {
+          Alert.alert('Oops :(', 'Invalid Barcode', [
+            {
+              text: 'OK',
+            },
+          ]);
         }
       })
       .catch(error => {
         setShowSpinner(false);
-        // console.log('error', error);
+        Alert.alert('Oops :(', 'Something went wrong, please try again', [
+          {
+            text: 'OK',
+          },
+        ]);
       });
   };
 

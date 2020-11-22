@@ -63,7 +63,7 @@ export const OrdersProductSearch = ({navigation}) => {
     getItemDetailsByName(accessToken, itemName)
       .then(apiResponse => {
         setShowSpinner(false);
-        console.log(apiResponse.data);
+        // console.log(apiResponse.data);
         if (apiResponse.data.status === 'success') {
           navigation.replace(ScreenNamesMarketing.ORDERPRODUCTDETAILS, {
             selectedProduct: apiResponse.data.response,

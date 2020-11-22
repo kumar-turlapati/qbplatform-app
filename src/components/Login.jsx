@@ -6,7 +6,7 @@ import {Logo} from '../icons/Icons';
 import {getToken, loginAPI, resendOTP} from '../networkcalls/apiCalls';
 import {colors} from '../theme/colors';
 import {theme} from '../theme/theme';
-import {storeItem, getValue} from '../utils/asyncStorage';
+import {storeItem, getValue, clearAllData} from '../utils/asyncStorage';
 import CommonButton from './MarketingExecutive/UI/CommonButton';
 import CommonSpinner from './MarketingExecutive/UI/CommonSpinner';
 import {isMobileNumberValidWithReason} from '../utils/Validators';
@@ -67,10 +67,12 @@ export const Login = ({navigation}) => {
           storeItem('UUID', UUID);
         } else {
           const errorMessage = apiResponse.data.errortext;
+          // console.log(errorMessage, 'error message is.....');
           errorMethod(errorMessage);
         }
       })
       .catch(e => {
+        // console.log(e);
         Analytics.trackEvent('Error in getOtp', JSON.stringify(e));
         errorMethod('Network error. Please try again after some time.');
       });
@@ -102,6 +104,7 @@ export const Login = ({navigation}) => {
           setShowOTPView(false);
           const accessToken = apiResponse.data.response.accessToken;
           storeItem('accessToken', accessToken);
+          storeItem('exeMobileNo', mobileNumber);
           navigation.navigate(ScreenNamesMarketing.DASHBOARD);
         } else {
           const errorMessage = apiResponse.data.errortext;
