@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
 });
 
 export const OrderDetailsView = ({navigation, route}) => {
-  const [showSpinner, setShowSpinner] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(true);
   const [orderDetails, setOrderDetails] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
   const orderCode = route.params.orderCode;
@@ -150,7 +150,9 @@ export const OrderDetailsView = ({navigation, route}) => {
             }}>
             <Text style={styles.titleStyle}>Customer</Text>
             <Text style={[styles.titleStyle, {marginRight: 24, opacity: 1}]}>
-              {orderDetails.customerName.length > 25
+              {orderDetails &&
+              orderDetails.customerName &&
+              orderDetails.customerName.length > 25
                 ? `${orderDetails.customerName.substr(0, 25)}...`
                 : orderDetails.customerName}
             </Text>

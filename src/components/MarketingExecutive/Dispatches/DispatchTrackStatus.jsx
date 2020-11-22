@@ -137,7 +137,11 @@ export const DispatchTrackStatus = ({navigation, route}) => {
           }}>
           <Text style={styles.titleStyle}>Customer</Text>
           <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
-            {orderDetails.customerName}
+            {orderDetails &&
+            orderDetails.customerName &&
+            orderDetails.customerName.length > 25
+              ? `${orderDetails.customerName.substr(0, 25)}...`
+              : orderDetails.customerName}
           </Text>
         </View>
         <View style={styles.listViewStyle}>
