@@ -158,7 +158,7 @@ export const Dashboard = ({navigation}) => {
 
   const getaccessToken = async () => {
     const accessToken = await getValue('accessToken');
-    console.log('accessToken', accessToken);
+    // console.log('accessToken', accessToken);
   };
 
   const renderHeader = () => {

@@ -9,7 +9,8 @@ import {theme} from '../theme/theme';
 import {storeItem, getValue} from '../utils/asyncStorage';
 import CommonButton from './MarketingExecutive/UI/CommonButton';
 import CommonSpinner from './MarketingExecutive/UI/CommonSpinner';
-import isMobileNumberValidWithReason from '../utils/Validators';
+import {isMobileNumberValidWithReason} from '../utils/Validators';
+import Analytics from 'appcenter-analytics';
 
 const styles = StyleSheet.create({
   container: {
@@ -53,8 +54,12 @@ export const Login = ({navigation}) => {
     loginAPI(mobileNumber)
       .then(apiResponse => {
         setShowSpinner(false);
-        // console.log('apiResponse', apiResponse);
+        // console.log('apiResponse', apiResponse.data.response);
         if (apiResponse.data.status === 'success') {
+          Analytics.trackEvent(
+            'apiResponse in getOTP',
+            JSON.stringify(apiResponse.data.response.response),
+          );
           setApiErrorText('');
           const UUID = apiResponse.data.response.response.uuid;
           setUuid(UUID);
@@ -65,7 +70,8 @@ export const Login = ({navigation}) => {
           errorMethod(errorMessage);
         }
       })
-      .catch(() => {
+      .catch(e => {
+        Analytics.trackEvent('Error in getOtp', JSON.stringify(e));
         errorMethod('Network error. Please try again after some time.');
       });
   };
@@ -113,7 +119,7 @@ export const Login = ({navigation}) => {
     setApiErrorText(errorMessage);
     setTimeout(() => {
       setApiErrorText('');
-    }, 1000);
+    }, 10000);
   };
 
   const renderMobileView = () => {
@@ -142,7 +148,6 @@ export const Login = ({navigation}) => {
           dataDetectorTypes="phoneNumber"
           placeholder="Mobile number"
         />
-
         <CommonButton
           buttonTitle={'Get OTP'}
           disableButton={disableLoginButton}
