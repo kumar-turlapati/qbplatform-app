@@ -73,8 +73,11 @@ export const Login = ({navigation}) => {
       })
       .catch(e => {
         // console.log(e);
-        Analytics.trackEvent('Error in getOtp', JSON.stringify(e));
-        errorMethod('Network error. Please try again after some time.');
+        Analytics.trackEvent(
+          'Error in getOtp',
+          JSON.stringify(e.response.data),
+        );
+        errorMethod(`Network error: ${JSON.stringify(e.response.data)}`);
       });
   };
 
