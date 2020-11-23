@@ -57,7 +57,7 @@ export const Login = ({navigation}) => {
         // console.log('apiResponse', apiResponse.data.response);
         if (apiResponse.data.status === 'success') {
           Analytics.trackEvent(
-            'apiResponse in getOTP',
+            `apiResponse in getOTP for mobile number: ${mobileNumber}`,
             JSON.stringify(apiResponse.data.response.response),
           );
           setApiErrorText('');
@@ -67,17 +67,21 @@ export const Login = ({navigation}) => {
           storeItem('UUID', UUID);
         } else {
           const errorMessage = apiResponse.data.errortext;
-          // console.log(errorMessage, 'error message is.....');
-          errorMethod(errorMessage);
+          errorMethod(
+            `Authentication failed for mobile number: ${mobileNumber} : ${errorMessage}`,
+          );
+          Analytics.trackEvent(
+            `Authentication failed for mobile number: ${mobileNumber} : ${errorMessage}`,
+          );
         }
       })
       .catch(e => {
         // console.log(e);
         Analytics.trackEvent(
-          'Error in getOtp',
-          JSON.stringify(e.response.data),
+          `Error in getOtp for mobile number: ${mobileNumber}`,
+          JSON.stringify(e),
         );
-        errorMethod(`Network error: ${JSON.stringify(e.response.data)}`);
+        errorMethod(`Network error: ${JSON.stringify(e)}`);
       });
   };
 
