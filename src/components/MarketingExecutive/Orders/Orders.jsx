@@ -5,7 +5,7 @@ import {
   SearchIcon,
   SideArrow,
   BarCodeIcon,
-  ArrowLeft,
+  // ArrowLeft,
   BackHome,
 } from '../../../icons/Icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -15,6 +15,7 @@ import {colors} from '../../../theme/colors';
 import {getValue} from '../../../utils/asyncStorage';
 import {getItemsByBarcode} from '../../../networkcalls/apiCalls';
 import CommonSpinner from '../UI/CommonSpinner';
+import Analytics from 'appcenter-analytics';
 
 // const {height, width} = Dimensions.get('window');
 
@@ -98,15 +99,23 @@ export const Orders = ({navigation}) => {
               text: 'OK',
             },
           ]);
+          Analytics.trackEvent(`Barcode not found: ${scancode}`);
         }
       })
       .catch(error => {
         setShowSpinner(false);
-        Alert.alert('Oops :(', 'Something went wrong, please try again', [
-          {
-            text: 'OK',
-          },
-        ]);
+        Alert.alert(
+          `Oops :(', 'Something went wrong:\n${JSON.stringify(error)}`,
+          [
+            {
+              text: 'OK',
+            },
+          ],
+        );
+        Analytics.trackEvent(
+          `Barcode error: ${scancode}`,
+          JSON.stringify(error.response.data),
+        );
       });
   };
 

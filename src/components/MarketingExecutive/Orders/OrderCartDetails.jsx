@@ -92,6 +92,7 @@ export const OrderCartDetails = ({navigation}) => {
   const [showSpinner, setShowSpinner] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [showFailAlert, setShowFailAlert] = useState(false);
+  const [showFailAlertMessage, setShowFailAlertMessage] = useState('');
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [newOrderNo, setNewOrderNo] = useState('');
 
@@ -391,10 +392,11 @@ export const OrderCartDetails = ({navigation}) => {
         setShowAlert(true);
       })
       .catch(error => {
-        // console.log('error', error.response.data);
+        console.log('error', error.response.data);
         setShowSpinner(false);
         setShowAlert(true);
         setShowFailAlert(true);
+        setShowFailAlertMessage(error.response.data.errortext);
       });
   };
 
@@ -441,7 +443,11 @@ export const OrderCartDetails = ({navigation}) => {
           navigation.navigate(ScreenNamesMarketing.ORDERSLIST);
         }}
         failTitle={'Oops :('}
-        failDescriptionTitle={`Somthing went wrong, \nplease try again`}
+        failDescriptionTitle={
+          showFailAlertMessage.length > 0
+            ? `Somthing went wrong, \nplease try again \n\n Error: ${showFailAlertMessage}`
+            : 'Somthing went wrong, \nplease try again'
+        }
         onPressFailButton={() => {
           setShowFailAlert(false);
           setShowAlert(false);
