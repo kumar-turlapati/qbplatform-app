@@ -223,7 +223,7 @@ export const OrderCartDetails = ({navigation}) => {
             <View>
               <Text style={styles.titleStyle}>{item.itemName}</Text>
               <Text style={styles.descriptionStyle}>
-                Rate: ₹{itemRate}&nbsp;Qty: {item.orderQty}
+                Rate: ₹{itemRate}&nbsp;Qty: {item.orderQty}*{item.packedQty}
               </Text>
             </View>
           </View>
@@ -236,7 +236,7 @@ export const OrderCartDetails = ({navigation}) => {
                 paddingTop: 19,
               },
             ]}>
-            ₹ {calculatePrice(item.orderQty, itemRate)}
+            ₹ {calculatePrice(item.orderQty * item.packedQty, itemRate)}
           </Text>
         </View>
       </View>

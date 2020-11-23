@@ -46,14 +46,12 @@ const styles = StyleSheet.create({
 
 export const OrdersProductDetails = ({navigation, route}) => {
   const {selectedProduct} = route.params;
-  const [orderQuantity, setOrderQuantity] = useState(
-    selectedProduct.closingQty,
-  );
+  const [orderQuantity, setOrderQuantity] = useState('1');
   const {addToCart, selectedCustomerName, cartItems} = useContext(
     ShoppingCartContext,
   );
 
-  console.log('cart items...', cartItems);
+  // console.log('cart items...', cartItems);
 
   // useEffect(() => {
   //   console.log(
@@ -155,12 +153,12 @@ export const OrdersProductDetails = ({navigation, route}) => {
           </Text>
         </View>
         <View style={styles.viewStyle}>
-          <Text style={styles.titleStyle}>Packed Qty.</Text>
+          <Text style={styles.titleStyle}>Packed Qty. (approx.)</Text>
           <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
             {selectedProduct.mOq}
           </Text>
         </View>
-        <View style={styles.viewStyle}>
+        {/* <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Lot No.</Text>
           <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
             {selectedProduct.lotNo}
@@ -171,7 +169,7 @@ export const OrdersProductDetails = ({navigation, route}) => {
           <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
             {selectedProduct.closingQty}
           </Text>
-        </View>
+        </View> */}
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>UOM Name</Text>
           <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
@@ -179,7 +177,9 @@ export const OrdersProductDetails = ({navigation, route}) => {
           </Text>
         </View>
         <View style={styles.viewStyle}>
-          <Text style={styles.titleStyle}>Order Qty.</Text>
+          <Text style={styles.titleStyle}>
+            Order Qty. (multiplied with packed qty.)
+          </Text>
           <TextInput
             style={[
               styles.titleStyle,
