@@ -81,7 +81,7 @@ export const Login = ({navigation}) => {
           `Error in getOtp for mobile number: ${mobileNumber}`,
           JSON.stringify(e),
         );
-        errorMethod(`Network error: ${JSON.stringify(e)}`);
+        errorMethod(`Network error, please try again.`);
       });
   };
 
