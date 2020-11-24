@@ -63,6 +63,7 @@ export default (CommonSearchHeader = ({
   onPressRightButton,
   rightSideText,
   onSearchValue,
+  customerOrProduct,
 }) => {
   const [search, setSearch] = useState('');
 
@@ -100,7 +101,11 @@ export default (CommonSearchHeader = ({
   return (
     <View style={styles.container}>
       <Text style={styles.mainHeaderStyle} textAlign="center">
-        Start typing the product name
+        Start typing the{' '}
+        {customerOrProduct && customerOrProduct.length > 0
+          ? customerOrProduct
+          : 'product'}{' '}
+        name
       </Text>
       {renderHeader()}
     </View>

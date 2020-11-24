@@ -85,6 +85,9 @@ export const restEndPoints = {
   GET_ALL_ORDERS: {
     URL: executiveId => `${apiBaseUrl}/app/v1/orders/${executiveId}?by=exe`,
   },
+  GET_CAMPAIGNS: {
+    URL: `${apiBaseUrl}/campaign/live`,
+  },
 };
 
 // appointment statuses

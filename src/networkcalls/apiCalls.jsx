@@ -23,6 +23,7 @@ const {
   GET_ALL_ORDERS,
   ORDER_DETAILS,
   CANCEL_ORDER,
+  GET_CAMPAIGNS,
 } = restEndPoints;
 
 export const loginAPI = mobileNumber => {
@@ -153,4 +154,9 @@ export const cancelOrder = (accessToken, orderCode) => {
   return Axios.delete(CANCEL_ORDER.URL(orderCode), {
     headers: requestHeadersWoOrg,
   });
+};
+
+export const getCampaigns = async accessToken => {
+  requestHeaders['Access-Token'] = accessToken;
+  return await Axios.get(GET_CAMPAIGNS.URL, {headers: requestHeaders});
 };

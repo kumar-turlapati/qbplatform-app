@@ -18,9 +18,11 @@ import {ShoppingCartContext} from '../../context/ShoppingCartProvider';
 import {paymentTypes} from '../../../../qbconfig';
 import ActionSheet from 'react-native-action-sheet';
 import {getValue} from '../../../utils/asyncStorage';
-import {postNewOrder} from '../../../networkcalls/apiCalls';
+import {postNewOrder, getCampaigns} from '../../../networkcalls/apiCalls';
 import CommonAlertView from '../UI/CommonAlertView';
 import CommonSpinner from '../UI/CommonSpinner';
+import _map from 'lodash/map';
+import _find from 'lodash/find';
 
 // const {height, width} = Dimensions.get('window');
 
@@ -95,6 +97,11 @@ export const OrderCartDetails = ({navigation}) => {
   const [showFailAlertMessage, setShowFailAlertMessage] = useState('');
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [newOrderNo, setNewOrderNo] = useState('');
+  const [campaigns, setCampaigns] = useState([]);
+  const [campaignIndex, setCampaignIndex] = useState(-1);
+  const [campaignsActual, setCampaignsActual] = useState([]);
+
+  // console.log(campaigns, 'campaigns......', campaignIndex);
 
   useEffect(() => {
     setShowItems(cartItems);
@@ -104,6 +111,27 @@ export const OrderCartDetails = ({navigation}) => {
       );
     }
   }, [cartItems, updated, newOrderNo]);
+
+  useEffect(() => {
+    const getCampaignsApiCall = async () => {
+      setShowSpinner(true);
+      const accessToken = await getValue('accessToken');
+      getCampaigns(accessToken)
+        .then(apiResponse => {
+          // console.log('apiResponse', apiResponse.data.response);
+          const campaignsData = apiResponse.data.response;
+          const campaignsArray = _map(campaignsData, 'campaignName');
+          setShowSpinner(false);
+          setCampaigns(campaignsArray);
+          setCampaignsActual(campaignsData);
+        })
+        .catch(error => {
+          // console.log('error', error.response.data);
+          setShowSpinner(false);
+        });
+    };
+    getCampaignsApiCall();
+  }, []);
 
   const showGenericAlert = message => {
     Alert.alert('Oops :(', message, [
@@ -318,6 +346,74 @@ export const OrderCartDetails = ({navigation}) => {
             />
           </View>
         </TouchableOpacity>
+
+        {campaigns.length > 0 && (
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              ActionSheet.showActionSheetWithOptions(
+                {
+                  options: campaigns,
+                },
+                buttonIndex => {
+                  setCampaignIndex(buttonIndex);
+                },
+              );
+            }}>
+            <View style={{backgroundColor: 'white', height: 44, marginTop: 21}}>
+              <View
+                style={{
+                  marginHorizontal: 16,
+                  flexDirection: 'row',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                }}>
+                <Text
+                  style={[
+                    styles.titleStyle,
+                    {
+                      color: '#3C3C43',
+                      opacity: 0.5,
+                    },
+                  ]}>
+                  Campaign Name
+                </Text>
+                <Text
+                  style={[
+                    styles.titleStyle,
+                    {
+                      marginRight: 24,
+                      color: '#3C3C43',
+                    },
+                  ]}>
+                  {campaigns[campaignIndex]}
+                </Text>
+                <SideArrow
+                  style={{
+                    width: 9,
+                    height: 16,
+                    top: 12,
+                    right: 0,
+                    position: 'absolute',
+                  }}
+                  resizeMode={'contain'}
+                />
+              </View>
+              <View
+                style={{
+                  left: 16,
+                  right: 0,
+                  height: 1,
+                  backgroundColor: 'black',
+                  opacity: 0.1,
+                  top: 43,
+                  position: 'absolute',
+                }}
+              />
+            </View>
+          </TouchableOpacity>
+        )}
+
         {renderButton()}
         {renderButtonAddMore()}
       </View>
@@ -354,6 +450,8 @@ export const OrderCartDetails = ({navigation}) => {
     const accessToken = await getValue('accessToken');
     const exeMobileNo = await getValue('exeMobileNo');
     const orderItems = new Array();
+    let campaignId;
+
     showItems.forEach(itemDetails => {
       let itemRate;
       const itemId = itemDetails.itemID;
@@ -370,17 +468,36 @@ export const OrderCartDetails = ({navigation}) => {
         itemRate: itemRate,
       });
     });
+
+    const campaignName = campaignIndex >= 0 ? campaigns[campaignIndex] : '';
+    if (campaignName !== '') {
+      const selectedCampaign = _find(
+        campaignsActual,
+        campaignDetails => campaignDetails.campaignName === campaignName,
+      );
+      campaignId = selectedCampaign ? selectedCampaign.campaignID : 0;
+    } else {
+      campaignId = 0;
+    }
+
     const orderDetails = {
       orderDetails: orderItems,
       couponCode: '',
       billingRate: getApiPaymentString(options[paymentIndex]),
       exeMobileNo: exeMobileNo,
+      campaignId: campaignId,
       customerName:
         selectedCustomerName.length > 0
           ? selectedCustomerName
           : 'Select Customer',
     };
 
+    // console.log(
+    //   campaignDetails,
+    //   orderDetails,
+    //   campaignId,
+    //   '-----------------------',
+    // );
     // console.log(orderDetails, '===================');
     postNewOrder(accessToken, orderDetails)
       .then(apiResponse => {
@@ -392,7 +509,7 @@ export const OrderCartDetails = ({navigation}) => {
         setShowAlert(true);
       })
       .catch(error => {
-        console.log('error', error.response.data);
+        // console.log('error', error.response.data);
         setShowSpinner(false);
         setShowAlert(true);
         setShowFailAlert(true);

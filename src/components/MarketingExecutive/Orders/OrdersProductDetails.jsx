@@ -270,7 +270,7 @@ export const OrdersProductDetails = ({navigation, route}) => {
     };
 
     const istLotNoExists = _find(cartItems, cartItemDetails => {
-      console.log(cartItemDetails, 'inside _find lodash');
+      // console.log(cartItemDetails, 'inside _find lodash');
       return cartItemDetails.lotNo === selectedProduct.lotNo;
     });
 

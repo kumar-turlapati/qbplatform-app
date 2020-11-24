@@ -1,63 +1,65 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Dimensions, FlatList, Keyboard, StyleSheet, Text, View } from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {
+  Dimensions,
+  FlatList,
+  Keyboard,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
-import { getValue } from '../../../utils/asyncStorage';
-import { getCustomerName } from '../../../networkcalls/apiCalls';
-import { colors } from '../../../theme/colors';
-import { theme } from '../../../theme/theme';
-import { ShoppingCartContext } from '../../context/ShoppingCartProvider';
+import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+import {getValue} from '../../../utils/asyncStorage';
+import {getCustomerName} from '../../../networkcalls/apiCalls';
+import {colors} from '../../../theme/colors';
+import {theme} from '../../../theme/theme';
+import {ShoppingCartContext} from '../../context/ShoppingCartProvider';
 
-const { height, width } = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    ...theme.viewStyles.restContainer
+    ...theme.viewStyles.restContainer,
   },
   mainDescriptionStyle: {
     ...theme.viewStyles.descriptionStyles,
   },
   rowView: {
-    ...theme.viewStyles.listRowViewStyle
+    ...theme.viewStyles.listRowViewStyle,
   },
   textStyle: {
     ...theme.viewStyles.commonTextStyles,
-    fontSize: 15
+    fontSize: 15,
   },
 });
 
-export const CustomerNameSearch = ({ navigation }) => {
+export const CustomerNameSearch = ({navigation}) => {
+  const [names, setNames] = useState([]);
+  const [showSpinner, setShowSpinner] = useState(false);
 
-  const [names, setNames] = useState([])
-  const [showSpinner, setShowSpinner] = useState(false)
-
-  const {
-    setSelectedCustomerName
-  } = useContext(ShoppingCartContext);
+  const {setSelectedCustomerName} = useContext(ShoppingCartContext);
 
   useEffect(() => {
-    setShowSpinner(true)
-    getCustomerNames('a')
-  }, [])
+    setShowSpinner(true);
+    getCustomerNames('a');
+  }, []);
 
-  const getCustomerNames = async (searchString) => {
-    const accessToken = await getValue('accessToken')
+  const getCustomerNames = async searchString => {
+    const accessToken = await getValue('accessToken');
     getCustomerName(accessToken, searchString)
-      .then((apiResponse) => {
-        setShowSpinner(false)
-        console.log('apiResponse', apiResponse)
+      .then(apiResponse => {
+        setShowSpinner(false);
+        // console.log('apiResponse', apiResponse)
         if (apiResponse.status === 200) {
-          const names =
-            apiResponse.data;
-          setNames(names)
-
+          const names = apiResponse.data;
+          setNames(names);
         }
       })
-      .catch((error) => {
-        setShowSpinner(false)
-        console.log('error', error)
-      })
-  }
+      .catch(error => {
+        setShowSpinner(false);
+        console.log('error', error);
+      });
+  };
 
   const renderHeader = () => {
     return (
@@ -68,13 +70,14 @@ export const CustomerNameSearch = ({ navigation }) => {
         }}
         onSearchValue={searchValue => {
           if (searchValue.length > 2) {
-            !showSpinner && setShowSpinner(true)
+            !showSpinner && setShowSpinner(true);
             setTimeout(() => {
-              getCustomerNames(searchValue)
-              Keyboard.dismiss()
+              getCustomerNames(searchValue);
+              Keyboard.dismiss();
             }, 1000);
           }
         }}
+        customerOrProduct="customer"
       />
     );
   };
@@ -84,8 +87,8 @@ export const CustomerNameSearch = ({ navigation }) => {
       <View style={styles.rowView}>
         <Text
           onPress={() => {
-            console.log('rowData', rowData)
-            setSelectedCustomerName(rowData)
+            // console.log('rowData', rowData);
+            setSelectedCustomerName(rowData);
             navigation.goBack();
 
             // navigation.navigate(ScreenNamesMarketing.CUSTOMERDETAILSUPDATE, {
@@ -101,7 +104,7 @@ export const CustomerNameSearch = ({ navigation }) => {
 
   const renderListView = () => {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <FlatList
           style={{
             flex: 1,
@@ -110,7 +113,7 @@ export const CustomerNameSearch = ({ navigation }) => {
             marginBottom: 0,
           }}
           data={names}
-          renderItem={({ item, index }) => renderRow(item, index)}
+          renderItem={({item, index}) => renderRow(item, index)}
           keyExtractor={item => item}
           removeClippedSubviews={true}
           showsVerticalScrollIndicator={false}
@@ -121,12 +124,8 @@ export const CustomerNameSearch = ({ navigation }) => {
   };
 
   const renderSpinner = () => {
-    return (
-      <CommonSpinner
-        animating={showSpinner}
-      />
-    )
-  }
+    return <CommonSpinner animating={showSpinner} />;
+  };
 
   return (
     <View style={styles.container}>
