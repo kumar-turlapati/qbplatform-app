@@ -91,4 +91,5 @@ export const colors = {
   ...Product,
   ...Slider,
   ...Carousel,
+  ...OrderColor
 };

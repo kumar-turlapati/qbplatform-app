@@ -7,6 +7,7 @@ import { getValue } from '../../../utils/asyncStorage';
 import CommonHeader from '../UI/CommonHeader';
 import moment from 'moment';
 import { ArrowLeft, ArrowRight } from '../../../icons/Icons';
+import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
 
 const styles = StyleSheet.create({
   container: {
@@ -92,6 +93,7 @@ export const Appointments = ({ navigation }) => {
         }}
         addIcon={true}
         onAddIconPress={() => {
+          navigation.navigate(ScreenNamesMarketing.CREATEAPPOINTMENTS);
         }}
       />
     );
