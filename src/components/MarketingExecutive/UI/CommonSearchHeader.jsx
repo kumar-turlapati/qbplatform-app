@@ -54,8 +54,6 @@ const styles = StyleSheet.create({
     height: 39,
     width: 254,
     fontSize: 17,
-    lineHeight: 22,
-    letterSpacing: -0.408,
   },
 });
 

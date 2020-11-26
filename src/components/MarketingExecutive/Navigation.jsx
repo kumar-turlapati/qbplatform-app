@@ -27,6 +27,7 @@ import {CustomerDetailsUpdate} from './Customers/CustomerDetailsUpdate';
 import {CustomerAppointmentAndOrder} from './Customers/CustomerAppointmentAndOrder';
 import {CustomerOrderFlowStatus} from './Customers/CustomerOrderFlowStatus';
 import {GalleryDetailView} from './Galleries/GalleryDetailView';
+import { CreateAppointments } from './Appointments/CreateAppointments';
 
 import {
   ScreenNamesMarketing,
@@ -164,6 +165,10 @@ export const AppNavigatorMarketing = () => {
       <Stack.Screen
         name={ScreenNamesMarketing.GALLERYDETAILVIEW}
         component={GalleryDetailView}
+      />
+       <Stack.Screen
+        name={ScreenNamesMarketing.CREATEAPPOINTMENTS}
+        component={CreateAppointments}
       />
     </Stack.Navigator>
   );
