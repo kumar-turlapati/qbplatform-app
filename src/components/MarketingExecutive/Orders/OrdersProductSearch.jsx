@@ -47,6 +47,7 @@ export const OrdersProductSearch = ({navigation}) => {
 
   const searchProducts = async stringSearch => {
     const accessToken = await getValue('accessToken');
+    // console.log('string search', stringSearch);
     getProductSearch(accessToken, stringSearch)
       .then(apiResponse => {
         setShowSpinner(false);
@@ -88,7 +89,7 @@ export const OrdersProductSearch = ({navigation}) => {
         onSearchValue={searchValue => {
           if (searchValue.length > 2) {
             setTimeout(() => {
-              Keyboard.dismiss();
+              // Keyboard.dismiss();
               setShowSpinner(true);
               searchProducts(searchValue);
             }, 1000);

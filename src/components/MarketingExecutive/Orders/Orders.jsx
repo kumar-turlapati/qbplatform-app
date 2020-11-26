@@ -104,14 +104,11 @@ export const Orders = ({navigation}) => {
       })
       .catch(error => {
         setShowSpinner(false);
-        Alert.alert(
-          `Oops :(', 'Something went wrong:\n${JSON.stringify(error)}`,
-          [
-            {
-              text: 'OK',
-            },
-          ],
-        );
+        Alert.alert(`Oops :(', 'Something went wrong`, [
+          {
+            text: 'OK',
+          },
+        ]);
         Analytics.trackEvent(
           `Barcode error: ${scancode}`,
           JSON.stringify(error.response.data),

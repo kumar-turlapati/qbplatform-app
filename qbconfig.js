@@ -45,7 +45,8 @@ export const restEndPoints = {
     URL: name => `${apiBaseUrl}/customers/ac/get-names?q=${name}`,
   },
   PRODUCT_NAMES: {
-    URL: searchString => `${apiBaseUrl}/products/ac?q=${searchString}`,
+    URL: searchString =>
+      `${apiBaseUrl}/products/ac?q=${searchString}&limit=25&it=p`,
   },
   CREATE_RECEIPT: {URL: `${apiBaseUrl}/fin/receipts/${clientCode}`},
   UPDATE_RECEIPT: {
