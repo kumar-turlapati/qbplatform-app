@@ -1,4 +1,4 @@
-import Axios, {AxiosResponse, Canceler} from 'axios';
+import Axios, { AxiosResponse, Canceler } from 'axios';
 import {
   restEndPoints,
   requestHeaders,
@@ -24,6 +24,7 @@ const {
   ORDER_DETAILS,
   CANCEL_ORDER,
   GET_CAMPAIGNS,
+  APP_CONTENT
 } = restEndPoints;
 
 export const loginAPI = mobileNumber => {
@@ -34,7 +35,7 @@ export const loginAPI = mobileNumber => {
       grantType: 'password',
       orgCode: clientCode,
     },
-    {headers: requestHeadersWoOrg},
+    { headers: requestHeadersWoOrg },
   );
 };
 
@@ -45,7 +46,7 @@ export const getToken = (uuid, otp) => {
       uuid: uuid,
       otp: otp,
     },
-    {headers: requestHeaders},
+    { headers: requestHeaders },
   );
 };
 
@@ -55,7 +56,7 @@ export const resendOTP = uuid => {
     {
       uuid: uuid,
     },
-    {headers: requestHeaders},
+    { headers: requestHeaders },
   );
 };
 
@@ -108,7 +109,7 @@ export const getAppointmentList = async (
 
 export const getCatsSubcats = async accessToken => {
   requestHeaders['Access-Token'] = accessToken;
-  return await Axios.get(CATS_SUBCATS.URL, {headers: requestHeaders});
+  return await Axios.get(CATS_SUBCATS.URL, { headers: requestHeaders });
 };
 
 export const getItemDetailsByName = async (accessToken, productName) => {
@@ -126,7 +127,7 @@ export const postNewOrder = (accessToken, orderDetails) => {
     {
       ...orderDetails,
     },
-    {headers: requestHeadersWoOrg},
+    { headers: requestHeadersWoOrg },
   );
 };
 
@@ -139,7 +140,7 @@ export const getItemsByBarcode = (accessToken, scanCode) => {
 
 export const getAllOrders = (accessToken, uuid) => {
   requestHeadersWoOrg['Access-Token'] = accessToken;
-  return Axios.get(GET_ALL_ORDERS.URL(uuid), {headers: requestHeadersWoOrg});
+  return Axios.get(GET_ALL_ORDERS.URL(uuid), { headers: requestHeadersWoOrg });
 };
 
 export const getOrderDetails = (accessToken, orderCode) => {
@@ -158,5 +159,10 @@ export const cancelOrder = (accessToken, orderCode) => {
 
 export const getCampaigns = async accessToken => {
   requestHeaders['Access-Token'] = accessToken;
-  return await Axios.get(GET_CAMPAIGNS.URL, {headers: requestHeaders});
+  return await Axios.get(GET_CAMPAIGNS.URL, { headers: requestHeaders });
+};
+
+export const getAppContent = async accessToken => {
+  requestHeaders['Access-Token'] = accessToken;
+  return await Axios.get(APP_CONTENT.URL, { headers: requestHeaders });
 };

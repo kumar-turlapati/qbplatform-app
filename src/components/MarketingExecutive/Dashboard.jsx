@@ -245,7 +245,7 @@ export const Dashboard = ({ navigation }) => {
         navigation.navigate(ScreenNamesMarketing.CUSTOMERS);
         break;
       case 4:
-        navigation.navigate(ScreenNamesMarketing.GALLERIES);
+        navigation.navigate(ScreenNamesMarketing.NEWHOME);
         break;
       default:
       // code block

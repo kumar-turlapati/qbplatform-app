@@ -25,7 +25,9 @@ export const ScreenNamesMarketing = {
   CUSTOMERAPPOINTMENTANDORDER: 'CustomerAppointmentAndOrder',
   CUSTOMERORDERFLOWSTATUS: 'CustomerOrderFlowStatus',
   GALLERYDETAILVIEW: 'GalleryDetailView',
-  CREATEAPPOINTMENTS: "CreateAppointments"
+  CREATEAPPOINTMENTS: "CreateAppointments",
+  SHOWBRANDS: 'ShowBrands',
+  NEWHOME: 'Home',
 };
 
 export const ScreenNamesGeneral = {
