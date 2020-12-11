@@ -1,68 +1,65 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   FlatList,
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
-import { cdnUrl, clientCode } from '../../../../qbconfig';
-import { MenuSmall } from '../../../icons/Icons';
-import { getCatalogDetails } from '../../../networkcalls/apiCalls';
-import { theme } from '../../../theme/theme';
-import { getValue } from '../../../utils/asyncStorage';
+import {cdnUrl, clientCode} from '../../../../qbconfig';
+import {MenuSmall} from '../../../icons/Icons';
+import {getCatalogDetails} from '../../../networkcalls/apiCalls';
+import {theme} from '../../../theme/theme';
+import {getValue} from '../../../utils/asyncStorage';
 import CommonHeader from '../UI/CommonHeader';
 import _find from 'lodash/find';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    ...theme.viewStyles.restContainer
+    ...theme.viewStyles.restContainer,
   },
   rowStyle: {
-    ...theme.viewStyles.galleryDetailsRowStyle
+    ...theme.viewStyles.galleryDetailsRowStyle,
   },
 });
 
-export const GalleryDetailView = ({ navigation, route }) => {
-  const { catalogName, catalogCode } = route.params;
+export const GalleryDetailView = ({navigation, route}) => {
+  const {catalogName, catalogCode} = route.params;
 
-  const [clothes, setClothes] = useState([])
-  const [showSpinner, setShowSpinner] = useState(false)
+  const [clothes, setClothes] = useState([]);
+  const [showSpinner, setShowSpinner] = useState(false);
   const [businessLocations, setBusinessLocations] = useState([]);
 
   useEffect(() => {
-    setShowSpinner(true)
-    getCatalogueDetails()
-  }, [])
+    setShowSpinner(true);
+    getCatalogueDetails();
+  }, []);
 
   const getCatalogueDetails = async () => {
-    const accessToken = await getValue('accessToken')
+    const accessToken = await getValue('accessToken');
 
     getCatalogDetails(accessToken, catalogCode)
-      .then((apiResponse) => {
-        setShowSpinner(false)
-        console.log('apiResponse', apiResponse)
+      .then(apiResponse => {
+        setShowSpinner(false);
+        console.log('apiResponse', apiResponse);
         if (apiResponse.data.status === 'success') {
-          const businessLocations =
-            apiResponse.data.response.businessLocations;
+          const businessLocations = apiResponse.data.response.businessLocations;
           setBusinessLocations(businessLocations);
-          console.log('businessLocations', businessLocations)
+          console.log('businessLocations', businessLocations);
 
-          const catalogs =
-            apiResponse.data.response.catalogItems;
-          setClothes(catalogs)
-          console.log('catalogs', catalogs)
-
+          const catalogs = apiResponse.data.response.catalogItems;
+          setClothes(catalogs);
+          console.log('catalogs', catalogs);
         }
       })
-      .catch((error) => {
-        setShowSpinner(false)
-        console.log('error', error)
-      })
-  }
+      .catch(error => {
+        setShowSpinner(false);
+        console.log('error', error);
+      });
+  };
 
   const renderHeader = () => {
     return (
@@ -72,7 +69,7 @@ export const GalleryDetailView = ({ navigation, route }) => {
         onPressLeftButton={() => {
           navigation.goBack();
         }}
-        onAddIconPress={() => { }}
+        onAddIconPress={() => {}}
         searchIcon={false}
         onPressSearchIcon={() => {
           console.log('search clicked');
@@ -82,10 +79,9 @@ export const GalleryDetailView = ({ navigation, route }) => {
   };
 
   const renderRow = (item, index) => {
-
     const imageLocation = _find(
       businessLocations,
-      (locationDetails) =>
+      locationDetails =>
         parseInt(locationDetails.locationID, 10) ===
         parseInt(item.locationID, 10),
     );
@@ -94,27 +90,26 @@ export const GalleryDetailView = ({ navigation, route }) => {
     if (item.images.length > 0) {
       imageUrl = imageLocation
         ? encodeURI(
-          `${cdnUrl}/${clientCode}/${imageLocation.locationCode}/${item.images[0].imageName}`,
-        )
+            `${cdnUrl}/${clientCode}/${imageLocation.locationCode}/${
+              item.images[0].imageName
+            }`,
+          )
         : '';
     }
 
     return (
-      <TouchableOpacity activeOpacity={1} onPress={() => { }}>
+      <TouchableOpacity activeOpacity={1} onPress={() => {}}>
         <ImageBackground
           style={[
             styles.rowStyle,
             {
               height: width / 3 - 11,
               width: width / 3 - 11,
-              borderWidth: 0.1
+              borderWidth: 0.1,
             },
           ]}
-          source={{ uri: imageUrl }}
-        >
-          <MenuSmall
-            style={theme.viewStyles.galleryMenuSmallIconStyle}
-          />
+          source={{uri: imageUrl}}>
+          <MenuSmall style={theme.viewStyles.galleryMenuSmallIconStyle} />
         </ImageBackground>
       </TouchableOpacity>
     );
@@ -126,7 +121,7 @@ export const GalleryDetailView = ({ navigation, route }) => {
         style={theme.viewStyles.galleryDetailsFlatListStyles}
         numColumns={3}
         data={clothes}
-        renderItem={({ item, index }) => renderRow(item, index)}
+        renderItem={({item, index}) => renderRow(item, index)}
         keyExtractor={item => item.itemName}
         removeClippedSubviews={true}
         showsHorizontalScrollIndicator={false}
@@ -136,12 +131,8 @@ export const GalleryDetailView = ({ navigation, route }) => {
   };
 
   const renderSpinner = () => {
-    return (
-      <CommonSpinner
-        animating={showSpinner}
-      />
-    )
-  }
+    return <CommonSpinner animating={showSpinner} />;
+  };
 
   return (
     <View style={styles.container}>

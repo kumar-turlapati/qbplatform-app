@@ -20,14 +20,17 @@ export const ScreenNamesMarketing = {
   DISPATCHTRACKSTATUS: 'DispatchTrackStatus',
   CUSTOMERNAMESEARCH: 'CustomerNameSearch',
   ORDERSLIST: 'OrdersList',
-  RECEIPTORDERDETAILS: 'ReceiptOrderDetails',
+  CREATERECEIPT: 'CreateReceipt',
+  EDITRECEIPT: 'EditReceipt',
+  VIEWRECEIPT: 'ViewReceipt',
+  RECEIPTSLIST: 'ReceiptsList',
   CUSTOMERDETAILSUPDATE: 'CustomerDetailsUpdate',
   CUSTOMERAPPOINTMENTANDORDER: 'CustomerAppointmentAndOrder',
   CUSTOMERORDERFLOWSTATUS: 'CustomerOrderFlowStatus',
   GALLERYDETAILVIEW: 'GalleryDetailView',
-  CREATEAPPOINTMENTS: "CreateAppointments",
+  CREATEAPPOINTMENTS: 'CreateAppointments',
   SHOWBRANDS: 'ShowBrands',
-  NEWHOME: 'Home',
+  SHOWCATEGORIES: 'ShowCategories',
 };
 
 export const ScreenNamesGeneral = {

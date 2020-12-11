@@ -15,7 +15,7 @@ import {colors} from '../../../theme/colors';
 import {theme} from '../../../theme/theme';
 import {ShoppingCartContext} from '../../context/ShoppingCartProvider';
 
-const {height, width} = Dimensions.get('window');
+// const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -41,7 +41,7 @@ export const CustomerNameSearch = ({navigation}) => {
 
   useEffect(() => {
     setShowSpinner(true);
-    getCustomerNames('a');
+    getCustomerNames('');
   }, []);
 
   const getCustomerNames = async searchString => {
@@ -73,7 +73,7 @@ export const CustomerNameSearch = ({navigation}) => {
             !showSpinner && setShowSpinner(true);
             setTimeout(() => {
               getCustomerNames(searchValue);
-              Keyboard.dismiss();
+              // Keyboard.dismiss();
             }, 1000);
           }
         }}
@@ -89,11 +89,11 @@ export const CustomerNameSearch = ({navigation}) => {
           onPress={() => {
             // console.log('rowData', rowData);
             setSelectedCustomerName(rowData);
-            navigation.goBack();
-
-            // navigation.navigate(ScreenNamesMarketing.CUSTOMERDETAILSUPDATE, {
-            //   name: rowData,
-            // });
+            navigation.navigate(ScreenNamesMarketing.CREATERECEIPT, {
+              name: '',
+              invoiceNumber: '',
+              status: '',
+            });
           }}
           style={styles.textStyle}>
           {rowData}

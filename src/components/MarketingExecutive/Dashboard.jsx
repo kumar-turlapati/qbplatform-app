@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useEffect, useCallback} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import {
   View,
   StyleSheet,
@@ -10,7 +10,7 @@ import {
   Image,
   BackHandler,
 } from 'react-native';
-import { ScreenNamesMarketing } from '../../helpers/ScreenNames';
+import {ScreenNamesMarketing} from '../../helpers/ScreenNames';
 import {
   MenuIcon,
   AppointmentsIcon,
@@ -21,13 +21,13 @@ import {
   OrdersIcon,
   LogoutIcon,
 } from '../../icons/Icons';
-import { useState } from 'react';
+import {useState} from 'react';
 // import {colors} from '../../theme/colors';
-import { theme } from '../../theme/theme';
-import { clearAllData, getValue, removeValue } from '../../utils/asyncStorage';
-import { clientName } from '../../../qbconfig';
+import {theme} from '../../theme/theme';
+import {clearAllData, getValue, removeValue} from '../../utils/asyncStorage';
+import {clientName} from '../../../qbconfig';
 
-const { height, width } = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -118,28 +118,28 @@ const styles = StyleSheet.create({
 
 const list = [
   {
-    icon: <AppointmentsIcon style={{ width: 36, height: 30 }} />,
+    icon: <AppointmentsIcon style={{width: 36, height: 30}} />,
     title: 'Appointments',
   },
   {
-    icon: <OrdersIcon style={{ width: 31, height: 30 }} />,
+    icon: <OrdersIcon style={{width: 31, height: 30}} />,
     title: 'Orders',
   },
   {
-    icon: <ReceiptsIcon style={{ width: 23, height: 30 }} />,
+    icon: <ReceiptsIcon style={{width: 23, height: 30}} />,
     title: 'Receipts',
   },
   {
-    icon: <CustomersIcon style={{ width: 28, height: 29 }} />,
+    icon: <CustomersIcon style={{width: 28, height: 29}} />,
     title: 'Customers',
   },
   {
-    icon: <GalleryIcon style={{ width: 36, height: 29 }} />,
+    icon: <GalleryIcon style={{width: 36, height: 29}} />,
     title: 'Catalogs',
   },
 ];
 
-export const Dashboard = ({ navigation }) => {
+export const Dashboard = ({navigation}) => {
   const [showSideMenu, setShowSideMenu] = useState(false);
   useFocusEffect(
     useCallback(() => {
@@ -176,7 +176,7 @@ export const Dashboard = ({ navigation }) => {
         <Text style={theme.viewStyles.textDashboardHeaderStyles}>
           {clientName}
         </Text>
-        <View style={{ width: 40, height: 1 }} />
+        <View style={{width: 40, height: 1}} />
       </View>
     );
   };
@@ -193,7 +193,7 @@ export const Dashboard = ({ navigation }) => {
           flex: 1,
         }}
         numColumns={2}
-        renderItem={({ item, index }) => (
+        renderItem={({item, index}) => (
           <TouchableOpacity
             onPress={() => {
               rowPressed(index);
@@ -223,10 +223,10 @@ export const Dashboard = ({ navigation }) => {
   const renderFooterView = () => {
     return (
       <View>
-        <View style={{ height: 20 }} />
+        <View style={{height: 20}} />
       </View>
-    )
-  }
+    );
+  };
 
   const rowPressed = index => {
     // console.log('pressed', index);
@@ -239,13 +239,13 @@ export const Dashboard = ({ navigation }) => {
         navigation.navigate(ScreenNamesMarketing.ORDERSLIST);
         break;
       case 2:
-        navigation.navigate(ScreenNamesMarketing.RECEIPTS);
+        navigation.navigate(ScreenNamesMarketing.RECEIPTSLIST);
         break;
       case 3:
         navigation.navigate(ScreenNamesMarketing.CUSTOMERS);
         break;
       case 4:
-        navigation.navigate(ScreenNamesMarketing.NEWHOME);
+        navigation.navigate(ScreenNamesMarketing.SHOWCATEGORIES);
         break;
       default:
       // code block
@@ -262,7 +262,7 @@ export const Dashboard = ({ navigation }) => {
           flex: 1,
         }}
         numColumns={1}
-        renderItem={({ item, index }) => (
+        renderItem={({item, index}) => (
           <View
             style={{
               height: 58,
@@ -351,15 +351,15 @@ export const Dashboard = ({ navigation }) => {
               }}
             />
             <View
-              style={{ height: '100%', width: '80%', backgroundColor: 'white' }}>
-              <View style={{ marginTop: 24, flex: 1 }}>
+              style={{height: '100%', width: '80%', backgroundColor: 'white'}}>
+              <View style={{marginTop: 24, flex: 1}}>
                 <TouchableOpacity
                   activeOpacity={1}
                   onPress={() => {
                     // setShowSideMenu(false);
                     // navigation.navigate(ScreenNamesMarketing.MYPROFILE);  /*** uncomment it during the edit profilr integration ***/
                   }}>
-                  <View style={{ flexDirection: 'row', marginLeft: 14 }}>
+                  <View style={{flexDirection: 'row', marginLeft: 14}}>
                     <Image style={styles.imageStyle} />
                     <Text style={styles.imageTextStyle}>UN</Text>
                     <View>
@@ -371,7 +371,7 @@ export const Dashboard = ({ navigation }) => {
                 {renderListView()}
               </View>
               <View
-                style={{ borderTopColor: 'rgba(0,0,0,0.1)', borderTopWidth: 1 }}>
+                style={{borderTopColor: 'rgba(0,0,0,0.1)', borderTopWidth: 1}}>
                 <TouchableOpacity
                   activeOpacity={1}
                   onPress={() => {
@@ -388,7 +388,7 @@ export const Dashboard = ({ navigation }) => {
                         marginTop: 24,
                         flexDirection: 'row',
                       }}>
-                      <LogoutIcon style={{ width: 24, height: 24 }} />
+                      <LogoutIcon style={{width: 24, height: 24}} />
                       <Text style={styles.logoutStyles}>Logout</Text>
                     </View>
                   </View>

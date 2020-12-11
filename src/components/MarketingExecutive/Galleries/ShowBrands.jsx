@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -7,26 +7,26 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { colors } from '../../../theme/colors';
-import { theme } from '../../../theme/theme';
-import CommonSearchHeader from '../UI/CommonSearchHeader';
+import {colors} from '../../../theme/colors';
+import {theme} from '../../../theme/theme';
+// import CommonSearchHeader from '../UI/CommonSearchHeader';
 import _orderBy from 'lodash/orderBy';
 import {
   cdnUrl,
   clientCode,
-  clientName,
+  // clientName,
   restEndPoints,
   requestHeaders,
 } from '../../../../qbconfig';
-import { Image } from 'react-native-elements';
-import { Loader } from '../../Loader';
+import {Image} from 'react-native-elements';
+import {Loader} from '../../Loader';
 import _startCase from 'lodash/startCase';
 import _toLower from 'lodash/toLower';
-import { useDebounce } from 'use-debounce';
+import {useDebounce} from 'use-debounce';
 import axios from 'axios';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -68,43 +68,43 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ShowBrands = ({ route, navigation }) => {
-  const { title, catsSubcats, categoryId } = route.params;
+export const ShowBrands = ({route, navigation}) => {
+  const {title, catsSubcats, categoryId} = route.params;
   const [showSearch, setShowSearch] = useState(false);
   const [searchData, setSearchData] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [debouncedText] = useDebounce(searchText, 500);
 
   let brands = [];
-  catsSubcats.map((catSubCatDetails) => {
+  catsSubcats.map(catSubCatDetails => {
     if (parseInt(catSubCatDetails.parentID) === parseInt(categoryId))
       brands.push(catSubCatDetails);
   });
 
-  const { CATALOG_ITEMS_AC } = restEndPoints;
+  // const {CATALOG_ITEMS_AC} = restEndPoints;
   const orderedBrands = _orderBy(brands, ['weight'], ['asc']);
 
-  const searchItems = async () => {
-    // console.log(debouncedText, 'debouncedText is........');
-    if (searchText.length >= 3) {
-      try {
-        await axios
-          .get(`${CATALOG_ITEMS_AC.URL}?q=${debouncedText}`, {
-            headers: requestHeaders,
-          })
-          .then((apiResponse) => {
-            // console.log(apiResponse);
-            setSearchData(apiResponse.data);
-          })
-          .catch((error) => {
-            navigation.push(ScreenNamesMarketing.LOGIN);
-            // console.log(error.response, '@@@@@@@@@@@@@@@@@@@@@@@@@@');
-          });
-      } catch (error) {
-        // console.log(error, '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-      }
-    }
-  };
+  // const searchItems = async () => {
+  //   // console.log(debouncedText, 'debouncedText is........');
+  //   if (searchText.length >= 3) {
+  //     try {
+  //       await axios
+  //         .get(`${CATALOG_ITEMS_AC.URL}?q=${debouncedText}`, {
+  //           headers: requestHeaders,
+  //         })
+  //         .then(apiResponse => {
+  //           // console.log(apiResponse);
+  //           setSearchData(apiResponse.data);
+  //         })
+  //         .catch(error => {
+  //           navigation.push(ScreenNamesMarketing.LOGIN);
+  //           // console.log(error.response, '@@@@@@@@@@@@@@@@@@@@@@@@@@');
+  //         });
+  //     } catch (error) {
+  //       // console.log(error, '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     return () => {
@@ -120,7 +120,7 @@ export const ShowBrands = ({ route, navigation }) => {
         onPressLeftButton={() => {
           navigation.goBack();
         }}
-        onAddIconPress={() => { }}
+        onAddIconPress={() => {}}
         searchIcon={false}
         onPressSearchIcon={() => {
           console.log('search clicked');
@@ -128,7 +128,6 @@ export const ShowBrands = ({ route, navigation }) => {
       />
     );
   };
-
 
   // const renderHeader = () => {
   //   return (
@@ -176,8 +175,8 @@ export const ShowBrands = ({ route, navigation }) => {
         }}
         data={orderedBrands}
         numColumns={2}
-        renderItem={({ item }) => renderRow(item)}
-        keyExtractor={(item) => item.categoryCode}
+        renderItem={({item}) => renderRow(item)}
+        keyExtractor={item => item.categoryCode}
         removeClippedSubviews={false}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
@@ -185,7 +184,7 @@ export const ShowBrands = ({ route, navigation }) => {
     );
   };
 
-  const renderRow = (item) => {
+  const renderRow = item => {
     const imageUrl = encodeURI(
       `${cdnUrl}/${clientCode}/categories/${item.imageName}`,
     );
@@ -194,15 +193,15 @@ export const ShowBrands = ({ route, navigation }) => {
         activeOpacity={1}
         style={styles.brandRowStyles}
         onPress={() => {
-          // navigation.navigate(ScreenNamesMarketing.CATALOGUE, {
-          //   brandName: item.categoryName,
-          //   categoryId: categoryId,
-          //   subCategoryId: item.categoryID,
-          // });
+          navigation.navigate(ScreenNamesMarketing.GALLERIES, {
+            brandName: item.categoryName,
+            categoryId: categoryId,
+            subCategoryId: item.categoryID,
+          });
         }}>
         <Image
-          source={{ uri: imageUrl }}
-          style={{ width: 150, height: 150 }}
+          source={{uri: imageUrl}}
+          style={{width: 150, height: 150}}
           resizeMode="stretch"
           PlaceholderContent={<Loader />}
         />
@@ -221,8 +220,8 @@ export const ShowBrands = ({ route, navigation }) => {
           backgroundColor: theme.colors.BLACK_WITH_OPACITY_5,
         }}
         data={searchData}
-        renderItem={({ item }) => renderSearchRow(item)}
-        keyExtractor={(item) => item}
+        renderItem={({item}) => renderSearchRow(item)}
+        keyExtractor={item => item}
         removeClippedSubviews={false}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
@@ -230,7 +229,7 @@ export const ShowBrands = ({ route, navigation }) => {
     );
   };
 
-  const renderSearchRow = (item) => {
+  const renderSearchRow = item => {
     return (
       <TouchableOpacity
         activeOpacity={1}

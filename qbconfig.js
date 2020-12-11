@@ -25,10 +25,10 @@ export const cdnUrl = 'https://dgufxvy74ps27.cloudfront.net';
 
 // end points
 export const restEndPoints = {
-  LOGIN: { URL: `${apiBaseUrl}/authorize/app` },
-  RESEND_OTP: { URL: `${apiBaseUrl}/app/v1/resend-otp` }, // Org-Id header required
-  GET_TOKEN: { URL: `${apiBaseUrl}/app/v1/get-token` }, // Org-Id header required
-  CREATE_APPOINTMENT: { URL: `${apiBaseUrl}/crm-object/create/appointment` },
+  LOGIN: {URL: `${apiBaseUrl}/authorize/app`},
+  RESEND_OTP: {URL: `${apiBaseUrl}/app/v1/resend-otp`}, // Org-Id header required
+  GET_TOKEN: {URL: `${apiBaseUrl}/app/v1/get-token`}, // Org-Id header required
+  CREATE_APPOINTMENT: {URL: `${apiBaseUrl}/crm-object/create/appointment`},
   UPDATE_APPOINTMENT: {
     URL: appointmentCode =>
       `${apiBaseUrl}/crm-object/update/appointment/${appointmentCode}`,
@@ -42,13 +42,13 @@ export const restEndPoints = {
       `${apiBaseUrl}/crm-object/list/appointment?pageNo=${pageNo}&perPage=${perPage}&appointmentTime=${appointmentTime}`,
   },
   CUSTOMER_NAMES: {
-    URL: name => `${apiBaseUrl}/customers/ac/get-names?q=${name}`,
+    URL: name => `${apiBaseUrl}/customers/ac/get-names?q=${name}&limit=20`,
   },
   PRODUCT_NAMES: {
     URL: searchString =>
       `${apiBaseUrl}/products/ac?q=${searchString}&limit=25&it=p`,
   },
-  CREATE_RECEIPT: { URL: `${apiBaseUrl}/fin/receipts/${clientCode}` },
+  CREATE_RECEIPT: {URL: `${apiBaseUrl}/fin/receipts/${clientCode}`},
   UPDATE_RECEIPT: {
     URL: receiptNo => `${apiBaseUrl}/fin/receipts/${receiptNo}/${clientCode}`,
   },
@@ -61,7 +61,11 @@ export const restEndPoints = {
   DELETE_RECEIPT: {
     URL: receiptNo => `${apiBaseUrl}/fin/receipts/${receiptNo}/${clientCode}`,
   },
-  CATALOGS: { URL: `${apiBaseUrl}/app/v1/catalog` },
+  GET_CUSTOMER_BILLNOS: {
+    URL: customerName =>
+      `${apiBaseUrl}/fin/receipts-get-billnos?customerName=${customerName}`,
+  },
+  CATALOGS: {URL: `${apiBaseUrl}/app/v1/catalog`},
   CATALOG_DETAILS: {
     URL: catalogCode => `${apiBaseUrl}/app/v1/catalog/details/${catalogCode}`,
   },
@@ -69,7 +73,7 @@ export const restEndPoints = {
     URL: productName =>
       `${apiBaseUrl}/inventory/get-item-details-by-name?itemName=${productName}`,
   },
-  NEW_ORDER: { URL: `${apiBaseUrl}/app/v1/order` },
+  NEW_ORDER: {URL: `${apiBaseUrl}/app/v1/order`},
   ORDER_DETAILS: {
     URL: orderCode => `${apiBaseUrl}/app/v1/order/${orderCode}`,
   },
@@ -125,10 +129,10 @@ export const apptPurposeList = {
 };
 
 // payment methods
-export const paymentMethods = {
-  c: 'Cash',
-  b: 'Bank',
-};
+export const paymentMethods = [
+  {paymentMethodKey: 'c', paymentMethodName: 'Cash'},
+  {paymentMethodKey: 'b', paymentMethodName: 'Bank'},
+];
 
 // payment methods
 export const paymentTypes = ['Wholesale', 'Retail', 'Online', 'Exmill'];

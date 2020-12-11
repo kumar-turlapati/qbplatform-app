@@ -1,36 +1,38 @@
 import React from 'react';
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
-import { Orders } from './Orders/Orders';
-import { Appointments } from './Appointments/Appointments';
-import { Customers } from './Customers/Customers';
-import { Galleries } from './Galleries/Galleries';
-import { Receipts } from './Receipts/Receipts';
-import { Dashboard } from './Dashboard';
-import { Dispatches } from './Dispatches/Dispatches';
-import { Profile } from '../Profile';
-import { Login } from '../Login';
-import { OrdersProductSearch } from './Orders/OrdersProductSearch';
-import { OrdersProductDetails } from './Orders/OrdersProductDetails';
-import { OrderCartDetails } from './Orders/OrderCartDetails';
-import { OrderAvailabilityCheck } from './Orders/OrderAvailabilityCheck';
-import { OrderProductDeliveryStatus } from './Orders/OrderProductDeliveryStatus';
-import { OrderDetailsView } from './Orders/OrderDetailsView';
-import { OrderUpdate } from './Orders/OrderUpdate';
-import { DispatchOrderList } from './Dispatches/DispatchOrderList';
-import { DispatchCustomerList } from './Dispatches/DispatchCustomerList';
-import { DispatchDetails } from './Dispatches/DispatchDetails';
-import { DispatchTrackStatus } from './Dispatches/DispatchTrackStatus';
-import { CustomerNameSearch } from './Receipts/CustomerNameSearch';
-import { OrdersList } from './Orders/OrdersList';
-import { ReceiptOrderDetails } from './Receipts/ReceiptOrderDetails';
-import { CustomerDetailsUpdate } from './Customers/CustomerDetailsUpdate';
-import { CustomerAppointmentAndOrder } from './Customers/CustomerAppointmentAndOrder';
-import { CustomerOrderFlowStatus } from './Customers/CustomerOrderFlowStatus';
-import { GalleryDetailView } from './Galleries/GalleryDetailView';
-import { CreateAppointments } from './Appointments/CreateAppointments';
-import { NewHome } from './Galleries/NewHome';
-import { ShowBrands } from './Galleries/ShowBrands';
-
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
+import {Orders} from './Orders/Orders';
+import {Appointments} from './Appointments/Appointments';
+import {Customers} from './Customers/Customers';
+import {Galleries} from './Galleries/Galleries';
+import {Receipts} from './Receipts/Receipts';
+import {ReceiptsList} from './Receipts/ReceiptsList';
+import {Dashboard} from './Dashboard';
+import {Dispatches} from './Dispatches/Dispatches';
+import {Profile} from '../Profile';
+import {Login} from '../Login';
+import {OrdersProductSearch} from './Orders/OrdersProductSearch';
+import {OrdersProductDetails} from './Orders/OrdersProductDetails';
+import {OrderCartDetails} from './Orders/OrderCartDetails';
+import {OrderAvailabilityCheck} from './Orders/OrderAvailabilityCheck';
+import {OrderProductDeliveryStatus} from './Orders/OrderProductDeliveryStatus';
+import {OrderDetailsView} from './Orders/OrderDetailsView';
+import {OrderUpdate} from './Orders/OrderUpdate';
+import {DispatchOrderList} from './Dispatches/DispatchOrderList';
+import {DispatchCustomerList} from './Dispatches/DispatchCustomerList';
+import {DispatchDetails} from './Dispatches/DispatchDetails';
+import {DispatchTrackStatus} from './Dispatches/DispatchTrackStatus';
+import {CustomerNameSearch} from './Receipts/CustomerNameSearch';
+import {OrdersList} from './Orders/OrdersList';
+import {CreateReceipt} from './Receipts/CreateReceipt';
+import {EditReceipt} from './Receipts/EditReceipt';
+import {ViewReceipt} from './Receipts/ViewReceipt';
+import {CustomerDetailsUpdate} from './Customers/CustomerDetailsUpdate';
+import {CustomerAppointmentAndOrder} from './Customers/CustomerAppointmentAndOrder';
+import {CustomerOrderFlowStatus} from './Customers/CustomerOrderFlowStatus';
+import {GalleryDetailView} from './Galleries/GalleryDetailView';
+import {CreateAppointments} from './Appointments/CreateAppointments';
+import {ShowCategories} from './Galleries/ShowCategories';
+import {ShowBrands} from './Galleries/ShowBrands';
 import {
   ScreenNamesMarketing,
   ScreenNamesGeneral,
@@ -42,7 +44,7 @@ export const AppNavigatorMarketing = () => {
     <Stack.Navigator
       initialRouteName={ScreenNamesGeneral.LOGIN}
       headerMode="none"
-      screenOptions={({ route, navigation }) => ({
+      screenOptions={({route, navigation}) => ({
         headerShown: false,
         gestureEnabled: false,
         // cardOverlayEnabled: true,
@@ -149,8 +151,20 @@ export const AppNavigatorMarketing = () => {
         component={OrdersList}
       />
       <Stack.Screen
-        name={ScreenNamesMarketing.RECEIPTORDERDETAILS}
-        component={ReceiptOrderDetails}
+        name={ScreenNamesMarketing.CREATERECEIPT}
+        component={CreateReceipt}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.EDITRECEIPT}
+        component={EditReceipt}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.VIEWRECEIPT}
+        component={ViewReceipt}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.RECEIPTSLIST}
+        component={ReceiptsList}
       />
       <Stack.Screen
         name={ScreenNamesMarketing.CUSTOMERDETAILSUPDATE}
@@ -173,8 +187,8 @@ export const AppNavigatorMarketing = () => {
         component={CreateAppointments}
       />
       <Stack.Screen
-        name={ScreenNamesMarketing.NEWHOME}
-        component={NewHome}
+        name={ScreenNamesMarketing.SHOWCATEGORIES}
+        component={ShowCategories}
       />
       <Stack.Screen
         name={ScreenNamesMarketing.SHOWBRANDS}

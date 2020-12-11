@@ -1,6 +1,6 @@
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import _find from 'lodash/find';
-import React, { useCallback, useState, useEffect } from 'react';
+import React, {useCallback, useState, useEffect} from 'react';
 import {
   BackHandler,
   Dimensions,
@@ -21,24 +21,24 @@ import {
   contentSections,
 } from '../../../../qbconfig';
 // import {Boy, Girl, MainImage, Men, Women} from '../../icons/Icons';
-import { colors } from '../../../theme/colors';
-import { theme } from '../../../theme/theme';
+import {colors} from '../../../theme/colors';
+import {theme} from '../../../theme/theme';
 import useAsyncStorage from '../customHooks/async';
-import { Loader } from '../../Loader';
+import {Loader} from '../../Loader';
 import CommonAlertView from '../UI/CommonAlertView';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
 import axios from 'axios';
 import _pickBy from 'lodash/pickBy';
 import _orderBy from 'lodash/orderBy';
-import { useDebounce } from 'use-debounce';
-import { useIsFocused } from '@react-navigation/native';
-import { ifIphoneX } from 'react-native-iphone-x-helper';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import {useDebounce} from 'use-debounce';
+import {useIsFocused} from '@react-navigation/native';
+import {ifIphoneX} from 'react-native-iphone-x-helper';
+import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 import CommonHeader from '../UI/CommonHeader';
-import { getCatsSubcats } from '../../../networkcalls/apiCalls';
-import { getValue } from '../../../utils/asyncStorage';
+import {getCatsSubcats} from '../../../networkcalls/apiCalls';
+import {getValue} from '../../../utils/asyncStorage';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 // console.log(width / 2, 'width is.....');
 
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const NewHome = ({ route, navigation }) => {
+export const ShowCategories = ({route, navigation}) => {
   const [showSortView, setShowSortView] = useState(false);
   const [wishlistLoading, setWishlistLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -223,25 +223,23 @@ export const NewHome = ({ route, navigation }) => {
   const [catsSubcatsLoading, setCatsSubcatsLoading] = useState(true);
   const [appContentErrorText, setAppContentErrorText] = useState('');
   const [catsSubcatsErrorText, setCatsSubcatsErrorText] = useState('');
-  const { storageItem: accessToken } = useAsyncStorage(
-    '@accessToken',
-  );
-  const { CATS_SUBCATS, APP_CONTENT, CATALOG_ITEMS_AC } = restEndPoints;
+  const {storageItem: accessToken} = useAsyncStorage('@accessToken');
+  const {CATS_SUBCATS, APP_CONTENT, CATALOG_ITEMS_AC} = restEndPoints;
   const [searchText, setSearchText] = useState('');
   const [debouncedText] = useDebounce(searchText, 500);
   const isFocused = useIsFocused();
 
-  useFocusEffect(
-    useCallback(() => {
-      const onBackPress = () => {
-        BackHandler.exitApp();
-        // return true;
-      };
-      BackHandler.addEventListener('hardwareBackPress', onBackPress);
-      return () =>
-        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    }, []),
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const onBackPress = () => {
+  //       BackHandler.exitApp();
+  //       // return true;
+  //     };
+  //     BackHandler.addEventListener('hardwareBackPress', onBackPress);
+  //     return () =>
+  //       BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+  //   }, []),
+  // );
 
   useEffect(() => {
     catalogListCalling();
@@ -253,7 +251,7 @@ export const NewHome = ({ route, navigation }) => {
       getCatsSubcats(accessToken)
         .then(apiResponse => {
           setCatsSubcatsLoading(false);
-          console.log(apiResponse.data, 'cats subcats');
+          // console.log(apiResponse.data, 'cats subcats');
           if (apiResponse.data.status === 'success') {
             const response = apiResponse.data.response;
             setCatsSubcats(response);
@@ -261,11 +259,9 @@ export const NewHome = ({ route, navigation }) => {
             setCatsSubcatsErrorText('Unable to fetch content :(');
           }
         })
-        .catch((error) => {
-          console.log(error, 'catalogListCalling ---> ');
-
+        .catch(error => {
+          // console.log(error, 'catalogListCalling ---> ');
           navigation.push(ScreenNamesMarketing.LOGIN);
-
           setCatsSubcatsLoading(false);
           setCatsSubcatsErrorText(error.response.data.errortext);
         });
@@ -285,7 +281,7 @@ export const NewHome = ({ route, navigation }) => {
         onPressLeftButton={() => {
           navigation.goBack();
         }}
-        onAddIconPress={() => { }}
+        onAddIconPress={() => {}}
         searchIcon={false}
         onPressSearchIcon={() => {
           console.log('search clicked');
@@ -293,9 +289,8 @@ export const NewHome = ({ route, navigation }) => {
       />
     );
   };
-
-
-  const renderRow = (item) => {
+  /*
+  const renderRow = item => {
     const imageUrl = encodeURI(
       `${cdnUrl}/${clientCode}/app-content/${item.imageName}`,
     );
@@ -305,7 +300,7 @@ export const NewHome = ({ route, navigation }) => {
     return (
       <TouchableOpacity
         activeOpacity={1}
-        style={[styles.brandRowStyles, { height: 200 }]}
+        style={[styles.brandRowStyles, {height: 200}]}
         onPress={() => {
           if (enableRedirection) {
             if (catalogId > 0) {
@@ -326,7 +321,7 @@ export const NewHome = ({ route, navigation }) => {
           source={{
             uri: imageUrl,
           }}
-          style={{ width: 200, height: 200 }}
+          style={{width: 200, height: 200}}
           resizeMode="contain"
         />
       </TouchableOpacity>
@@ -343,8 +338,8 @@ export const NewHome = ({ route, navigation }) => {
         }}
         data={topBrands}
         horizontal={true}
-        renderItem={({ item }) => renderRow(item)}
-        keyExtractor={(item) => item.contentCode}
+        renderItem={({item}) => renderRow(item)}
+        keyExtractor={item => item.contentCode}
         removeClippedSubviews={true}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
@@ -386,18 +381,18 @@ export const NewHome = ({ route, navigation }) => {
         }}
         data={hotSellers}
         horizontal={true}
-        renderItem={({ item }) => renderRow(item)}
-        keyExtractor={(item) => item.contentCode}
+        renderItem={({item}) => renderRow(item)}
+        keyExtractor={item => item.contentCode}
         removeClippedSubviews={false}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
       />
     );
   };
-
+*/
   const renderBrandsList = () => {
     let categories = [];
-    catsSubcats.map((catSubCatDetails) => {
+    catsSubcats.map(catSubCatDetails => {
       if (parseInt(catSubCatDetails.parentID) === 0)
         categories.push(catSubCatDetails);
     });
@@ -409,20 +404,15 @@ export const NewHome = ({ route, navigation }) => {
         }}
         data={orderedCategories}
         numColumns={2}
-        renderItem={({ item }) => renderBrandRow(item)}
-        keyExtractor={(item) => item.categoryCode}
+        renderItem={({item}) => renderBrandRow(item)}
+        keyExtractor={item => item.categoryCode}
         removeClippedSubviews={false}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-      // ListHeaderComponent={renderHeaderComponent()}
-      // ListFooterComponent={
-      //   (topBrands.length > 0 || hotSellers.length > 0) &&
-      //   renderFooterComponent()
-      // }
       />
     );
   };
-
+  /*
   const renderFooterComponent = () => {
     // console.log(hotSellers, 'hot sellers.....');
     return (
@@ -449,8 +439,8 @@ export const NewHome = ({ route, navigation }) => {
       </>
     );
   };
-
-  const renderBrandRow = (item) => {
+*/
+  const renderBrandRow = item => {
     const imageUrl = encodeURI(
       `${cdnUrl}/${clientCode}/categories/${item.imageName}`,
     );
@@ -467,20 +457,20 @@ export const NewHome = ({ route, navigation }) => {
         }}>
         <Text style={styles.genderTextStyles}>{item.categoryName}</Text>
         <Image
-          source={{ uri: imageUrl }}
-          style={{ width: width / 2, height: width / 2 }}
+          source={{uri: imageUrl}}
+          style={{width: width / 2, height: width / 2}}
           resizeMode="stretch"
         />
-        <Text style={{ ...styles.viewTextStyles, paddingTop: 10 }}>
+        <Text style={{...styles.viewTextStyles, paddingTop: 10}}>
           View All Brands
         </Text>
       </TouchableOpacity>
     );
   };
-
+  /*
   const renderMainView = () => {
     return (
-      <View style={{ width: '100%', height: 200 }}>
+      <View style={{width: '100%', height: 200}}>
         {renderCarouselView()}
         {!appContentLoading && renderSliderDotView()}
       </View>
@@ -489,23 +479,23 @@ export const NewHome = ({ route, navigation }) => {
 
   const renderCarouselView = () => {
     return (
-      <View style={{ position: 'absolute', width: '100%', height: 200, top: 0 }}>
+      <View style={{position: 'absolute', width: '100%', height: 200, top: 0}}>
         {appContentLoading ? (
           <Loader />
         ) : (
-            <Carousel
-              onSnapToItem={(slideIndex) => setSlideIndex(slideIndex)}
-              data={banners}
-              renderItem={renderSliderItem}
-              sliderWidth={width}
-              itemWidth={width}
-              loop
-              autoplay
-              autoplayDelay={3000}
-              autoplayInterval={3000}
-              layout="default"
-            />
-          )}
+          <Carousel
+            onSnapToItem={slideIndex => setSlideIndex(slideIndex)}
+            data={banners}
+            renderItem={renderSliderItem}
+            sliderWidth={width}
+            itemWidth={width}
+            loop
+            autoplay
+            autoplayDelay={3000}
+            autoplayInterval={3000}
+            layout="default"
+          />
+        )}
       </View>
     );
   };
@@ -536,7 +526,7 @@ export const NewHome = ({ route, navigation }) => {
     />
   );
 
-  const renderSliderItem = ({ item }) => {
+  const renderSliderItem = ({item}) => {
     const imageUrl = encodeURI(
       `${cdnUrl}/${clientCode}/app-content/${item.imageName}`,
     );
@@ -546,7 +536,7 @@ export const NewHome = ({ route, navigation }) => {
     // console.log('item in banners .....', item);
     return (
       <TouchableOpacity
-        style={{ width: '100%', height: 200 }}
+        style={{width: '100%', height: 200}}
         activeOpacity={1}
         onPress={() => {
           if (enableRedirection) {
@@ -564,9 +554,9 @@ export const NewHome = ({ route, navigation }) => {
           }
         }}>
         <Image
-          source={{ uri: imageUrl }}
+          source={{uri: imageUrl}}
           PlaceholderContent={<Loader />}
-          style={{ width: '100%', height: 200, position: 'absolute' }}
+          style={{width: '100%', height: 200, position: 'absolute'}}
           resizeMode="stretch"
         />
       </TouchableOpacity>
@@ -598,8 +588,8 @@ export const NewHome = ({ route, navigation }) => {
           backgroundColor: theme.colors.BLACK_WITH_OPACITY_5,
         }}
         data={searchData}
-        renderItem={({ item }) => renderSearchRow(item)}
-        keyExtractor={(item) => item}
+        renderItem={({item}) => renderSearchRow(item)}
+        keyExtractor={item => item}
         removeClippedSubviews={false}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
@@ -607,7 +597,7 @@ export const NewHome = ({ route, navigation }) => {
     );
   };
 
-  const renderSearchRow = (item) => {
+  const renderSearchRow = item => {
     return (
       <TouchableOpacity
         activeOpacity={1}
@@ -625,7 +615,7 @@ export const NewHome = ({ route, navigation }) => {
       </TouchableOpacity>
     );
   };
-
+*/
   return (
     <View style={styles.container}>
       {renderHeader()}

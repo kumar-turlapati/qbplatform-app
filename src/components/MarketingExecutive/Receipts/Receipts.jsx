@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, StyleSheet, Text, Dimensions} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
 import {SearchIcon, SideArrow, BarCodeIcon} from '../../../icons/Icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 
-const {height, width} = Dimensions.get('window');
+// const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -61,13 +61,12 @@ export const Receipts = ({navigation}) => {
   const renderHeader = () => {
     return (
       <CommonHeader
-        mainViewHeading={'New Order'}
+        mainViewHeading={'New Receipt'}
         leftSideText={'Home'}
         onPressLeftButton={() => {
           navigation.goBack();
         }}
-        onAddIconPress={() => {}}
-        addIcon={true}
+        rightSideText="Receipts"
       />
     );
   };

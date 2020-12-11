@@ -14,6 +14,8 @@ target 'qbplatform' do
   # you should disable these next few lines.
   use_flipper!
 
+  pod 'RNCPicker', :path => '../node_modules/@react-native-picker/picker'
+
   post_install do |installer|
     flipper_post_install(installer)
   end

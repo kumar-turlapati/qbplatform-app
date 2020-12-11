@@ -47,28 +47,6 @@ export const Galleries = ({navigation}) => {
 
   console.log(clothes, '-----------------');
 
-  // const catalogListCalling = async () => {
-  //   const accessToken = await getValue('accessToken')
-  //   getCatalogList(accessToken)
-  //     .then((apiResponse) => {
-  //       setShowSpinner(false)
-  //       console.log('apiResponse', apiResponse)
-  //       if (apiResponse.data.status === 'success') {
-  //         const businessLocations =
-  //           apiResponse.data.response.businessLocations;
-  //         setBusinessLocations(businessLocations);
-  //         const catalogs =
-  //           apiResponse.data.response.catalogs;
-  //         setClothes(catalogs)
-
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setShowSpinner(false)
-  //       console.log('error', error)
-  //     })
-  // }
-
   const catalogListCalling = async () => {
     const accessToken = await getValue('accessToken');
     getCatsSubcats(accessToken)
