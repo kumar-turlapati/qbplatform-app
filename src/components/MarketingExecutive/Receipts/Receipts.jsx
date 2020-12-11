@@ -77,7 +77,9 @@ export const Receipts = ({navigation}) => {
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
-            navigation.navigate(ScreenNamesMarketing.CUSTOMERNAMESEARCH);
+            navigation.navigate(ScreenNamesMarketing.CUSTOMERNAMESEARCH, {
+              redirectTo: 'createReceipt',
+            });
           }}>
           <View style={styles.productViewStyles}>
             <View style={styles.iconBackgroundStyle}>

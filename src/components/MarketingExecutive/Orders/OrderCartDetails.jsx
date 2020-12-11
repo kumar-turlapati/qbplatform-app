@@ -6,7 +6,7 @@ import {
   Text,
   View,
   TouchableOpacity,
-  // TextInput,
+  TextInput,
   Alert,
 } from 'react-native';
 // import CommonSearchHeader from '../UI/CommonSearchHeader';
@@ -100,6 +100,7 @@ export const OrderCartDetails = ({navigation}) => {
   const [campaigns, setCampaigns] = useState([]);
   const [campaignIndex, setCampaignIndex] = useState(-1);
   const [campaignsActual, setCampaignsActual] = useState([]);
+  const [remarks, setRemarks] = useState('');
 
   // console.log(campaigns, 'campaigns......', campaignIndex);
 
@@ -165,7 +166,9 @@ export const OrderCartDetails = ({navigation}) => {
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
-          navigation.navigate(ScreenNamesMarketing.CUSTOMERNAMESEARCH);
+          navigation.navigate(ScreenNamesMarketing.CUSTOMERNAMESEARCH, {
+            redirectTo: 'orderCart',
+          });
         }}>
         <View style={{backgroundColor: 'white', height: 44}}>
           <View
@@ -251,7 +254,7 @@ export const OrderCartDetails = ({navigation}) => {
             <View>
               <Text style={styles.titleStyle}>{item.itemName}</Text>
               <Text style={styles.descriptionStyle}>
-                Rate: ₹{itemRate}&nbsp;Qty: {item.orderQty}*{item.packedQty}
+                Rate: ₹{itemRate}&nbsp;Qty: {item.orderQty}
               </Text>
             </View>
           </View>
@@ -264,7 +267,7 @@ export const OrderCartDetails = ({navigation}) => {
                 paddingTop: 19,
               },
             ]}>
-            ₹ {calculatePrice(item.orderQty * item.packedQty, itemRate)}
+            ₹ {calculatePrice(item.orderQty, itemRate)}
           </Text>
         </View>
       </View>
@@ -346,7 +349,48 @@ export const OrderCartDetails = ({navigation}) => {
             />
           </View>
         </TouchableOpacity>
-
+        <View style={{backgroundColor: 'white', height: 44, marginTop: 21}}>
+          <View
+            style={{
+              marginHorizontal: 16,
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+            }}>
+            <Text
+              style={[
+                styles.titleStyle,
+                {
+                  color: '#3C3C43',
+                  opacity: 0.5,
+                },
+              ]}>
+              Instruction(s)
+            </Text>
+            <TextInput
+              style={[
+                styles.titleStyle,
+                {
+                  marginRight: 0,
+                  color: '#0081CE',
+                  fontSize: 17,
+                  lineHeight: 22,
+                  letterSpacing: -0.5,
+                  opacity: 1,
+                  textAlign: 'right',
+                },
+              ]}
+              value={remarks}
+              returnKeyType="done"
+              placeholder="type here..."
+              onChangeText={remarks => {
+                setRemarks(remarks);
+              }}
+              maxLength={100}
+              keyboardType="default"
+            />
+          </View>
+        </View>
         {campaigns.length > 0 && (
           <TouchableOpacity
             activeOpacity={1}
@@ -445,6 +489,27 @@ export const OrderCartDetails = ({navigation}) => {
     return 'wholesale';
   };
 
+  const getCartValue = () => {
+    let cartValue = 0;
+    showItems.every(itemDetails => {
+      let itemRate;
+      const itemQty = itemDetails.orderQty;
+      if (paymentIndex === 0) itemRate = itemDetails.wholesalePrice;
+      if (paymentIndex === 1) itemRate = itemDetails.mrp;
+      if (paymentIndex === 2) itemRate = itemDetails.onlinePrice;
+      if (paymentIndex === 3) itemRate = itemDetails.exmillPrice;
+      const itemTotal = parseFloat(itemQty * itemRate);
+      if (itemTotal <= 0) {
+        cartValue = 0;
+        return false;
+      } else {
+        cartValue += itemTotal;
+      }
+    });
+    // console.log(cartValue, 'cart value is......');
+    return cartValue > 0;
+  };
+
   const callTheNewOrderAPI = async () => {
     setShowSpinner(true);
     const accessToken = await getValue('accessToken');
@@ -455,7 +520,7 @@ export const OrderCartDetails = ({navigation}) => {
     showItems.forEach(itemDetails => {
       let itemRate;
       const itemId = itemDetails.itemID;
-      const itemQty = itemDetails.orderQty;
+      const itemQty = itemDetails.orderQty / itemDetails.packedQty;
       const packedQty = itemDetails.packedQty;
       if (paymentIndex === 0) itemRate = itemDetails.wholesalePrice;
       if (paymentIndex === 1) itemRate = itemDetails.mrp;
@@ -486,6 +551,7 @@ export const OrderCartDetails = ({navigation}) => {
       billingRate: getApiPaymentString(options[paymentIndex]),
       exeMobileNo: exeMobileNo,
       campaignId: campaignId,
+      remarks: remarks,
       customerName:
         selectedCustomerName.length > 0
           ? selectedCustomerName
@@ -522,10 +588,10 @@ export const OrderCartDetails = ({navigation}) => {
       <CommonButton
         buttonTitle={'Place Order'}
         onPressButton={() => {
-          callTheNewOrderAPI();
-          // navigation.navigate(ScreenNamesMarketing.ORDERAVAILABILITYCHECK);
+          if (getCartValue() > 0) callTheNewOrderAPI();
         }}
         propStyle={{marginHorizontal: 16, marginTop: 26}}
+        disableButton={!getCartValue()}
       />
     );
   };

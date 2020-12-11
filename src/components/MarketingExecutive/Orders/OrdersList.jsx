@@ -112,6 +112,7 @@ export const OrdersList = ({navigation}) => {
         setShowSpinner(false);
         if (apiResponse.data.status === 'success') {
           setAllOrders(apiResponse.data.response);
+          setReloadComponent(false);
         }
       })
       .catch(error => {

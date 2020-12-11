@@ -33,9 +33,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export const CustomerNameSearch = ({navigation}) => {
+export const CustomerNameSearch = ({navigation, route}) => {
   const [names, setNames] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
+  const redirectTo = route.params.redirectTo ? route.params.redirectTo : '';
 
   const {setSelectedCustomerName} = useContext(ShoppingCartContext);
 
@@ -89,11 +90,16 @@ export const CustomerNameSearch = ({navigation}) => {
           onPress={() => {
             // console.log('rowData', rowData);
             setSelectedCustomerName(rowData);
-            navigation.navigate(ScreenNamesMarketing.CREATERECEIPT, {
-              name: '',
-              invoiceNumber: '',
-              status: '',
-            });
+            if (redirectTo === 'orderCart') {
+              navigation.navigate(ScreenNamesMarketing.ORDERCARTDETAILS);
+            } else if (redirectTo === 'orderProductDetails') {
+              const selectedProduct = route.params.selectedProduct;
+              navigation.navigate(ScreenNamesMarketing.ORDERPRODUCTDETAILS, {
+                selectedProduct: selectedProduct,
+              });
+            } else if (redirectTo === 'createReceipt') {
+              navigation.navigate(ScreenNamesMarketing.CREATERECEIPT);
+            }
           }}
           style={styles.textStyle}>
           {rowData}

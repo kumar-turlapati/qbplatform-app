@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const CreateReceipt = ({navigation, route}) => {
+export const CreateReceipt = ({navigation}) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
   const [selectedBillNo, setSelectedBillNo] = useState('');
   const [amountPaid, setAmountPaid] = useState(0);

@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 
 export const OrdersProductDetails = ({navigation, route}) => {
   const {selectedProduct} = route.params;
-  const [orderQuantity, setOrderQuantity] = useState('1');
+  const [orderQuantity, setOrderQuantity] = useState(selectedProduct.mOq);
   const {addToCart, selectedCustomerName, cartItems} = useContext(
     ShoppingCartContext,
   );
@@ -82,7 +82,10 @@ export const OrdersProductDetails = ({navigation, route}) => {
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
-          navigation.navigate(ScreenNamesMarketing.CUSTOMERNAMESEARCH);
+          navigation.navigate(ScreenNamesMarketing.CUSTOMERNAMESEARCH, {
+            redirectTo: 'orderProductDetails',
+            selectedProduct: selectedProduct,
+          });
         }}>
         <View style={{backgroundColor: colors.WHITE, height: 44}}>
           <View style={theme.viewStyles.viewMainStyles}>
@@ -158,13 +161,13 @@ export const OrdersProductDetails = ({navigation, route}) => {
             {selectedProduct.mOq}
           </Text>
         </View>
-        {/* <View style={styles.viewStyle}>
+        <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Lot No.</Text>
           <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
             {selectedProduct.lotNo}
           </Text>
         </View>
-        <View style={styles.viewStyle}>
+        {/* <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Available Qty. (in this Lot)</Text>
           <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
             {selectedProduct.closingQty}
@@ -177,9 +180,7 @@ export const OrdersProductDetails = ({navigation, route}) => {
           </Text>
         </View>
         <View style={styles.viewStyle}>
-          <Text style={styles.titleStyle}>
-            Order Qty. (multiplied with packed qty.)
-          </Text>
+          <Text style={styles.titleStyle}>Order Qty.</Text>
           <TextInput
             style={[
               styles.titleStyle,
@@ -218,7 +219,9 @@ export const OrdersProductDetails = ({navigation, route}) => {
           if (
             parseFloat(selectedProduct.closingQty) < parseFloat(orderQuantity)
           ) {
-            showGenericAlert('The order limit is more than items in the stock');
+            showGenericAlert(
+              'The order qty. is more than available stock in this lot!',
+            );
             return;
           }
           const isItemAdded = updateCart();
@@ -235,9 +238,11 @@ export const OrdersProductDetails = ({navigation, route}) => {
       <CommonButton
         buttonTitle="View Cart"
         onPressButton={() => {
-          navigation.navigate(ScreenNamesMarketing.ORDERCARTDETAILS);
+          if (cartItems.length > 0)
+            navigation.navigate(ScreenNamesMarketing.ORDERCARTDETAILS);
         }}
         propStyle={{marginHorizontal: 16, marginTop: 15, marginBottom: 20}}
+        disableButton={cartItems.length === 0}
       />
     );
   };

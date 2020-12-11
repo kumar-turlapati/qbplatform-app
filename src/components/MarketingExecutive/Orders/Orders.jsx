@@ -16,6 +16,7 @@ import {getValue} from '../../../utils/asyncStorage';
 import {getItemsByBarcode} from '../../../networkcalls/apiCalls';
 import CommonSpinner from '../UI/CommonSpinner';
 import Analytics from 'appcenter-analytics';
+import BarcodeMask from 'react-native-barcode-mask';
 
 // const {height, width} = Dimensions.get('window');
 
@@ -213,12 +214,13 @@ export const Orders = ({navigation}) => {
           type={RNCamera.Constants.Type.back}
           flashMode={RNCamera.Constants.FlashMode.on}
           barCodeTypes={[RNCamera.Constants.BarCodeType.ean13]}
-          onGoogleVisionBarcodesDetected={e => {
-            console.warn(e);
-          }}
+          // onGoogleVisionBarcodesDetected={e => {
+          //   console.warn(e);
+          // }}
           onBarCodeRead={onBarCodeRead}
-          captureAudio={false}
-        />
+          captureAudio={false}>
+          <BarcodeMask width={300} height={200} edgeColor={'#C3111A'} />
+        </RNCamera>
         <View
           style={{
             position: 'absolute',
