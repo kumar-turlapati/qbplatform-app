@@ -18,6 +18,7 @@ import {restEndPoints, requestHeadersWoOrg} from '../../../../qbconfig';
 import axios from 'axios';
 import CommonSpinner from '../UI/CommonSpinner';
 import {useIsFocused} from '@react-navigation/native';
+import {NoDataMessage} from '../NoDataMessage';
 import moment from 'moment';
 
 // const {height, width} = Dimensions.get('window');
@@ -98,6 +99,7 @@ export const ReceiptsList = ({navigation}) => {
   const [showDialogue, setShowDialogue] = useState(false);
   const [selectedData, setSelectedData] = useState([]);
   const [reloadComponent, setReloadComponent] = useState(false);
+  const [showNoDataMessage, setShowNoDataMessage] = useState(false);
   const isFocused = useIsFocused();
 
   const getReceipts = async () => {
@@ -122,9 +124,10 @@ export const ReceiptsList = ({navigation}) => {
         })
         .catch(e => {
           // console.log(e, 'error is.....');
-          const errorMessage = e.response.data.errortext;
-          showGenericAlert('Oops :(', errorMessage, true);
+          // const errorMessage = e.response.data.errortext;
+          // showGenericAlert('Oops :(', errorMessage, true);
           setShowSpinner(false);
+          setShowNoDataMessage(true);
         });
     } catch (e) {
       showGenericAlert('Oops :(', 'Network Error. Please try again.', true);
@@ -356,9 +359,15 @@ export const ReceiptsList = ({navigation}) => {
   return (
     <View style={styles.container}>
       {renderHeader()}
-      {renderFlatList()}
-      {renderSpinner()}
-      {showDialogue && renderCommonDialogue()}
+      {showNoDataMessage ? (
+        <NoDataMessage message="No Receipts found :(" />
+      ) : (
+        <>
+          {renderFlatList()}
+          {renderSpinner()}
+          {showDialogue && renderCommonDialogue()}
+        </>
+      )}
     </View>
   );
 };

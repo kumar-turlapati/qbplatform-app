@@ -21,6 +21,7 @@ import {
 } from '../../../networkcalls/apiCalls';
 import moment from 'moment';
 import {useIsFocused} from '@react-navigation/native';
+import {NoDataMessage} from '../NoDataMessage';
 
 // const {height, width} = Dimensions.get('window');
 
@@ -100,6 +101,7 @@ export const OrdersList = ({navigation}) => {
   const [showDialogue, setShowDialogue] = useState(false);
   const [selectedData, setSelectedData] = useState([]);
   const [reloadComponent, setReloadComponent] = useState(false);
+  const [showNoDataMessage, setShowNoDataMessage] = useState(false);
   const isFocused = useIsFocused();
 
   const getOrderList = async () => {
@@ -117,7 +119,8 @@ export const OrdersList = ({navigation}) => {
       })
       .catch(error => {
         setShowSpinner(false);
-        console.log('error', error.response.data);
+        setShowNoDataMessage(true);
+        // console.log('error', error.response.data);
       });
   };
 
@@ -381,10 +384,15 @@ export const OrdersList = ({navigation}) => {
   return (
     <View style={styles.container}>
       {renderHeader()}
-      {/* {renderCompanyName()} */}
-      {renderFlatList()}
-      {renderSpinner()}
-      {showDialogue && renderCommonDialogue()}
+      {showNoDataMessage ? (
+        <NoDataMessage message="No Orders found :(" />
+      ) : (
+        <>
+          {renderFlatList()}
+          {renderSpinner()}
+          {showDialogue && renderCommonDialogue()}
+        </>
+      )}
     </View>
   );
 };
