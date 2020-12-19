@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,6 +6,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {colors} from '../../../theme/colors';
 import {theme} from '../../../theme/theme';
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const CreateAppointments = ({navigation}) => {
+export const UpdateAppointments = ({navigation, route}) => {
   const [showSpinner, setShowSpinner] = useState(false);
   // const [rightBtnClicked, setRightBtnClicked] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -86,18 +87,99 @@ export const CreateAppointments = ({navigation}) => {
   const [showAlertMessage, setShowAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
   const [apptError, setApptError] = useState(false);
+  const appointmentCode = route.params.appointmentCode;
+
+  // console.log(
+  //   'appointment code....',
+  //   appointmentCode,
+  //   restEndPoints.APPOINTMENT_DETAILS.URL(appointmentCode),
+  // );
+
+  useEffect(() => {
+    const getAppointmentDetails = async appointmentCode => {
+      setShowSpinner(true);
+      const accessToken = await getValue('accessToken');
+      requestHeadersWoOrg['Access-Token'] = accessToken;
+      try {
+        await axios
+          .get(restEndPoints.APPOINTMENT_DETAILS.URL(appointmentCode), {
+            headers: requestHeadersWoOrg,
+          })
+          .then(apiResponse => {
+            // console.log('apiResponse in appointment details....', apiResponse);
+            setShowSpinner(false);
+            if (apiResponse.data.status === 'success') {
+              const appointmentDetails =
+                apiResponse.data.response.objectDetails;
+              setAppointmentTitle(appointmentDetails.appointmentTitle);
+              setAppointmentDesc(appointmentDetails.appointmentDescription);
+              setCustomerName(appointmentDetails.appointmentTitle);
+              setStartDate(
+                new Date(
+                  moment(
+                    appointmentDetails.appointmentStartDate,
+                    'YYYY-MM-DD HH:mm:ss',
+                  ),
+                ),
+              );
+              setEndDate(
+                new Date(
+                  moment(
+                    appointmentDetails.appointmentEndDate,
+                    'YYYY-MM-DD HH:mm:ss',
+                  ),
+                ),
+              );
+              setAppointmentType(appointmentDetails.appointmentTypeId);
+              setAppointmentPurpose(appointmentDetails.appointmentPurposeId);
+              setAppointmentStatus(appointmentDetails.appointmentStatusId);
+            } else {
+            }
+          })
+          .catch(e => {
+            // console.log(e, 'error.....', e.response.data, accessToken);
+            const errorMessage = e.response.data.errortext;
+            if (errorMessage === 'Token Expired') {
+              const removeKeys = clearAllData();
+              if (removeKeys) {
+                navigation.navigate(ScreenNamesGeneral.LOGIN);
+              }
+            } else {
+              setAlertTitle('Oops :(');
+              setShowSpinner(false);
+              setShowAlert(true);
+              setApptError(true);
+              setShowAlertMessage(errorMessage);
+            }
+          });
+      } catch (e) {
+        // console.log(e, 'error in catch block.....');
+        setShowSpinner(false);
+        setShowAlert(true);
+        setAlertTitle('Oops :(');
+        setShowAlertMessage('Network Error. Please try again.');
+      }
+    };
+    if (appointmentCode.length > 0) {
+      getAppointmentDetails(appointmentCode);
+    }
+  }, [appointmentCode]);
 
   const renderHeader = () => {
     return (
       <CommonHeader
-        mainViewHeading={'New Appointment'}
-        leftSideText={'Home'}
+        mainViewHeading={'Update Appointment'}
+        leftSideText={'Back'}
         onPressLeftButton={() => {
           navigation.goBack();
         }}
-        rightSideText="Calendar"
+        rightSideText="Delete"
         onPressRightButton={() => {
-          navigation.navigate(ScreenNamesMarketing.APPOINTMENTS);
+          showYesNoAlert(
+            'Confirm',
+            'Are you sure. You want to delete this appointment?',
+            appointmentCode,
+          );
         }}
       />
     );
@@ -316,10 +398,10 @@ export const CreateAppointments = ({navigation}) => {
   const renderButton = () => {
     return (
       <CommonButton
-        buttonTitle={'Create Appointment'}
+        buttonTitle={'Update Appointment'}
         disableButton={!disableButton}
         onPressButton={() => {
-          createAppointment();
+          updateAppointment(appointmentCode);
         }}
         propStyle={{marginHorizontal: 16, marginTop: 26, marginBottom: 30}}
       />
@@ -344,7 +426,7 @@ export const CreateAppointments = ({navigation}) => {
     );
   };
 
-  const createAppointment = async () => {
+  const updateAppointment = async appointmentCode => {
     const accessToken = await getValue('accessToken');
     const uuid = await getValue('UUID');
     const startDate = moment(isStartDate);
@@ -366,8 +448,8 @@ export const CreateAppointments = ({navigation}) => {
     requestHeadersWoOrg['Access-Token'] = accessToken;
     setShowSpinner(true);
     await axios
-      .post(
-        restEndPoints.CREATE_APPOINTMENT.URL,
+      .put(
+        restEndPoints.UPDATE_APPOINTMENT.URL(appointmentCode),
         {...requestInput},
         {headers: requestHeadersWoOrg},
       )
@@ -377,7 +459,7 @@ export const CreateAppointments = ({navigation}) => {
         setShowAlert(true);
         if (apiResponse.data.status === 'success') {
           setAlertTitle('Success :)');
-          setShowAlertMessage(`Appointment created successfully`);
+          setShowAlertMessage(`Appointment updated successfully`);
         } else {
           setAlertTitle('Oops :(');
           setShowAlertMessage(`Unable to create Appointment. Please try again`);
@@ -397,6 +479,56 @@ export const CreateAppointments = ({navigation}) => {
           setShowAlert(true);
           setApptError(true);
           setShowAlertMessage(errorMessage);
+        }
+      });
+  };
+
+  const showYesNoAlert = (title, message, appointmentCode) => {
+    Alert.alert(title, message, [
+      {
+        text: 'Yes',
+        onPress: () => {
+          deleteAppointment(appointmentCode);
+        },
+      },
+      {
+        text: 'No',
+        onPress: () => {},
+      },
+    ]);
+  };
+
+  const deleteAppointment = async appointmentCode => {
+    setShowSpinner(true);
+    const accessToken = await getValue('accessToken');
+    const deleteUrl = restEndPoints.DELETE_APPOINTMENT.URL(appointmentCode);
+    requestHeadersWoOrg['Access-Token'] = accessToken;
+    await axios
+      .delete(deleteUrl, {
+        headers: requestHeadersWoOrg,
+      })
+      .then(() => {
+        setShowSpinner(false);
+        setShowAlert(true);
+        setAlertTitle('Success :)');
+        setShowAlertMessage(`Appointment deleted successfully`);
+      })
+      .catch(e => {
+        const errorMessage = e.response.data.errortext;
+        console.log(e.response.data);
+        if (errorMessage === 'Token Expired') {
+          const removeKeys = clearAllData();
+          if (removeKeys) {
+            navigation.navigate(ScreenNamesGeneral.LOGIN);
+          }
+        } else {
+          setShowSpinner(false);
+          setShowAlert(true);
+          setApptError(true);
+          setAlertTitle('Error :)');
+          setShowAlertMessage(
+            `An error occurred while deleting this appointment.`,
+          );
         }
       });
   };

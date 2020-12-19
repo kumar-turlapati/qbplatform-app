@@ -216,14 +216,6 @@ export const ReceiptsList = ({navigation}) => {
           false,
         );
       });
-
-    // try {
-
-    // } catch (e) {
-    //   console.log(e);
-    //   setShowSpinner(false);
-    //   showGenericAlert('Error ):', `Network error. Please try again.`, false);
-    // }
   };
 
   const showYesNoAlert = (title, message) => {

@@ -33,13 +33,17 @@ export const restEndPoints = {
     URL: appointmentCode =>
       `${apiBaseUrl}/crm-object/update/appointment/${appointmentCode}`,
   },
+  APPOINTMENT_DETAILS: {
+    URL: appointmentCode =>
+      `${apiBaseUrl}/crm-object/details/appointment/${appointmentCode}`,
+  },
   DELETE_APPOINTMENT: {
     URL: appointmentCode =>
-      `${apiBaseUrl}/crm-object/update/appointment/${appointmentCode}`,
+      `${apiBaseUrl}/crm-object/delete/appointment/${appointmentCode}`,
   },
   LIST_APPOINTMENTS: {
-    URL: (pageNo, perPage, appointmentTime) =>
-      `${apiBaseUrl}/crm-object/list/appointment?pageNo=${pageNo}&perPage=${perPage}&appointmentTime=${appointmentTime}`,
+    URL: (pageNo, perPage, appointmentTime, fromDate, toDate) =>
+      `${apiBaseUrl}/crm-object/list/appointment?pageNo=${pageNo}&perPage=${perPage}&appointmentTime=${appointmentTime}&fromDate=${fromDate}&toDate=${toDate}`,
   },
   CUSTOMER_NAMES: {
     URL: name => `${apiBaseUrl}/customers/ac/get-names?q=${name}&limit=20`,
@@ -105,28 +109,34 @@ export const restEndPoints = {
 };
 
 // appointment statuses
-export const apptStatusList = {
-  1300: 'To Do',
-  1301: 'In Progress',
-  1302: 'Cancelled',
-  1303: 'Completed',
-};
+export const apptStatusList = [
+  {typeId: 1300, typeName: 'To Do'},
+  {typeId: 1301, typeName: 'In Progress'},
+  {typeId: 1302, typeName: 'Cancelled'},
+  {typeId: 1303, typeName: 'Completed'},
+];
+
+// appointment types
+export const apptTypes = [
+  {typeId: 1200, typeName: 'Virtual'},
+  {typeId: 1201, typeName: 'Physical'},
+];
 
 // appointment responses
-export const apptResponsesList = {
-  704: 'Tobe added',
-  700: 'Interested',
-  701: 'Not interested',
-  702: 'Unable to reach',
-  703: 'No Response',
-};
+export const apptResponsesList = [
+  {typeId: 704, typeName: 'Tobe added'},
+  {typeId: 700, typeName: 'Interested'},
+  {typeId: 701, typeName: 'Not interested'},
+  {typeId: 702, typeName: 'Unable to reach'},
+  {typeId: 703, typeName: 'No Response'},
+];
 
 // appointment purpose list
-export const apptPurposeList = {
-  1100: 'Marketing activity',
-  1101: 'Sales activity',
-  1102: 'Payment followup',
-};
+export const apptPurposeList = [
+  {typeId: 1100, typeName: 'Marketing activity'},
+  {typeId: 1101, typeName: 'Sales activity'},
+  {typeId: 1102, typeName: 'Payment followup'},
+];
 
 // payment methods
 export const paymentMethods = [

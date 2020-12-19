@@ -24,10 +24,10 @@ import {
 import {useState} from 'react';
 // import {colors} from '../../theme/colors';
 import {theme} from '../../theme/theme';
-import {clearAllData, getValue, removeValue} from '../../utils/asyncStorage';
+import {clearAllData, getValue} from '../../utils/asyncStorage';
 import {clientName} from '../../../qbconfig';
 
-const {height, width} = Dimensions.get('window');
+// const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -333,7 +333,7 @@ export const Dashboard = ({navigation}) => {
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
-            console.log('sidebar pressed');
+            // console.log('sidebar pressed');
             setShowSideMenu(false);
           }}>
           <View>
@@ -377,7 +377,7 @@ export const Dashboard = ({navigation}) => {
                   onPress={() => {
                     const removeKeys = clearAllData();
                     if (removeKeys) {
-                      navigation.pop(ScreenNamesMarketing.LOGIN);
+                      navigation.navigate(ScreenNamesMarketing.LOGIN);
                     }
                   }}>
                   <View>

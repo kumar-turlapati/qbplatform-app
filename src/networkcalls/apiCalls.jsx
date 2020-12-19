@@ -94,14 +94,16 @@ export const getAppointmentList = async (
   pageNo,
   perPage,
   appointmentTime,
+  fromDate,
+  toDate,
 ) => {
-  console.log(
-    'LIST_APPOINTMENTS.URL(pageNo, perPage, appointmentTime),',
-    LIST_APPOINTMENTS.URL(pageNo, perPage, appointmentTime),
-  );
+  // console.log(
+  //   'LIST_APPOINTMENTS.URL(pageNo, perPage, appointmentTime),',
+  //   LIST_APPOINTMENTS.URL(pageNo, perPage, appointmentTime),
+  // );
   requestHeadersWoOrg['Access-Token'] = accessToken;
   return await Axios.get(
-    LIST_APPOINTMENTS.URL(pageNo, perPage, appointmentTime),
+    LIST_APPOINTMENTS.URL(pageNo, perPage, appointmentTime, fromDate, toDate),
     {
       headers: requestHeadersWoOrg,
     },

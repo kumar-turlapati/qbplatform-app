@@ -29,6 +29,7 @@ export const ScreenNamesMarketing = {
   CUSTOMERORDERFLOWSTATUS: 'CustomerOrderFlowStatus',
   GALLERYDETAILVIEW: 'GalleryDetailView',
   CREATEAPPOINTMENTS: 'CreateAppointments',
+  UPDATEAPPOINTMENTS: 'UpdateAppointments',
   SHOWBRANDS: 'ShowBrands',
   SHOWCATEGORIES: 'ShowCategories',
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
-import {SearchIcon, SideArrow, BarCodeIcon} from '../../../icons/Icons';
+import {SearchIcon, SideArrow} from '../../../icons/Icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 

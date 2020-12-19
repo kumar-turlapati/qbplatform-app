@@ -1,11 +1,11 @@
-import { Dimensions } from 'react-native';
-import { colors } from './colors';
+import {Dimensions} from 'react-native';
+import {colors} from './colors';
 
-const { height, width } = Dimensions.get('window')
+const {height, width} = Dimensions.get('window');
 
 export const viewStyles = {
   flex: {
-    flex: 1
+    flex: 1,
   },
   container: {
     flex: 1,
@@ -24,7 +24,7 @@ export const viewStyles = {
     paddingLeft: 16,
     fontSize: 17,
     lineHeight: 22,
-    color: colors.BLACK
+    color: colors.BLACK,
   },
   headerTextStyles: {
     marginTop: 16,
@@ -33,14 +33,14 @@ export const viewStyles = {
     fontSize: 15,
     lineHeight: 20,
     letterSpacing: -0.24,
-    marginBottom: 5
+    marginBottom: 5,
   },
   buttonStyles: {
     marginHorizontal: 35,
     marginTop: 16,
     borderRadius: 10,
     height: 50,
-    backgroundColor: colors.RED
+    backgroundColor: colors.RED,
   },
   activityIndicatorStyles: {
     position: 'absolute',
@@ -48,7 +48,7 @@ export const viewStyles = {
     width: '100%',
     height: '100%',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   errorTextStyles: {
     fontSize: 14,
@@ -65,7 +65,7 @@ export const viewStyles = {
     fontSize: 17,
     lineHeight: 22,
     fontWeight: '600',
-    color: colors.RED
+    color: colors.RED,
   },
   headerDashboardStyles: {
     width: width,
@@ -82,7 +82,7 @@ export const viewStyles = {
     height: 1,
     marginHorizontal: 0,
     marginTop: 26,
-    opacity: 0.1
+    opacity: 0.1,
   },
   listRowViewStyle: {
     marginLeft: 16,
@@ -186,7 +186,7 @@ export const viewStyles = {
     fontSize: 17,
     lineHeight: 22,
     fontWeight: '600',
-    color: colors.RED
+    color: colors.RED,
   },
   headerMainStyles: {
     width: width,
@@ -240,5 +240,5 @@ export const viewStyles = {
     marginLeft: 15,
     marginRight: 0,
     marginTop: 11,
-  }
+  },
 };
