@@ -46,7 +46,11 @@ const styles = StyleSheet.create({
 
 export const OrdersProductDetails = ({navigation, route}) => {
   const {selectedProduct} = route.params;
-  const [orderQuantity, setOrderQuantity] = useState(selectedProduct.mOq);
+  const [orderQuantity, setOrderQuantity] = useState(
+    route && route.params && route.params.qtyRequested
+      ? String(route.params.qtyRequested)
+      : String(1),
+  );
   const {addToCart, selectedCustomerName, cartItems} = useContext(
     ShoppingCartContext,
   );
@@ -200,7 +204,7 @@ export const OrdersProductDetails = ({navigation, route}) => {
               setOrderQuantity(changedQuantity);
             }}
             maxLength={6}
-            keyboardType="number-pad"
+            keyboardType="numeric"
           />
         </View>
       </View>

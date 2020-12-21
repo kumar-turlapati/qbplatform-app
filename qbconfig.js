@@ -106,6 +106,11 @@ export const restEndPoints = {
   APP_CONTENT: {
     URL: `${apiBaseUrl}/app/v1/app-content`,
   },
+  CATALOGS: {URL: `${apiBaseUrl}/app/v1/catalog`},
+  CATALOG_DETAILS: {
+    URL: (catalogCode, byType) =>
+      `${apiBaseUrl}/app/v1/catalog/details/${catalogCode}?by=${byType}`,
+  },
 };
 
 // appointment statuses

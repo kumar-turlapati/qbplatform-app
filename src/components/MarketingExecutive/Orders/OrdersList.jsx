@@ -12,8 +12,11 @@ import {
 import CommonHeader from '../UI/CommonHeader';
 import {SideArrow} from '../../../icons/Icons';
 import CommonDialogView from '../UI/CommonDialogView';
-import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
-import {getValue} from '../../../utils/asyncStorage';
+import {
+  ScreenNamesMarketing,
+  ScreenNamesGeneral,
+} from '../../../helpers/ScreenNames';
+import {getValue, clearAllData} from '../../../utils/asyncStorage';
 import CommonSpinner from '../UI/CommonSpinner';
 import {
   getAllOrders,
@@ -118,9 +121,19 @@ export const OrdersList = ({navigation}) => {
         }
       })
       .catch(error => {
+        // console.log('error', error);
         setShowSpinner(false);
-        setShowNoDataMessage(true);
-        // console.log('error', error.response.data);
+        const response = error.response.data;
+        const tokenFailed = response.tokenFailed ? response.tokenFailed : 0;
+        const errorMessage = response.errortext ? response.errortext : '';
+        if (parseInt(tokenFailed) || errorMessage === 'Token Expired') {
+          const removeKeys = clearAllData();
+          if (removeKeys) {
+            navigation.navigate(ScreenNamesGeneral.LOGIN);
+          }
+        } else {
+          setShowNoDataMessage(true);
+        }
       });
   };
 

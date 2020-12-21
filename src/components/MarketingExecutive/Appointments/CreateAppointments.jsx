@@ -386,7 +386,10 @@ export const CreateAppointments = ({navigation}) => {
       .catch(e => {
         // console.log(e, 'error.....', e.response.data, accessToken);
         const errorMessage = e.response.data.errortext;
-        if (errorMessage === 'Token Expired') {
+        const tokenFailed = e.response.data.tokenFailed
+          ? e.response.data.tokenFailed
+          : 0;
+        if (errorMessage === 'Token Expired' || parseInt(tokenFailed)) {
           const removeKeys = clearAllData();
           if (removeKeys) {
             navigation.navigate(ScreenNamesGeneral.LOGIN);

@@ -9,21 +9,12 @@ import {
 } from 'react-native';
 import {colors} from '../../../theme/colors';
 import {theme} from '../../../theme/theme';
-// import CommonSearchHeader from '../UI/CommonSearchHeader';
 import _orderBy from 'lodash/orderBy';
-import {
-  cdnUrl,
-  clientCode,
-  // clientName,
-  restEndPoints,
-  requestHeaders,
-} from '../../../../qbconfig';
+import {cdnUrl, clientCode} from '../../../../qbconfig';
 import {Image} from 'react-native-elements';
 import {Loader} from '../../Loader';
 import _startCase from 'lodash/startCase';
 import _toLower from 'lodash/toLower';
-import {useDebounce} from 'use-debounce';
-import axios from 'axios';
 import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 
 const {width, height} = Dimensions.get('window');
@@ -73,7 +64,6 @@ export const ShowBrands = ({route, navigation}) => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchData, setSearchData] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [debouncedText] = useDebounce(searchText, 500);
 
   let brands = [];
   catsSubcats.map(catSubCatDetails => {
@@ -81,30 +71,7 @@ export const ShowBrands = ({route, navigation}) => {
       brands.push(catSubCatDetails);
   });
 
-  // const {CATALOG_ITEMS_AC} = restEndPoints;
   const orderedBrands = _orderBy(brands, ['weight'], ['asc']);
-
-  // const searchItems = async () => {
-  //   // console.log(debouncedText, 'debouncedText is........');
-  //   if (searchText.length >= 3) {
-  //     try {
-  //       await axios
-  //         .get(`${CATALOG_ITEMS_AC.URL}?q=${debouncedText}`, {
-  //           headers: requestHeaders,
-  //         })
-  //         .then(apiResponse => {
-  //           // console.log(apiResponse);
-  //           setSearchData(apiResponse.data);
-  //         })
-  //         .catch(error => {
-  //           navigation.push(ScreenNamesMarketing.LOGIN);
-  //           // console.log(error.response, '@@@@@@@@@@@@@@@@@@@@@@@@@@');
-  //         });
-  //     } catch (error) {
-  //       // console.log(error, '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     return () => {
@@ -128,42 +95,6 @@ export const ShowBrands = ({route, navigation}) => {
       />
     );
   };
-
-  // const renderHeader = () => {
-  //   return (
-  //     <CommonSearchHeader
-  //       leftSideText={clientName}
-  //       isSearch
-  //       isTabView={false}
-  //       onPressLeftButton={() => {
-  //         navigation.goBack();
-  //       }}
-  //       onPressSearchIcon={() => {
-  //         // console.log('onPressSearchIcon');
-  //         setShowSearch(true);
-  //       }}
-  //       onPressSearchCloseButton={() => {
-  //         // console.log('onPressSearchCloseButton');
-  //         setSearchData([]);
-  //       }}
-  //       onTextChange={(changedText) => {
-  //         setSearchText(changedText);
-  //         if (changedText.length === 0) {
-  //           setSearchData([]);
-  //         } else {
-  //           searchItems();
-  //         }
-  //       }}
-  //       onPressBackButton={() => {
-  //         // console.log('onPressBackButton');
-  //         navigation.goBack();
-  //         setSearchData([]);
-  //         setSearchText('');
-  //         setShowSearch(false);
-  //       }}
-  //     />
-  //   );
-  // };
 
   const renderListView = () => {
     return (
@@ -238,10 +169,6 @@ export const ShowBrands = ({route, navigation}) => {
           setSearchData([]);
           setSearchText('');
           setShowSearch(false);
-          // navigation.push(ScreenNamesMarketing.PRODUCTDETAILSFROMSEARCH, {
-          //   itemName: item,
-          //   byNameOrId: 'name',
-          // });
         }}>
         <Text style={styles.searchRowTextStyles}>{item}</Text>
       </TouchableOpacity>

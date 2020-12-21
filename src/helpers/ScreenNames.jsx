@@ -32,6 +32,7 @@ export const ScreenNamesMarketing = {
   UPDATEAPPOINTMENTS: 'UpdateAppointments',
   SHOWBRANDS: 'ShowBrands',
   SHOWCATEGORIES: 'ShowCategories',
+  PRODUCTDETAILS: 'ProductDetails',
 };
 
 export const ScreenNamesGeneral = {

@@ -29,6 +29,14 @@ const {
 } = restEndPoints;
 
 export const loginAPI = mobileNumber => {
+  // if (requestHeadersWoOrg['Access-Token']) {
+  //   delete requestHeadersWoOrg['Acess-Token'];
+  // }
+  // console.log(requestHeadersWoOrg, 'after deleting.......');
+  const requestHeadersWoOrg = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    Accept: 'application/json',
+  };
   return Axios.post(
     LOGIN.URL,
     {

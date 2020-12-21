@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, TextInput, View, Keyboard} from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
-import {ScreenNamesMarketing} from '../helpers/ScreenNames';
+import {ScreenNamesMarketing, ScreenNamesGeneral} from '../helpers/ScreenNames';
 import {Logo} from '../icons/Icons';
 import {getToken, loginAPI, resendOTP} from '../networkcalls/apiCalls';
 import {colors} from '../theme/colors';
@@ -24,15 +24,16 @@ const styles = StyleSheet.create({
 });
 
 export const Login = ({navigation}) => {
-  const [mobileNumber, setMobileNumber] = useState('');
   // const [isMobileNumberError, setIsMobileNumberError] = useState(false);
+  // const [isPasswordError, setIsPasswordError] = useState(false);
+  // const [isOrgCodeError, setIsOrgCodeError] = useState(false);
+  const [mobileNumber, setMobileNumber] = useState('');
   const [showOTPView, setShowOTPView] = useState(false);
   const [apiErrorText, setApiErrorText] = useState('');
   const [showSpinner, setShowSpinner] = useState(false);
   const [uuid, setUuid] = useState('');
   const [OTP, setOTP] = useState('');
-  // const [isPasswordError, setIsPasswordError] = useState(false);
-  // const [isOrgCodeError, setIsOrgCodeError] = useState(false);
+  const [disableResendOtp, setDisableResendOtp] = useState(false);
 
   useEffect(() => {
     loginHappened();
@@ -75,24 +76,31 @@ export const Login = ({navigation}) => {
           );
         }
       })
-      .catch(e => {
-        // console.log(e);
+      .catch(error => {
+        // console.log(error.response.data);
         Analytics.trackEvent(
           `Error in getOtp for mobile number: ${mobileNumber}`,
-          JSON.stringify(e),
+          JSON.stringify(error),
         );
         errorMethod(`Network error, please try again.`);
+        const response = error.response.data;
+        const tokenFailed = response.tokenFailed ? response.tokenFailed : 0;
+        const errorMessage = response.errortext ? response.errortext : '';
+        if (errorMessage === 'Token Expired' || parseInt(tokenFailed)) {
+          const removeKeys = clearAllData();
+          removeKeys.then(() => navigation.navigate(ScreenNamesGeneral.LOGIN));
+        }
       });
   };
 
   const resendOtpCall = () => {
     setShowSpinner(true);
     resendOTP(uuid)
-      .then(response => {
+      .then(() => {
         setShowSpinner(false);
         // console.log(response, 'response is........');
       })
-      .catch(e => {
+      .catch(() => {
         setShowSpinner(false);
         const errorMessage = apiResponse.data.errortext;
         errorMethod(errorMessage);
@@ -112,14 +120,23 @@ export const Login = ({navigation}) => {
           const accessToken = apiResponse.data.response.accessToken;
           storeItem('accessToken', accessToken);
           storeItem('exeMobileNo', mobileNumber);
+          setMobileNumber('');
           navigation.navigate(ScreenNamesMarketing.DASHBOARD);
         } else {
           const errorMessage = apiResponse.data.errortext;
           errorMethod(errorMessage);
         }
       })
-      .catch(() => {
-        errorMethod('Network error. Please try again after some time.');
+      .catch(error => {
+        // console.log(error.response.data);
+        const response = error.response.data;
+        const tokenFailed = response.tokenFailed ? response.tokenFailed : 0;
+        const errorMessage = response.errortext ? response.errortext : '';
+        if (errorMessage === 'Token Expired' || parseInt(tokenFailed)) {
+          const removeKeys = clearAllData();
+          removeKeys.then(() => navigation.navigate(ScreenNamesGeneral.LOGIN));
+        }
+        errorMethod(errorMessage);
       });
   };
 
@@ -129,7 +146,7 @@ export const Login = ({navigation}) => {
     setApiErrorText(errorMessage);
     setTimeout(() => {
       setApiErrorText('');
-    }, 10000);
+    }, 5000);
   };
 
   const renderMobileView = () => {
@@ -202,6 +219,7 @@ export const Login = ({navigation}) => {
             buttonTitle="<- Change details?"
             onPressButton={() => {
               setShowOTPView(false);
+              setMobileNumber('');
             }}
             propStyle={[styles.changeButtonStyles, {backgroundColor: 'white'}]}
             buttonStyle={{color: colors.RED}}
@@ -209,10 +227,17 @@ export const Login = ({navigation}) => {
           <CommonButton
             buttonTitle="Resend OTP"
             onPressButton={() => {
-              resendOtpCall();
+              if (!disableResendOtp) {
+                setDisableResendOtp(true);
+                resendOtpCall();
+                setTimeout(() => {
+                  setDisableResendOtp(false);
+                }, 20000);
+              }
             }}
             propStyle={[styles.changeButtonStyles, {backgroundColor: 'white'}]}
             buttonStyle={{color: colors.RED}}
+            disableButton={disableResendOtp}
           />
         </View>
       </>

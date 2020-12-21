@@ -1,23 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {
-  // Dimensions,
-  FlatList,
-  Keyboard,
-  StyleSheet,
-  Text,
-  View,
-  Alert,
-} from 'react-native';
+import {FlatList, StyleSheet, Text, View, Alert} from 'react-native';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
 import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 import {
-  // getCatalogList,
   getProductSearch,
   getItemDetailsByName,
 } from '../../../networkcalls/apiCalls';
 import {getValue} from '../../../utils/asyncStorage';
 import {theme} from '../../../theme/theme';
-// import _ from 'lodash';
 import CommonSpinner from '../UI/CommonSpinner';
 
 const styles = StyleSheet.create({
@@ -26,21 +16,43 @@ const styles = StyleSheet.create({
   },
 });
 
-export const OrdersProductSearch = ({navigation}) => {
+export const OrdersProductSearch = ({navigation, route}) => {
   const [productData, setProductData] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
+  const itemName =
+    route &&
+    route.params &&
+    route.params.itemName &&
+    route.params.itemName.length > 0
+      ? route.params.itemName
+      : '';
+  const orderQty =
+    route &&
+    route.params &&
+    route.params.orderQty &&
+    route.params.orderQty.length > 0
+      ? route.params.orderQty
+      : 0;
 
   // console.log(productData, 'product data is.........');
+  // console.log(itemName, orderQty, 'from params.....');
 
   useEffect(() => {
-    // setShowSpinner(true);
-    // catalogListCalling('a');
-  }, []);
+    if (itemName && itemName.length > 0) {
+      setShowSpinner(true);
+      callAPIOnClick(itemName);
+    }
+  }, [itemName]);
 
-  const showGenericAlert = () => {
+  const showGenericAlert = itemName => {
     Alert.alert('Oops :(', 'Product is out of stock !', [
       {
         text: 'OK',
+        onPress: () => {
+          if (itemName.length > 0) {
+            navigation.goBack();
+          }
+        },
       },
     ]);
   };
@@ -68,9 +80,10 @@ export const OrdersProductSearch = ({navigation}) => {
         if (apiResponse.data.status === 'success') {
           navigation.replace(ScreenNamesMarketing.ORDERPRODUCTDETAILS, {
             selectedProduct: apiResponse.data.response,
+            qtyRequested: orderQty,
           });
         } else {
-          showGenericAlert();
+          showGenericAlert(itemName);
         }
       })
       .catch(error => {
@@ -142,8 +155,8 @@ export const OrdersProductSearch = ({navigation}) => {
   return (
     <View style={styles.container}>
       {renderHeader()}
-      {productData.length > 2 && renderListView()}
       {renderSpinner()}
+      {productData.length > 2 && renderListView()}
     </View>
   );
 };

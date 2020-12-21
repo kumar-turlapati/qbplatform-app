@@ -122,12 +122,20 @@ export const ReceiptsList = ({navigation}) => {
             showGenericAlert('Oops :(', 'No Receipts found', true);
           }
         })
-        .catch(e => {
+        .catch(error => {
           // console.log(e, 'error is.....');
-          // const errorMessage = e.response.data.errortext;
-          // showGenericAlert('Oops :(', errorMessage, true);
-          setShowSpinner(false);
-          setShowNoDataMessage(true);
+          const response = error.response.data;
+          const tokenFailed = response.tokenFailed ? response.tokenFailed : 0;
+          const errorMessage = response.errortext ? response.errortext : '';
+          if (parseInt(tokenFailed) || errorMessage === 'Token Expired') {
+            const removeKeys = clearAllData();
+            if (removeKeys) {
+              navigation.navigate(ScreenNamesGeneral.LOGIN);
+            }
+          } else {
+            setShowSpinner(false);
+            setShowNoDataMessage(true);
+          }
         });
     } catch (e) {
       showGenericAlert('Oops :(', 'Network Error. Please try again.', true);

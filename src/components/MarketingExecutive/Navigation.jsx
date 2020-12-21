@@ -34,6 +34,7 @@ import {CreateAppointments} from './Appointments/CreateAppointments';
 import {UpdateAppointments} from './Appointments/UpdateAppointments';
 import {ShowCategories} from './Galleries/ShowCategories';
 import {ShowBrands} from './Galleries/ShowBrands';
+import {ProductDetails} from './Galleries/ProductDetails';
 import {
   ScreenNamesMarketing,
   ScreenNamesGeneral,
@@ -198,6 +199,10 @@ export const AppNavigatorMarketing = () => {
       <Stack.Screen
         name={ScreenNamesMarketing.SHOWBRANDS}
         component={ShowBrands}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.PRODUCTDETAILS}
+        component={ProductDetails}
       />
     </Stack.Navigator>
   );

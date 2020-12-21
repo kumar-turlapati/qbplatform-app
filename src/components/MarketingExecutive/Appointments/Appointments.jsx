@@ -7,7 +7,10 @@ import {getValue} from '../../../utils/asyncStorage';
 import CommonHeader from '../UI/CommonHeader';
 import moment from 'moment';
 import {ArrowLeft, ArrowRight} from '../../../icons/Icons';
-import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+import {
+  ScreenNamesMarketing,
+  ScreenNamesGeneral,
+} from '../../../helpers/ScreenNames';
 import {useIsFocused} from '@react-navigation/native';
 
 const styles = StyleSheet.create({
@@ -82,7 +85,16 @@ export const Appointments = ({navigation, route}) => {
       })
       .catch(error => {
         setShowSpinner(false);
-        console.log('error', error);
+        // console.log('error', error);
+        const response = error.response.data;
+        const tokenFailed = response.tokenFailed ? response.tokenFailed : 0;
+        const errorMessage = response.errortext ? response.errorMessage : '';
+        if (errorMessage === 'Token Expired' || parseInt(tokenFailed)) {
+          const removeKeys = clearAllData();
+          if (removeKeys) {
+            navigation.navigate(ScreenNamesGeneral.LOGIN);
+          }
+        }
       });
   };
 

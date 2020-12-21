@@ -86,7 +86,7 @@ export const OrderCartDetails = ({navigation}) => {
     clearCartInfo,
   } = useContext(ShoppingCartContext);
 
-  // console.log(cartItems, 'cart items......');
+  console.log(cartItems, 'cart items......');
 
   const [onEditClicked, setOnEditClicked] = useState(false);
   const [showItems, setShowItems] = useState(cartItems);
@@ -254,7 +254,7 @@ export const OrderCartDetails = ({navigation}) => {
             <View>
               <Text style={styles.titleStyle}>{item.itemName}</Text>
               <Text style={styles.descriptionStyle}>
-                Rate: ₹{itemRate}&nbsp;Qty: {item.orderQty}
+                Rate: ₹{itemRate}&nbsp;Qty: {item.orderQty} * {item.packedQty}
               </Text>
             </View>
           </View>
@@ -267,7 +267,7 @@ export const OrderCartDetails = ({navigation}) => {
                 paddingTop: 19,
               },
             ]}>
-            ₹ {calculatePrice(item.orderQty, itemRate)}
+            ₹ {calculatePrice(item.orderQty * item.packedQty, itemRate)}
           </Text>
         </View>
       </View>
@@ -520,7 +520,7 @@ export const OrderCartDetails = ({navigation}) => {
     showItems.forEach(itemDetails => {
       let itemRate;
       const itemId = itemDetails.itemID;
-      const itemQty = itemDetails.orderQty / itemDetails.packedQty;
+      const itemQty = itemDetails.orderQty;
       const packedQty = itemDetails.packedQty;
       if (paymentIndex === 0) itemRate = itemDetails.wholesalePrice;
       if (paymentIndex === 1) itemRate = itemDetails.mrp;

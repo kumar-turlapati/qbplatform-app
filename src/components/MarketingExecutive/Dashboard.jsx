@@ -10,14 +10,17 @@ import {
   Image,
   BackHandler,
 } from 'react-native';
-import {ScreenNamesMarketing} from '../../helpers/ScreenNames';
+import {
+  ScreenNamesMarketing,
+  ScreenNamesGeneral,
+} from '../../helpers/ScreenNames';
 import {
   MenuIcon,
   AppointmentsIcon,
   GalleryIcon,
-  CustomersIcon,
+  // CustomersIcon,
   ReceiptsIcon,
-  DispatchIcon,
+  // DispatchIcon,
   OrdersIcon,
   LogoutIcon,
 } from '../../icons/Icons';
@@ -129,10 +132,10 @@ const list = [
     icon: <ReceiptsIcon style={{width: 23, height: 30}} />,
     title: 'Receipts',
   },
-  {
-    icon: <CustomersIcon style={{width: 28, height: 29}} />,
-    title: 'Customers',
-  },
+  // {
+  //   icon: <CustomersIcon style={{width: 28, height: 29}} />,
+  //   title: 'Customers',
+  // },
   {
     icon: <GalleryIcon style={{width: 36, height: 29}} />,
     title: 'Catalogs',
@@ -152,14 +155,14 @@ export const Dashboard = ({navigation}) => {
     }, []),
   );
 
-  useEffect(() => {
-    getaccessToken();
-  }, []);
+  // useEffect(() => {
+  //   getaccessToken();
+  // }, []);
 
-  const getaccessToken = async () => {
-    const accessToken = await getValue('accessToken');
-    // console.log('accessToken', accessToken);
-  };
+  // const getaccessToken = async () => {
+  //   const accessToken = await getValue('accessToken');
+  //   console.log('accessToken', accessToken);
+  // };
 
   const renderHeader = () => {
     return (
@@ -377,7 +380,7 @@ export const Dashboard = ({navigation}) => {
                   onPress={() => {
                     const removeKeys = clearAllData();
                     if (removeKeys) {
-                      navigation.navigate(ScreenNamesMarketing.LOGIN);
+                      navigation.navigate(ScreenNamesGeneral.LOGIN);
                     }
                   }}>
                   <View>

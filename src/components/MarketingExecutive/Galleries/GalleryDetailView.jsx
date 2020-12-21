@@ -14,6 +14,10 @@ import {theme} from '../../../theme/theme';
 import {getValue} from '../../../utils/asyncStorage';
 import CommonHeader from '../UI/CommonHeader';
 import _find from 'lodash/find';
+import {
+  ScreenNamesMarketing,
+  ScreenNamesGeneral,
+} from '../../../helpers/ScreenNames';
 
 const {width} = Dimensions.get('window');
 
@@ -44,20 +48,27 @@ export const GalleryDetailView = ({navigation, route}) => {
     getCatalogDetails(accessToken, catalogCode)
       .then(apiResponse => {
         setShowSpinner(false);
-        console.log('apiResponse', apiResponse);
+        // console.log('apiResponse', apiResponse);
         if (apiResponse.data.status === 'success') {
           const businessLocations = apiResponse.data.response.businessLocations;
-          setBusinessLocations(businessLocations);
-          console.log('businessLocations', businessLocations);
-
           const catalogs = apiResponse.data.response.catalogItems;
+          setBusinessLocations(businessLocations);
           setClothes(catalogs);
-          console.log('catalogs', catalogs);
+          // console.log('catalogs', catalogs);
         }
       })
       .catch(error => {
+        // console.log('error', error);
         setShowSpinner(false);
-        console.log('error', error);
+        const response = error.response.data;
+        const tokenFailed = response.tokenFailed ? response.tokenFailed : 0;
+        const errorMessage = response.errortext ? response.errortext : '';
+        if (errorMessage === 'Token Expired' || parseInt(tokenFailed)) {
+          const removeKeys = clearAllData();
+          if (removeKeys) {
+            navigation.navigate(ScreenNamesGeneral.LOGIN);
+          }
+        }
       });
   };
 
@@ -78,7 +89,7 @@ export const GalleryDetailView = ({navigation, route}) => {
     );
   };
 
-  const renderRow = (item, index) => {
+  const renderRow = item => {
     const imageLocation = _find(
       businessLocations,
       locationDetails =>
@@ -96,9 +107,15 @@ export const GalleryDetailView = ({navigation, route}) => {
           )
         : '';
     }
-
     return (
-      <TouchableOpacity activeOpacity={1} onPress={() => {}}>
+      <TouchableOpacity
+        activeOpacity={1}
+        onPress={() => {
+          navigation.navigate(ScreenNamesMarketing.PRODUCTDETAILS, {
+            productDetails: item,
+            productLocation: imageLocation.locationCode,
+          });
+        }}>
         <ImageBackground
           style={[
             styles.rowStyle,
