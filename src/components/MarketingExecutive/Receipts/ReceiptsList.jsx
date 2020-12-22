@@ -344,10 +344,10 @@ export const ReceiptsList = ({navigation}) => {
     return (
       <CommonHeader
         mainViewHeading={'Receipts'}
-        leftSideText={'Back'}
+        leftSideText={'Home'}
         rightSideText={'New Receipt'}
         onPressLeftButton={() => {
-          navigation.goBack();
+          navigation.navigate(ScreenNamesMarketing.DASHBOARD);
         }}
         onPressRightButton={() => {
           navigation.navigate(ScreenNamesMarketing.RECEIPTS);

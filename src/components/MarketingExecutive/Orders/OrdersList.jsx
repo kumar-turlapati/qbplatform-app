@@ -149,10 +149,10 @@ export const OrdersList = ({navigation}) => {
     return (
       <CommonHeader
         mainViewHeading={'Orders'}
-        leftSideText={'Back'}
+        leftSideText={'Home'}
         rightSideText={'New Order'}
         onPressLeftButton={() => {
-          navigation.goBack();
+          navigation.navigate(ScreenNamesMarketing.DASHBOARD);
         }}
         onPressRightButton={() => {
           navigation.navigate(ScreenNamesMarketing.ORDERS);

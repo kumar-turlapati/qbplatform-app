@@ -127,7 +127,7 @@ export const Orders = ({navigation}) => {
           navigation.navigate(ScreenNamesMarketing.ORDERCARTDETAILS);
         }}
         onPressLeftButton={() => {
-          navigation.goBack();
+          navigation.navigate(ScreenNamesMarketing.ORDERSLIST);
         }}
       />
     );

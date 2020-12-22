@@ -86,7 +86,7 @@ export const OrderCartDetails = ({navigation}) => {
     clearCartInfo,
   } = useContext(ShoppingCartContext);
 
-  console.log(cartItems, 'cart items......');
+  // console.log(cartItems, 'cart items......');
 
   const [onEditClicked, setOnEditClicked] = useState(false);
   const [showItems, setShowItems] = useState(cartItems);

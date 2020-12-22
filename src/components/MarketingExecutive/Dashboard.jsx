@@ -245,11 +245,11 @@ export const Dashboard = ({navigation}) => {
         navigation.navigate(ScreenNamesMarketing.RECEIPTSLIST);
         break;
       case 3:
-        navigation.navigate(ScreenNamesMarketing.CUSTOMERS);
-        break;
-      case 4:
         navigation.navigate(ScreenNamesMarketing.SHOWCATEGORIES);
         break;
+      // case 4:
+      //   navigation.navigate(ScreenNamesMarketing.SHOWCATEGORIES);
+      //   break;
       default:
       // code block
     }
