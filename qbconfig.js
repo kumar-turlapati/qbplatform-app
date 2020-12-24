@@ -111,6 +111,9 @@ export const restEndPoints = {
     URL: (catalogCode, byType) =>
       `${apiBaseUrl}/app/v1/catalog/details/${catalogCode}?by=${byType}`,
   },
+  GET_USER_STATS: {
+    URL: uuid => `${apiBaseUrl}/user-stats/${uuid}`,
+  },
 };
 
 // appointment statuses

@@ -123,10 +123,11 @@ export const ReceiptsList = ({navigation}) => {
           }
         })
         .catch(error => {
-          // console.log(e, 'error is.....');
+          // console.log(error.response.data);
           const response = error.response.data;
           const tokenFailed = response.tokenFailed ? response.tokenFailed : 0;
           const errorMessage = response.errortext ? response.errortext : '';
+          // console.log(response, 'error is.....');
           if (parseInt(tokenFailed) || errorMessage === 'Token Expired') {
             const removeKeys = clearAllData();
             if (removeKeys) {
@@ -138,7 +139,12 @@ export const ReceiptsList = ({navigation}) => {
           }
         });
     } catch (e) {
-      showGenericAlert('Oops :(', 'Network Error. Please try again.', true);
+      console.log(e);
+      showGenericAlert(
+        'Oops :(',
+        'Something went wrong. Please try again.',
+        true,
+      );
       setShowSpinner(false);
     }
   };

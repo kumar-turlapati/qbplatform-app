@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {Orders} from './Orders/Orders';
 import {Appointments} from './Appointments/Appointments';
@@ -39,22 +39,40 @@ import {
   ScreenNamesMarketing,
   ScreenNamesGeneral,
 } from '../../helpers/ScreenNames';
+import {Loader} from '../Loader';
+import {getValue} from '../../utils/asyncStorage';
 
 export const AppNavigatorMarketing = () => {
   const Stack = createStackNavigator();
-  return (
+  const [loading, setLoading] = useState(true);
+  const [isAccessTokenFound, setIsAccessTokenFound] = useState(false);
+  // console.log(loading);
+  useEffect(() => {
+    const getAccessToken = async () => {
+      return await getValue('accessToken');
+    };
+    const isAccessTokenSet = getAccessToken();
+    if (isAccessTokenSet.length > 0) {
+      setLoading(false);
+      setIsAccessTokenFound(true);
+    } else {
+      setLoading(false);
+    }
+  }, [isAccessTokenFound]);
+
+  return loading ? (
+    <Loader />
+  ) : (
     <Stack.Navigator
-      initialRouteName={ScreenNamesGeneral.LOGIN}
+      initialRouteName={
+        isAccessTokenFound
+          ? ScreenNamesMarketing.DASHBOARD
+          : ScreenNamesGeneral.LOGIN
+      }
       headerMode="none"
       screenOptions={({route, navigation}) => ({
         headerShown: false,
         gestureEnabled: false,
-        // cardOverlayEnabled: true,
-        // headerStatusBarHeight:
-        //   navigation.dangerouslyGetState().routes.indexOf(route) > 0
-        //     ? 0
-        //     : undefined,
-        // ...TransitionPresets.ModalPresentationIOS,
       })}
       cardStyle={{
         backgroundColor: 'transparent',

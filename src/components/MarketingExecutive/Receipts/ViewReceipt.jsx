@@ -8,23 +8,23 @@ import {
   Text,
   View,
   TouchableOpacity,
-  TextInput,
+  // TextInput,
 } from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
-import {SideArrow} from '../../../icons/Icons';
+// import {SideArrow} from '../../../icons/Icons';
 import CommonButton from '../UI/CommonButton';
 import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ShoppingCartContext} from '../../context/ShoppingCartProvider';
-import {getCustomerBillNos} from '../../../networkcalls/apiCalls';
+// import {getCustomerBillNos} from '../../../networkcalls/apiCalls';
 import {getValue} from '../../../utils/asyncStorage';
 import CommonSpinner from '../UI/CommonSpinner';
 import CommonAlertView from '../UI/CommonAlertView';
 import {theme} from '../../../theme/theme';
-import {colors} from '../../../theme/colors';
-import {Picker} from '@react-native-picker/picker';
+// import {colors} from '../../../theme/colors';
+// import {Picker} from '@react-native-picker/picker';
 import {
-  paymentMethods,
+  // paymentMethods,
   requestHeadersWoOrg,
   restEndPoints,
 } from '../../../../qbconfig';
@@ -105,7 +105,7 @@ export const ViewReceipt = ({navigation, route}) => {
   const [refNo, setRefno] = useState('');
   const [refDate, setRefDate] = useState(new Date());
   const [narration, setNarration] = useState('');
-  const [customerBillNos, setCustomerBillNos] = useState([]);
+  // const [customerBillNos, setCustomerBillNos] = useState([]);
   const [showError, setShowError] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -114,11 +114,11 @@ export const ViewReceipt = ({navigation, route}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
   const [receiptError, setReceiptError] = useState(false);
-  const [receiptDetails, setReceiptDetails] = useState([]);
+  // const [receiptDetails, setReceiptDetails] = useState([]);
   const {selectedCustomerName, setSelectedCustomerName} = useContext(
     ShoppingCartContext,
   );
-  const [isFormUpdated, setIsFormUpdated] = useState(false);
+  // const [isFormUpdated, setIsFormUpdated] = useState(false);
   const receiptNo =
     route.params && route.params.receiptNo ? route.params.receiptNo : 0;
 

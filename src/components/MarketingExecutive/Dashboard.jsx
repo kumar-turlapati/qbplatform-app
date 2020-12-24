@@ -27,8 +27,13 @@ import {
 import {useState} from 'react';
 // import {colors} from '../../theme/colors';
 import {theme} from '../../theme/theme';
-import {clearAllData, getValue} from '../../utils/asyncStorage';
+import {clearAllData} from '../../utils/asyncStorage';
 import {clientName} from '../../../qbconfig';
+import {getValue} from '../../utils/asyncStorage';
+import axios from 'axios';
+import {restEndPoints, requestHeadersWoOrg} from '../../../qbconfig';
+import CommonSpinner from '../../components/MarketingExecutive/UI/CommonSpinner';
+import _find from 'lodash/find';
 
 // const {height, width} = Dimensions.get('window');
 
@@ -123,14 +128,17 @@ const list = [
   {
     icon: <AppointmentsIcon style={{width: 36, height: 30}} />,
     title: 'Appointments',
+    statKey: 'appointments',
   },
   {
     icon: <OrdersIcon style={{width: 31, height: 30}} />,
     title: 'Orders',
+    statKey: 'orders',
   },
   {
     icon: <ReceiptsIcon style={{width: 23, height: 30}} />,
     title: 'Receipts',
+    statKey: 'receipts',
   },
   // {
   //   icon: <CustomersIcon style={{width: 28, height: 29}} />,
@@ -139,11 +147,17 @@ const list = [
   {
     icon: <GalleryIcon style={{width: 36, height: 29}} />,
     title: 'Catalogs',
+    statKey: 'catalogs',
   },
 ];
 
 export const Dashboard = ({navigation}) => {
   const [showSideMenu, setShowSideMenu] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [stats, setStats] = useState([]);
+
+  // console.log(stats, 'stats.....');
+
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
@@ -155,21 +169,40 @@ export const Dashboard = ({navigation}) => {
     }, []),
   );
 
-  // useEffect(() => {
-  //   getaccessToken();
-  // }, []);
-
-  // const getaccessToken = async () => {
-  //   const accessToken = await getValue('accessToken');
-  //   console.log('accessToken', accessToken);
-  // };
+  useEffect(() => {
+    const getUserStats = async () => {
+      setShowSpinner(true);
+      const accessToken = await getValue('accessToken');
+      const uuid = await getValue('UUID');
+      requestHeadersWoOrg['Access-Token'] = accessToken;
+      try {
+        await axios
+          .get(restEndPoints.GET_USER_STATS.URL(uuid), {
+            headers: requestHeadersWoOrg,
+          })
+          .then(apiResponse => {
+            // console.log(apiResponse, '------------');
+            setShowSpinner(false);
+            setStats(apiResponse.data.response.userStats);
+          })
+          .catch(error => {
+            // console.log(error, 'error.....', error.response);
+            setShowSpinner(false);
+          });
+      } catch (e) {
+        // console.log('in catch blok....', e);
+        setShowSpinner(false);
+      }
+    };
+    getUserStats();
+  }, []);
 
   const renderHeader = () => {
     return (
       <View style={theme.viewStyles.headerDashboardStyles}>
         <TouchableOpacity
           onPress={() => {
-            console.log('heasder pressed');
+            // console.log('heasder pressed');
             setShowSideMenu(true);
           }}>
           <View style={styles.iconViewStyles}>
@@ -196,28 +229,38 @@ export const Dashboard = ({navigation}) => {
           flex: 1,
         }}
         numColumns={2}
-        renderItem={({item, index}) => (
-          <TouchableOpacity
-            onPress={() => {
-              rowPressed(index);
-            }}>
-            <View style={styles.listItem}>
-              <View
-                style={{
-                  width: 40,
-                  height: 40,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginTop: 10,
-                }}>
-                {item.icon}
+        renderItem={({item, index}) => {
+          const statKey = item.statKey;
+          const moduleStats = _find(stats, {moduleName: statKey});
+          const recordCount =
+            moduleStats && moduleStats.recordCount
+              ? moduleStats.recordCount
+              : 0;
+          return (
+            <TouchableOpacity
+              onPress={() => {
+                rowPressed(index);
+              }}>
+              <View style={styles.listItem}>
+                <View
+                  style={{
+                    width: 40,
+                    height: 40,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: 10,
+                  }}>
+                  {item.icon}
+                </View>
+                <View style={theme.viewStyles.separatorStyle} />
+                <Text style={styles.countStyle}>
+                  {recordCount > 0 ? String(recordCount).padStart(2, '0') : '0'}
+                </Text>
+                <Text style={styles.titleStyle}>{item.title}</Text>
               </View>
-              <View style={theme.viewStyles.separatorStyle} />
-              <Text style={styles.countStyle}>0</Text>
-              <Text style={styles.titleStyle}>{item.title}</Text>
-            </View>
-          </TouchableOpacity>
-        )}
+            </TouchableOpacity>
+          );
+        }}
         ListFooterComponent={renderFooterView()}
       />
     );
@@ -404,11 +447,16 @@ export const Dashboard = ({navigation}) => {
     );
   };
 
+  const renderSpinner = () => {
+    return <CommonSpinner animating={showSpinner} />;
+  };
+
   return (
     <View style={styles.container}>
       {renderHeader()}
       {renderFlatList()}
       {showSideMenu && renderSideMenu()}
+      {renderSpinner()}
     </View>
   );
 };
