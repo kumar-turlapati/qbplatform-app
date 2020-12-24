@@ -155,8 +155,12 @@ export const Dashboard = ({navigation}) => {
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
   const [stats, setStats] = useState([]);
-
-  // console.log(stats, 'stats.....');
+  const [fullName, setFullName] = useState('');
+  const [exeMobileNo, setExeMobileNo] = useState('');
+  const [shortName, setShortName] = useState('');
+  // console.log(stats, 'stats.....');y
+  // console.log(fullName, exeMobileNo);
+  // console.log(shortName);
 
   useFocusEffect(
     useCallback(() => {
@@ -174,19 +178,36 @@ export const Dashboard = ({navigation}) => {
       setShowSpinner(true);
       const accessToken = await getValue('accessToken');
       const uuid = await getValue('UUID');
+      const fullName = await getValue('fullName');
+      const exeMobileNo = await getValue('exeMobileNo');
+      const fullNameSplit = fullName.split(' ');
+      if (fullNameSplit.length > 0) {
+        setShortName(
+          `${fullNameSplit[0][0]}${
+            fullNameSplit[1].length > 0
+              ? fullNameSplit[1][0]
+              : fullNameSplit[0][1]
+          }`,
+        );
+      } else {
+        setShortName(`${fullNameSplit[0].substr(0, 2)}`);
+      }
+      // console.log(fullNameSplit, 'full name split....');
+
       requestHeadersWoOrg['Access-Token'] = accessToken;
+      // console.log(fullName, exeMobileNo, '---------------');
       try {
         await axios
           .get(restEndPoints.GET_USER_STATS.URL(uuid), {
             headers: requestHeadersWoOrg,
           })
           .then(apiResponse => {
-            // console.log(apiResponse, '------------');
             setShowSpinner(false);
             setStats(apiResponse.data.response.userStats);
+            setFullName(fullName);
+            setExeMobileNo(exeMobileNo);
           })
-          .catch(error => {
-            // console.log(error, 'error.....', error.response);
+          .catch(() => {
             setShowSpinner(false);
           });
       } catch (e) {
@@ -403,14 +424,18 @@ export const Dashboard = ({navigation}) => {
                   activeOpacity={1}
                   onPress={() => {
                     // setShowSideMenu(false);
-                    // navigation.navigate(ScreenNamesMarketing.MYPROFILE);  /*** uncomment it during the edit profilr integration ***/
+                    // navigation.navigate(
+                    //   ScreenNamesMarketing.MYPROFILE,
+                    // ); /*** uncomment it during the edit profilr integration ***/
                   }}>
                   <View style={{flexDirection: 'row', marginLeft: 14}}>
                     <Image style={styles.imageStyle} />
-                    <Text style={styles.imageTextStyle}>UN</Text>
+                    <Text style={styles.imageTextStyle}>
+                      {shortName.toUpperCase()}
+                    </Text>
                     <View>
-                      <Text style={styles.nameStyles}>User Name</Text>
-                      <Text style={styles.emailStyles}>username@gmail.com</Text>
+                      <Text style={styles.nameStyles}>{fullName}</Text>
+                      <Text style={styles.emailStyles}>{exeMobileNo}</Text>
                     </View>
                   </View>
                 </TouchableOpacity>

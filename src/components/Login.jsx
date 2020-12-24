@@ -114,12 +114,16 @@ export const Login = ({navigation}) => {
       .then(apiResponse => {
         setShowSpinner(false);
         if (apiResponse.data.status === 'success') {
-          // console.log('apiResponse', apiResponse);
+          // console.log('apiResponse', apiResponse.data);
           setApiErrorText('');
           setShowOTPView(false);
           const accessToken = apiResponse.data.response.accessToken;
+          const firstName = apiResponse.data.response.firstName;
+          const lastName = apiResponse.data.response.lastName;
+          const fullName = `${firstName} ${lastName ? lastName : ''}`;
           storeItem('accessToken', accessToken);
           storeItem('exeMobileNo', mobileNumber);
+          storeItem('fullName', fullName);
           setMobileNumber('');
           navigation.navigate(ScreenNamesMarketing.DASHBOARD);
         } else {
