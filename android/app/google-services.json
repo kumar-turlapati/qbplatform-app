@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "560599846",
+    "project_id": "svfadmin-a8011",
+    "storage_bucket": "svfadmin-a8011.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560599846:android:f98a4a034943b86df927e7",
+        "android_client_info": {
+          "package_name": "com.svfadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "560599846-1q6c26uorustecmpbfjnojpj3gi3p3r9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5yru1c3tj-8mJE_l7QPwb-OoSReWgwmY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "560599846-1q6c26uorustecmpbfjnojpj3gi3p3r9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

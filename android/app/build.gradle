@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: "com.google.gms.google-services"  // Google Services plugin
 
 import com.android.build.OutputFile
 
@@ -82,6 +83,7 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -164,13 +166,22 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            // Note: CodePush updates shouldn't be tested in Debug mode as they're overriden by the RN packager. However, because CodePush checks for updates in all modes, we must supply a key.
+            resValue "string", "CodePushDeploymentKey", '""'            
         }
+        releaseStaging {
+            resValue "string", "CodePushDeploymentKey", '"6t9s72A7tvctNY1eAWS7YyG_cUMeVAghO6dRy"'
+            // Note: It's a good idea to provide matchingFallbacks for the new buildType you create to prevent build issues
+            // Add the following line if not already there
+            matchingFallbacks = ['release']
+        }        
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            resValue "string", "CodePushDeploymentKey", '"WjrrxSivI8Llcv3wrBWiOsCBgdMxgpaD_dKN1"'
         }
     }
 
@@ -201,6 +212,12 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:26.2.0')
+
+    // Declare the dependency for the Firebase SDK for Google Analytics
+    implementation 'com.google.firebase:firebase-analytics'    
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 

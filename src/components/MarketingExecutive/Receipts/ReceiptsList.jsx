@@ -107,6 +107,7 @@ export const ReceiptsList = ({navigation}) => {
     const accessToken = await getValue('accessToken');
     const uuid = await getValue('UUID');
     requestHeadersWoOrg['Access-Token'] = accessToken;
+    // console.log(requestHeadersWoOrg, 'request headers......');
     try {
       await axios
         .get(restEndPoints.LIST_RECEIPTS.URL(uuid), {
@@ -123,7 +124,8 @@ export const ReceiptsList = ({navigation}) => {
           }
         })
         .catch(error => {
-          // console.log(error.response.data);
+          // console.log(error.response);
+          setShowSpinner(false);
           const response = error.response.data;
           const tokenFailed = response.tokenFailed ? response.tokenFailed : 0;
           const errorMessage = response.errortext ? response.errortext : '';
@@ -134,7 +136,6 @@ export const ReceiptsList = ({navigation}) => {
               navigation.navigate(ScreenNamesGeneral.LOGIN);
             }
           } else {
-            setShowSpinner(false);
             setShowNoDataMessage(true);
           }
         });
