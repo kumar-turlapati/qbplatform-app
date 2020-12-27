@@ -120,7 +120,7 @@ export const ViewReceipt = ({navigation, route}) => {
   const receiptNo =
     route.params && route.params.receiptNo ? route.params.receiptNo : 0;
 
-  console.log(receiptNo, 'receipt.....');
+  // console.log(receiptNo, 'receipt.....');
 
   useEffect(() => {
     const getReceiptDetails = async receiptNo => {
