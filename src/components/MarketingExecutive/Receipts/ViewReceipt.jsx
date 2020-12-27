@@ -105,7 +105,6 @@ export const ViewReceipt = ({navigation, route}) => {
   const [refNo, setRefno] = useState('');
   const [refDate, setRefDate] = useState(new Date());
   const [narration, setNarration] = useState('');
-  // const [customerBillNos, setCustomerBillNos] = useState([]);
   const [showError, setShowError] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -114,13 +113,14 @@ export const ViewReceipt = ({navigation, route}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');
   const [receiptError, setReceiptError] = useState(false);
-  // const [receiptDetails, setReceiptDetails] = useState([]);
   const {selectedCustomerName, setSelectedCustomerName} = useContext(
     ShoppingCartContext,
   );
   // const [isFormUpdated, setIsFormUpdated] = useState(false);
   const receiptNo =
     route.params && route.params.receiptNo ? route.params.receiptNo : 0;
+
+  console.log(receiptNo, 'receipt.....');
 
   useEffect(() => {
     const getReceiptDetails = async receiptNo => {
@@ -136,7 +136,6 @@ export const ViewReceipt = ({navigation, route}) => {
             setShowSpinner(false);
             if (apiResponse.data.status === 'success') {
               const receiptDetails = apiResponse.data.response.vocDetails;
-              setReceiptDetails(receiptDetails);
               setSelectedCustomerName(receiptDetails.partyName);
               setSelectedBillNo(receiptDetails.billNo);
               setSelectedPaymentMethod(receiptDetails.paymentMode);
@@ -158,6 +157,7 @@ export const ViewReceipt = ({navigation, route}) => {
             }
           })
           .catch(e => {
+            // console.log(e);
             const errorMessage = e.response.data.errortext;
             setShowSpinner(false);
             setShowAlert(true);

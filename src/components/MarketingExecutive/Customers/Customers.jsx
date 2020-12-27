@@ -1,47 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Text, View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 
 import CommonHeader from '../UI/CommonHeader';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
-import { getValue } from '../../../utils/asyncStorage';
-import { getCustomerName } from '../../../networkcalls/apiCalls';
-import { colors } from '../../../theme/colors';
-import { theme } from '../../../theme/theme';
+import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+import {getValue} from '../../../utils/asyncStorage';
+import {getCustomerName} from '../../../networkcalls/apiCalls';
+import {colors} from '../../../theme/colors';
+import {theme} from '../../../theme/theme';
 
 const styles = StyleSheet.create({
   container: {
-    ...theme.viewStyles.restContainer
+    ...theme.viewStyles.restContainer,
   },
 });
 
-export const Customers = ({ navigation }) => {
-
-  const [names, setNames] = useState([])
-  const [showSpinner, setShowSpinner] = useState(false)
+export const Customers = ({navigation}) => {
+  const [names, setNames] = useState([]);
+  const [showSpinner, setShowSpinner] = useState(false);
 
   useEffect(() => {
-    setShowSpinner(true)
-    getCustomerNames('a')
-  }, [])
+    setShowSpinner(true);
+    getCustomerNames('a');
+  }, []);
 
-  const getCustomerNames = async (searchString) => {
-    const accessToken = await getValue('accessToken')
+  const getCustomerNames = async searchString => {
+    const accessToken = await getValue('accessToken');
     getCustomerName(accessToken, searchString)
-      .then((apiResponse) => {
-        setShowSpinner(false)
-        console.log('apiResponse', apiResponse)
+      .then(apiResponse => {
+        setShowSpinner(false);
+        // console.log('apiResponse', apiResponse)
         if (apiResponse.status === 200) {
-          const names =
-            apiResponse.data;
-          setNames(names)
-
+          const names = apiResponse.data;
+          setNames(names);
         }
       })
-      .catch((error) => {
-        setShowSpinner(false)
-        console.log('error', error)
-      })
-  }
+      .catch(error => {
+        setShowSpinner(false);
+        console.log('error', error);
+      });
+  };
 
   const renderHeader = () => {
     return (
@@ -55,7 +52,7 @@ export const Customers = ({ navigation }) => {
         onPressSearchIcon={() => {
           navigation.navigate(ScreenNamesMarketing.CUSTOMERNAMESEARCH);
         }}
-        onPressPlusIcon={() => { }}
+        onPressPlusIcon={() => {}}
       />
     );
   };
@@ -70,11 +67,9 @@ export const Customers = ({ navigation }) => {
               name: item,
             });
           }}>
-          <View style={{ backgroundColor: colors.WHITE, height: 46 }}>
+          <View style={{backgroundColor: colors.WHITE, height: 46}}>
             <Text style={theme.viewStyles.customerRowTextStyles}>{item}</Text>
-            <View
-              style={theme.viewStyles.customerSperatorColor}
-            />
+            <View style={theme.viewStyles.customerSperatorColor} />
           </View>
         </TouchableOpacity>
       </View>
@@ -90,7 +85,7 @@ export const Customers = ({ navigation }) => {
           marginBottom: 0,
         }}
         data={names}
-        renderItem={({ item, index }) => renderRow(item, index)}
+        renderItem={({item, index}) => renderRow(item, index)}
         keyExtractor={item => item}
         removeClippedSubviews={true}
       />
@@ -98,12 +93,8 @@ export const Customers = ({ navigation }) => {
   };
 
   const renderSpinner = () => {
-    return (
-      <CommonSpinner
-        animating={showSpinner}
-      />
-    )
-  }
+    return <CommonSpinner animating={showSpinner} />;
+  };
 
   return (
     <View style={styles.container}>

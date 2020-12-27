@@ -24,9 +24,6 @@ const styles = StyleSheet.create({
 });
 
 export const Login = ({navigation}) => {
-  // const [isMobileNumberError, setIsMobileNumberError] = useState(false);
-  // const [isPasswordError, setIsPasswordError] = useState(false);
-  // const [isOrgCodeError, setIsOrgCodeError] = useState(false);
   const [mobileNumber, setMobileNumber] = useState('');
   const [showOTPView, setShowOTPView] = useState(false);
   const [apiErrorText, setApiErrorText] = useState('');
@@ -183,7 +180,18 @@ export const Login = ({navigation}) => {
           buttonTitle={'Get OTP'}
           disableButton={disableLoginButton}
           onPressButton={() => {
-            getOTP();
+            const mobileNumberValidation = isMobileNumberValidWithReason(
+              mobileNumber,
+            );
+            // console.log(
+            //   mobileNumberValidation,
+            //   'mobile number validation.....',
+            // );
+            if (mobileNumberValidation.status) {
+              getOTP();
+            } else {
+              setApiErrorText(mobileNumberValidation.reason);
+            }
           }}
           propStyle={theme.viewStyles.buttonStyles}
         />
@@ -263,11 +271,17 @@ export const Login = ({navigation}) => {
           style={{
             position: 'absolute',
             width: '100%',
-            height: '100%',
+            // height: '100%',
             alignItems: 'center',
-            backgroundColor: colors.SEPERATOR_COLOR,
+            backgroundColor: '#fff',
           }}>
-          <Text style={theme.viewStyles.errorTextStyles}>{apiErrorText}</Text>
+          <Text
+            style={[
+              theme.viewStyles.errorTextStyles,
+              {fontSize: 14, padding: 5, fontWeight: 'bold'},
+            ]}>
+            {apiErrorText}
+          </Text>
         </View>
       ) : null}
     </View>

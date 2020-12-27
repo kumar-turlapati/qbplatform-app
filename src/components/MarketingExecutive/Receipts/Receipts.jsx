@@ -67,6 +67,9 @@ export const Receipts = ({navigation}) => {
           navigation.goBack();
         }}
         rightSideText="Receipts"
+        onPressRightButton={() => {
+          navigation.navigate(ScreenNamesMarketing.RECEIPTSLIST);
+        }}
       />
     );
   };
