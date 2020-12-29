@@ -1,17 +1,17 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, FlatList} from 'react-native';
-import {CalendarList, Calendar} from 'react-native-calendars';
-import {getAppointmentList} from '../../../networkcalls/apiCalls';
-import {theme} from '../../../theme/theme';
-import {getValue} from '../../../utils/asyncStorage';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { CalendarList, Calendar } from 'react-native-calendars';
+import { getAppointmentList } from '../../../networkcalls/apiCalls';
+import { theme } from '../../../theme/theme';
+import { getValue } from '../../../utils/asyncStorage';
 import CommonHeader from '../UI/CommonHeader';
 import moment from 'moment';
-import {ArrowLeft, ArrowRight} from '../../../icons/Icons';
+import { ArrowLeft, ArrowRight } from '../../../icons/Icons';
 import {
   ScreenNamesMarketing,
   ScreenNamesGeneral,
 } from '../../../helpers/ScreenNames';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Appointments = ({navigation, route}) => {
+export const Appointments = ({ navigation, route }) => {
   const calendarRef = useRef(null);
   const [showSpinner, setShowSpinner] = useState(false);
   const [appointmentData, setAppointmentData] = useState([]);
@@ -76,7 +76,7 @@ export const Appointments = ({navigation, route}) => {
           let obj = dataPush.reduce(
             (c, v) =>
               Object.assign(c, {
-                [v]: {marked: true, dotColor: theme.colors.LIGHT_GRAY},
+                [v]: { marked: true, dotColor: theme.colors.LIGHT_GRAY },
               }),
             {},
           );
@@ -211,15 +211,14 @@ export const Appointments = ({navigation, route}) => {
               },
               selected: {
                 borderRadius: 16,
-                backgroundColor: theme.colors.RED,
+                backgroundColor: theme.colors.WHITE,
               },
               selectedText: {
-                color: theme.colors.WHITE,
-                fontWeight: '500',
+                color: theme.colors.CALENDAR_TEXT_COLOR,
               },
             },
             'stylesheet.calendar.header': {
-              header: {height: 0},
+              header: { height: 0 },
               week: {
                 marginTop: 12,
                 marginBottom: 15,
@@ -246,7 +245,7 @@ export const Appointments = ({navigation, route}) => {
       return appointmentDate === day.dateString;
     });
 
-    const sortedActivities = dataFiltered.sort(function(a, b) {
+    const sortedActivities = dataFiltered.sort(function (a, b) {
       return (
         new Date(
           '1970/01/01 ' + moment(a.appointmentStartDate).format('hh:mm a'),
@@ -269,7 +268,7 @@ export const Appointments = ({navigation, route}) => {
           backgroundColor: theme.colors.WHITE,
         }}
         data={filterList}
-        renderItem={({item, index}) => renderRow(item, index)}
+        renderItem={({ item, index }) => renderRow(item, index)}
         keyExtractor={item => item.appointmentCode}
         removeClippedSubviews={true}
         ListEmptyComponent={renderEmptyContainer()}
@@ -288,7 +287,7 @@ export const Appointments = ({navigation, route}) => {
         <Text
           style={[
             theme.viewStyles.customerRowTextStyles,
-            {paddingVertical: 20},
+            { paddingVertical: 20 },
           ]}>
           No Appointments to show
         </Text>
@@ -314,11 +313,11 @@ export const Appointments = ({navigation, route}) => {
               backgroundColor: theme.colors.WHITE_SNOW,
               flexDirection: 'row',
             }}>
-            <View style={{marginLeft: 17, marginHorizontal: 3, width: 70}}>
-              <Text style={[styles.timeStyles, {marginTop: 5}]}>
+            <View style={{ marginLeft: 17, marginHorizontal: 3, width: 70 }}>
+              <Text style={[styles.timeStyles, { marginTop: 5 }]}>
                 {startTime}
               </Text>
-              <Text style={[styles.timeStyles, {marginBottom: 5}]}>
+              <Text style={[styles.timeStyles, { marginBottom: 5 }]}>
                 {endTime}
               </Text>
             </View>
@@ -386,7 +385,7 @@ export const Appointments = ({navigation, route}) => {
           onPress={() => {
             calendarRef.current && calendarRef.current.addMonth(-1);
           }}>
-          <ArrowLeft style={{width: 24, height: 24, marginLeft: 16}} />
+          <ArrowLeft style={{ width: 24, height: 24, marginLeft: 16 }} />
         </TouchableOpacity>
         <View
           style={{
@@ -406,7 +405,7 @@ export const Appointments = ({navigation, route}) => {
           onPress={() => {
             calendarRef.current && calendarRef.current.addMonth(1);
           }}>
-          <ArrowRight style={{width: 24, height: 24, marginRight: 16}} />
+          <ArrowRight style={{ width: 24, height: 24, marginRight: 16 }} />
         </TouchableOpacity>
       </View>
     );

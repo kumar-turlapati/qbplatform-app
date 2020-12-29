@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   // Dimensions,
   // FlatList,
@@ -11,10 +11,10 @@ import {
 } from 'react-native';
 // import CommonSearchHeader from '../UI/CommonSearchHeader';
 import CommonHeader from '../UI/CommonHeader';
-import {getValue} from '../../../utils/asyncStorage';
-import {getOrderDetails} from '../../../networkcalls/apiCalls';
+import { getValue } from '../../../utils/asyncStorage';
+import { getOrderDetails } from '../../../networkcalls/apiCalls';
 import moment from 'moment';
-import {colors} from '../../../theme/colors';
+import { colors } from '../../../theme/colors';
 import CommonSpinner from '../UI/CommonSpinner';
 
 // import {theme} from '../../../theme/theme';
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const OrderDetailsView = ({navigation, route}) => {
+export const OrderDetailsView = ({ navigation, route }) => {
   const [showSpinner, setShowSpinner] = useState(true);
   const [orderDetails, setOrderDetails] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
@@ -140,7 +140,7 @@ export const OrderDetailsView = ({navigation, route}) => {
         onPress={() => {
           // alert('hello....');
         }}>
-        <View style={{backgroundColor: 'white', height: 44}}>
+        <View style={{ backgroundColor: 'white' }}>
           <View
             style={{
               marginHorizontal: 16,
@@ -149,13 +149,10 @@ export const OrderDetailsView = ({navigation, route}) => {
               justifyContent: 'space-between',
             }}>
             <Text style={styles.titleStyle}>Customer</Text>
-            <Text style={[styles.titleStyle, {marginRight: 24, opacity: 1}]}>
+            <Text style={[styles.titleStyle, { textAlign: 'right', width: 260 }]} numberOfLines={2}>
               {orderDetails &&
-              orderDetails.customerName &&
-              orderDetails.customerName.length > 25
-                ? `${orderDetails.customerName.substr(0, 25)}...`
-                : orderDetails.customerName}
-            </Text>
+                orderDetails.customerName &&
+                orderDetails.customerName.trim()}</Text>
             {/* <SideArrow
               style={{
                 width: 9,
@@ -174,8 +171,7 @@ export const OrderDetailsView = ({navigation, route}) => {
               height: 1,
               backgroundColor: 'black',
               opacity: 0.1,
-              top: 43,
-              position: 'absolute',
+              marginTop: 5,
             }}
           />
         </View>
@@ -185,11 +181,11 @@ export const OrderDetailsView = ({navigation, route}) => {
 
   const renderOrderDetails = () => {
     return (
-      <View style={{backgroundColor: 'white', marginTop: 17}}>
-        <TouchableOpacity activeOpacity={1} onPress={() => {}}>
-          <View style={[styles.viewStyle, {height: 48}]}>
+      <View style={{ backgroundColor: 'white', marginTop: 17 }}>
+        <TouchableOpacity activeOpacity={1} onPress={() => { }}>
+          <View style={[styles.viewStyle, { height: 48 }]}>
             <Text style={styles.titleStyle}>Order Date</Text>
-            <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+            <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
               {moment(orderDetails.indentDate, 'YYYY-MM-DD').format(
                 'DD/MM/YYYY',
               )}
@@ -209,7 +205,7 @@ export const OrderDetailsView = ({navigation, route}) => {
 
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Order No.</Text>
-          <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+          <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
             {orderDetails.indentNo}
           </Text>
         </View>
@@ -219,7 +215,7 @@ export const OrderDetailsView = ({navigation, route}) => {
           <Text
             style={[
               styles.titleStyle,
-              {marginRight: 40, opacity: 1, color: colors.RED, fontSize: 20},
+              { marginRight: 40, opacity: 1, color: colors.RED, fontSize: 20 },
             ]}>
             {`₹ ${parseFloat(orderDetails.netpay).toFixed(2)}`}
           </Text>
@@ -234,35 +230,35 @@ export const OrderDetailsView = ({navigation, route}) => {
       parseFloat(orderItemDetails.itemQty)
     ).toFixed(2);
     return (
-      <View style={{backgroundColor: 'white', marginTop: 17}}>
+      <View style={{ backgroundColor: 'white', marginTop: 17 }}>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Product</Text>
-          <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+          <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
             {orderItemDetails.itemName}
           </Text>
         </View>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Brand</Text>
-          <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+          <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
             {orderItemDetails.brandName}
           </Text>
         </View>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Order Qty.</Text>
-          <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+          <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
             {parseFloat(orderItemDetails.itemQty).toFixed(2)} /{' '}
             {orderItemDetails.uomName}
           </Text>
         </View>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Rate</Text>
-          <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+          <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
             {`₹ ${parseFloat(orderItemDetails.itemRateIndent).toFixed(2)}`}
           </Text>
         </View>
         <View style={styles.viewStyle}>
           <Text style={styles.titleStyle}>Amount</Text>
-          <Text style={[styles.titleStyle, {marginRight: 40, opacity: 1}]}>
+          <Text style={[styles.titleStyle, { marginRight: 40, opacity: 1 }]}>
             {`₹ ${itemAmount}`}
           </Text>
         </View>
@@ -279,7 +275,7 @@ export const OrderDetailsView = ({navigation, route}) => {
           marginTop: 5,
         }}
         data={orderItems.length > 0 ? orderItems : null}
-        renderItem={({item}) => renderItemDetails(item)}
+        renderItem={({ item }) => renderItemDetails(item)}
         keyExtractor={item => item.lotNo}
         removeClippedSubviews={false}
         showsHorizontalScrollIndicator={false}
@@ -291,12 +287,12 @@ export const OrderDetailsView = ({navigation, route}) => {
   return showSpinner ? (
     <>{renderSpinner()}</>
   ) : (
-    <View style={styles.container}>
-      {renderHeader()}
-      {renderCustomerName()}
-      {renderOrderDetails()}
-      {renderListView()}
-      {renderSpinner()}
-    </View>
-  );
+      <View style={styles.container}>
+        {renderHeader()}
+        {renderCustomerName()}
+        {renderOrderDetails()}
+        {renderListView()}
+        {renderSpinner()}
+      </View>
+    );
 };

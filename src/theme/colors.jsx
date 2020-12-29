@@ -60,7 +60,8 @@ const Common = {
   BLACK_WITH_OPACITY_3: blackOpacity3,
   BLACK_WITH_OPACITY_1: blackOpacity1,
   BLACK_RUSSIAN: '#1C1C1E',
-  VIVID_BLUE: '#0081CE'
+  VIVID_BLUE: '#0081CE',
+  CALENDAR_TEXT_COLOR: '#2d4150'
 };
 
 const Product = {

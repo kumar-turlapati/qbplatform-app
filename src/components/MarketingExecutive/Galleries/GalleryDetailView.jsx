@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -7,19 +7,20 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {cdnUrl, clientCode} from '../../../../qbconfig';
-import {MenuSmall} from '../../../icons/Icons';
-import {getCatalogDetails} from '../../../networkcalls/apiCalls';
-import {theme} from '../../../theme/theme';
-import {getValue} from '../../../utils/asyncStorage';
+import { cdnUrl, clientCode } from '../../../../qbconfig';
+import { MenuSmall } from '../../../icons/Icons';
+import { getCatalogDetails } from '../../../networkcalls/apiCalls';
+import { theme } from '../../../theme/theme';
+import { getValue } from '../../../utils/asyncStorage';
 import CommonHeader from '../UI/CommonHeader';
 import _find from 'lodash/find';
 import {
   ScreenNamesMarketing,
   ScreenNamesGeneral,
 } from '../../../helpers/ScreenNames';
+import SearchHeader from '../UI/SearchHeader';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -30,12 +31,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export const GalleryDetailView = ({navigation, route}) => {
-  const {catalogName, catalogCode} = route.params;
+export const GalleryDetailView = ({ navigation, route }) => {
+  const { catalogName, catalogCode } = route.params;
 
   const [clothes, setClothes] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
   const [businessLocations, setBusinessLocations] = useState([]);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchData, setSearchData] = useState([]);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     setShowSpinner(true);
@@ -74,16 +78,35 @@ export const GalleryDetailView = ({navigation, route}) => {
 
   const renderHeader = () => {
     return (
-      <CommonHeader
-        mainViewHeading={catalogName}
-        leftSideText={'Back'}
+      <SearchHeader
+        leftSideText={catalogName}
+        isSearch
+        isTabView={false}
         onPressLeftButton={() => {
           navigation.goBack();
         }}
-        onAddIconPress={() => {}}
-        searchIcon={false}
         onPressSearchIcon={() => {
-          console.log('search clicked');
+          // console.log('onPressSearchIcon');
+          setShowSearch(true);
+        }}
+        onPressSearchCloseButton={() => {
+          // console.log('onPressSearchCloseButton');
+          setSearchData([]);
+        }}
+        onTextChange={(changedText) => {
+          setSearchText(changedText);
+          if (changedText.length === 0) {
+            setSearchData([]);
+          } else {
+            // searchItems();
+          }
+        }}
+        onPressBackButton={() => {
+          // console.log('onPressBackButton');
+          navigation.goBack();
+          setSearchData([]);
+          setSearchText('');
+          setShowSearch(false);
         }}
       />
     );
@@ -101,10 +124,9 @@ export const GalleryDetailView = ({navigation, route}) => {
     if (item.images.length > 0) {
       imageUrl = imageLocation
         ? encodeURI(
-            `${cdnUrl}/${clientCode}/${imageLocation.locationCode}/${
-              item.images[0].imageName
-            }`,
-          )
+          `${cdnUrl}/${clientCode}/${imageLocation.locationCode}/${item.images[0].imageName
+          }`,
+        )
         : '';
     }
     return (
@@ -125,7 +147,7 @@ export const GalleryDetailView = ({navigation, route}) => {
               borderWidth: 0.1,
             },
           ]}
-          source={{uri: imageUrl}}>
+          source={{ uri: imageUrl }}>
           <MenuSmall style={theme.viewStyles.galleryMenuSmallIconStyle} />
         </ImageBackground>
       </TouchableOpacity>
@@ -138,7 +160,7 @@ export const GalleryDetailView = ({navigation, route}) => {
         style={theme.viewStyles.galleryDetailsFlatListStyles}
         numColumns={3}
         data={clothes}
-        renderItem={({item, index}) => renderRow(item, index)}
+        renderItem={({ item, index }) => renderRow(item, index)}
         keyExtractor={item => item.itemName}
         removeClippedSubviews={true}
         showsHorizontalScrollIndicator={false}
@@ -151,11 +173,47 @@ export const GalleryDetailView = ({navigation, route}) => {
     return <CommonSpinner animating={showSpinner} />;
   };
 
+  const renderSearchView = () => {
+    return (
+      <FlatList
+        style={{
+          flex: 1,
+          position: 'absolute',
+          marginTop: 88,
+          height: height - 88,
+          backgroundColor: theme.colors.BLACK_WITH_OPACITY_5,
+        }}
+        data={searchData}
+        renderItem={({ item }) => renderSearchRow(item)}
+        keyExtractor={item => item}
+        removeClippedSubviews={false}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+      />
+    );
+  };
+
+  const renderSearchRow = item => {
+    return (
+      <TouchableOpacity
+        activeOpacity={1}
+        style={styles.searchRowStyles}
+        onPress={() => {
+          setSearchData([]);
+          setSearchText('');
+          setShowSearch(false);
+        }}>
+        <Text style={styles.searchRowTextStyles}>{item}</Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={styles.container}>
       {renderHeader()}
       {renderListView()}
       {renderSpinner()}
+      {showSearch && renderSearchView()}
     </View>
   );
 };

@@ -1,7 +1,7 @@
-import {Dimensions} from 'react-native';
-import {colors} from './colors';
+import { Dimensions } from 'react-native';
+import { colors } from './colors';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export const viewStyles = {
   flex: {

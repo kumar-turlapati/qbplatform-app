@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TextInput, View, Keyboard} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, TextInput, View, Keyboard } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
-import {ScreenNamesMarketing, ScreenNamesGeneral} from '../helpers/ScreenNames';
-import {Logo} from '../icons/Icons';
-import {getToken, loginAPI, resendOTP} from '../networkcalls/apiCalls';
-import {colors} from '../theme/colors';
-import {theme} from '../theme/theme';
-import {storeItem, getValue, clearAllData} from '../utils/asyncStorage';
+import { ScreenNamesMarketing, ScreenNamesGeneral } from '../helpers/ScreenNames';
+import { Logo } from '../icons/Icons';
+import { getToken, loginAPI, resendOTP } from '../networkcalls/apiCalls';
+import { colors } from '../theme/colors';
+import { theme } from '../theme/theme';
+import { storeItem, getValue, clearAllData } from '../utils/asyncStorage';
 import CommonButton from './MarketingExecutive/UI/CommonButton';
 import CommonSpinner from './MarketingExecutive/UI/CommonSpinner';
-import {isMobileNumberValidWithReason} from '../utils/Validators';
+import { isMobileNumberValidWithReason } from '../utils/Validators';
 import Analytics from 'appcenter-analytics';
 
 const styles = StyleSheet.create({
@@ -21,9 +21,12 @@ const styles = StyleSheet.create({
     marginTop: 16,
     height: 50,
   },
+  whiteContainer: {
+    backgroundColor: colors.WHITE
+  }
 });
 
-export const Login = ({navigation}) => {
+export const Login = ({ navigation }) => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [showOTPView, setShowOTPView] = useState(false);
   const [apiErrorText, setApiErrorText] = useState('');
@@ -152,12 +155,12 @@ export const Login = ({navigation}) => {
 
   const renderMobileView = () => {
     return (
-      <View>
+      <View style={styles.whiteContainer}>
         <Text style={theme.viewStyles.headerTextStyles}>
           Enter your mobile number
         </Text>
         <TextInput
-          style={[theme.viewStyles.textInputStyles, {letterSpacing: 2}]}
+          style={[theme.viewStyles.textInputStyles, { letterSpacing: 2 }]}
           value={mobileNumber}
           onChangeText={changedText => {
             setApiErrorText('');
@@ -176,25 +179,27 @@ export const Login = ({navigation}) => {
           dataDetectorTypes="phoneNumber"
           placeholder="Mobile number"
         />
-        <CommonButton
-          buttonTitle={'Get OTP'}
-          disableButton={disableLoginButton}
-          onPressButton={() => {
-            const mobileNumberValidation = isMobileNumberValidWithReason(
-              mobileNumber,
-            );
-            // console.log(
-            //   mobileNumberValidation,
-            //   'mobile number validation.....',
-            // );
-            if (mobileNumberValidation.status) {
-              getOTP();
-            } else {
-              setApiErrorText(mobileNumberValidation.reason);
-            }
-          }}
-          propStyle={theme.viewStyles.buttonStyles}
-        />
+        <View style={[styles.whiteContainer, { marginTop: 0 }]}>
+          <CommonButton
+            buttonTitle={'Get OTP'}
+            disableButton={disableLoginButton}
+            onPressButton={() => {
+              const mobileNumberValidation = isMobileNumberValidWithReason(
+                mobileNumber,
+              );
+              // console.log(
+              //   mobileNumberValidation,
+              //   'mobile number validation.....',
+              // );
+              if (mobileNumberValidation.status) {
+                getOTP();
+              } else {
+                setApiErrorText(mobileNumberValidation.reason);
+              }
+            }}
+            propStyle={theme.viewStyles.buttonStyles}
+          />
+        </View>
       </View>
     );
   };
@@ -204,7 +209,7 @@ export const Login = ({navigation}) => {
       <>
         <Text style={theme.viewStyles.headerTextStyles}>Please enter OTP</Text>
         <TextInput
-          style={[theme.viewStyles.textInputStyles, {letterSpacing: 10}]}
+          style={[theme.viewStyles.textInputStyles, { letterSpacing: 10 }]}
           onChangeText={changedText => {
             setApiErrorText('');
             setOTP(changedText);
@@ -233,8 +238,8 @@ export const Login = ({navigation}) => {
               setShowOTPView(false);
               setMobileNumber('');
             }}
-            propStyle={[styles.changeButtonStyles, {backgroundColor: 'white'}]}
-            buttonStyle={{color: colors.RED}}
+            propStyle={[styles.changeButtonStyles, { backgroundColor: 'white' }]}
+            buttonStyle={{ color: colors.RED }}
           />
           <CommonButton
             buttonTitle="Resend OTP"
@@ -247,8 +252,8 @@ export const Login = ({navigation}) => {
                 }, 20000);
               }
             }}
-            propStyle={[styles.changeButtonStyles, {backgroundColor: 'white'}]}
-            buttonStyle={{color: colors.RED}}
+            propStyle={[styles.changeButtonStyles, { backgroundColor: 'white' }]}
+            buttonStyle={{ color: colors.RED }}
             disableButton={disableResendOtp}
           />
         </View>
@@ -262,7 +267,7 @@ export const Login = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Logo style={{width: 55, height: 74, marginLeft: 40, marginTop: 164}} />
+      <Logo style={{ width: 55, height: 74, marginLeft: 40, marginTop: 164 }} />
       {!showOTPView && renderMobileView()}
       {showOTPView && renderOTPView()}
       {renderSpinnerView()}
@@ -278,7 +283,7 @@ export const Login = ({navigation}) => {
           <Text
             style={[
               theme.viewStyles.errorTextStyles,
-              {fontSize: 14, padding: 5, fontWeight: 'bold'},
+              { fontSize: 14, padding: 5, fontWeight: 'bold' },
             ]}>
             {apiErrorText}
           </Text>

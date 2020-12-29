@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,19 +8,20 @@ import {
   Text,
 } from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
-import {MenuBig} from '../../../icons/Icons';
+import { MenuBig } from '../../../icons/Icons';
 import {
   ScreenNamesMarketing,
   ScreenNamesGeneral,
 } from '../../../helpers/ScreenNames';
-import {theme} from '../../../theme/theme';
-import {getValue} from '../../../utils/asyncStorage';
+import { theme } from '../../../theme/theme';
+import { getValue } from '../../../utils/asyncStorage';
 import _find from 'lodash/find';
 import _map from 'lodash/map';
 import _compact from 'lodash/compact';
-import {cdnUrl, clientCode} from '../../../../qbconfig';
+import { cdnUrl, clientCode, clientName } from '../../../../qbconfig';
 import axios from 'axios';
-import {restEndPoints, requestHeaders} from '../../../../qbconfig';
+import { restEndPoints, requestHeaders } from '../../../../qbconfig';
+import SearchHeader from '../UI/SearchHeader';
 
 const styles = StyleSheet.create({
   container: {
@@ -41,10 +42,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Galleries = ({navigation, route}) => {
+export const Galleries = ({ navigation, route }) => {
   const [businessLocations, setBusinessLocations] = useState([]);
   const [catalogs, setCatalogs] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchData, setSearchData] = useState([]);
+  const [searchText, setSearchText] = useState('');
+
   const categoryId =
     route.params && route.params.categoryId ? route.params.categoryId : 0;
   const subCategoryId =
@@ -60,13 +65,12 @@ export const Galleries = ({navigation, route}) => {
   const catalogListCalling = async () => {
     const accessToken = await getValue('accessToken');
     requestHeaders['Access-Token'] = accessToken;
-    const catalogsUrl = `${
-      restEndPoints.CATALOGS.URL
-    }?categoryID=${categoryId}&subCategoryID=${subCategoryId}`;
+    const catalogsUrl = `${restEndPoints.CATALOGS.URL
+      }?categoryID=${categoryId}&subCategoryID=${subCategoryId}`;
 
     try {
       await axios
-        .get(catalogsUrl, {headers: requestHeaders})
+        .get(catalogsUrl, { headers: requestHeaders })
         .then(apiResponse => {
           setShowSpinner(false);
           const catalogs = apiResponse.data.response.catalogs;
@@ -99,16 +103,35 @@ export const Galleries = ({navigation, route}) => {
 
   const renderHeader = () => {
     return (
-      <CommonHeader
-        mainViewHeading={'Catalogs'}
-        leftSideText={'Back'}
+      <SearchHeader
+        leftSideText={clientName}
+        isSearch
+        isTabView={false}
         onPressLeftButton={() => {
           navigation.goBack();
         }}
-        onAddIconPress={() => {}}
-        searchIcon={false}
         onPressSearchIcon={() => {
-          console.log('search clicked');
+          // console.log('onPressSearchIcon');
+          setShowSearch(true);
+        }}
+        onPressSearchCloseButton={() => {
+          // console.log('onPressSearchCloseButton');
+          setSearchData([]);
+        }}
+        onTextChange={(changedText) => {
+          setSearchText(changedText);
+          if (changedText.length === 0) {
+            setSearchData([]);
+          } else {
+            // searchItems();
+          }
+        }}
+        onPressBackButton={() => {
+          // console.log('onPressBackButton');
+          navigation.goBack();
+          setSearchData([]);
+          setSearchText('');
+          setShowSearch(false);
         }}
       />
     );
@@ -123,10 +146,9 @@ export const Galleries = ({navigation, route}) => {
     );
     let imageUrl = imageLocation
       ? encodeURI(
-          `${cdnUrl}/${clientCode}/${imageLocation.locationCode}/${
-            item.imageName
-          }`,
-        )
+        `${cdnUrl}/${clientCode}/${imageLocation.locationCode}/${item.imageName
+        }`,
+      )
       : '';
     // if (imageUrl === '') {
     //   imageUrl = require('../../../icons/Aravinda.png');
@@ -141,7 +163,7 @@ export const Galleries = ({navigation, route}) => {
               catalogCode: item.catalogCode,
             });
           }}>
-          <ImageBackground style={styles.rowStyle} source={{uri: imageUrl}}>
+          <ImageBackground style={styles.rowStyle} source={{ uri: imageUrl }}>
             <View style={theme.viewStyles.galleryRowOverlayView} />
             <Text style={styles.textStyle}>{item.catalogName}</Text>
             <Text style={styles.descriptionStyles}>{item.catalogDesc}</Text>
@@ -161,7 +183,7 @@ export const Galleries = ({navigation, route}) => {
           marginBottom: 0,
         }}
         data={catalogs}
-        renderItem={({item, index}) => renderRow(item, index)}
+        renderItem={({ item, index }) => renderRow(item, index)}
         keyExtractor={item => item.catalogName}
         removeClippedSubviews={true}
         showsHorizontalScrollIndicator={false}
@@ -174,11 +196,48 @@ export const Galleries = ({navigation, route}) => {
     return <CommonSpinner animating={showSpinner} />;
   };
 
+
+  const renderSearchView = () => {
+    return (
+      <FlatList
+        style={{
+          flex: 1,
+          position: 'absolute',
+          marginTop: 88,
+          height: height - 88,
+          backgroundColor: theme.colors.BLACK_WITH_OPACITY_5,
+        }}
+        data={searchData}
+        renderItem={({ item }) => renderSearchRow(item)}
+        keyExtractor={item => item}
+        removeClippedSubviews={false}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+      />
+    );
+  };
+
+  const renderSearchRow = item => {
+    return (
+      <TouchableOpacity
+        activeOpacity={1}
+        style={styles.searchRowStyles}
+        onPress={() => {
+          setSearchData([]);
+          setSearchText('');
+          setShowSearch(false);
+        }}>
+        <Text style={styles.searchRowTextStyles}>{item}</Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={styles.container}>
       {renderHeader()}
       {renderListView()}
       {renderSpinner()}
+      {showSearch && renderSearchView()}
     </View>
   );
 };

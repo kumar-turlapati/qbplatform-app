@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {View, StyleSheet, Text, Dimensions, Alert} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, StyleSheet, Text, Dimensions, Alert } from 'react-native';
 import CommonHeader from '../UI/CommonHeader';
 import {
   SearchIcon,
@@ -8,12 +8,12 @@ import {
   // ArrowLeft,
   BackHome,
 } from '../../../icons/Icons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
-import {RNCamera} from 'react-native-camera';
-import {colors} from '../../../theme/colors';
-import {getValue} from '../../../utils/asyncStorage';
-import {getItemsByBarcode} from '../../../networkcalls/apiCalls';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import { RNCamera } from 'react-native-camera';
+import { colors } from '../../../theme/colors';
+import { getValue } from '../../../utils/asyncStorage';
+import { getItemsByBarcode } from '../../../networkcalls/apiCalls';
 import CommonSpinner from '../UI/CommonSpinner';
 import Analytics from 'appcenter-analytics';
 import BarcodeMask from 'react-native-barcode-mask';
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Orders = ({navigation}) => {
+export const Orders = ({ navigation }) => {
   const [showBarcode, setShowBarcode] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
 
@@ -163,7 +163,7 @@ export const Orders = ({navigation}) => {
             />
           </View>
         </TouchableOpacity>
-        <View style={{backgroundColor: 'black', opacity: 0.1, height: 1}} />
+        <View style={{ backgroundColor: 'black', opacity: 0.1, height: 1 }} />
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => {
@@ -175,7 +175,7 @@ export const Orders = ({navigation}) => {
             <View
               style={[
                 styles.iconBackgroundStyle,
-                {backgroundColor: 'rgb(191,39,228)'},
+                { backgroundColor: 'rgb(191,39,228)' },
               ]}>
               <BarCodeIcon />
             </View>
@@ -210,7 +210,7 @@ export const Orders = ({navigation}) => {
     return (
       <View style={styles.cameraStyle}>
         <RNCamera
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           type={RNCamera.Constants.Type.back}
           flashMode={RNCamera.Constants.FlashMode.on}
           barCodeTypes={[RNCamera.Constants.BarCodeType.ean13]}
@@ -227,9 +227,12 @@ export const Orders = ({navigation}) => {
             top: 0,
             left: 0,
             right: 0,
-            height: 80,
+            height: 70,
             backgroundColor: colors.WHITE,
             width: '100%',
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between'
           }}>
           <TouchableOpacity
             style={{
@@ -237,14 +240,16 @@ export const Orders = ({navigation}) => {
               height: 40,
               alignItems: 'center',
               justifyContent: 'center',
-              marginTop: 35,
+              marginTop: 25,
             }}
             activeOpacity={1}
             onPress={() => {
               setShowBarcode(false);
             }}>
-            <BackHome style={{width: 13, height: 21}} />
+            <BackHome style={{ width: 13, height: 21 }} />
           </TouchableOpacity>
+          <Text style={{ marginTop: 35, marginLeft: -25, fontWeight: '600' }}>Barcode Scan</Text>
+          <View />
         </View>
       </View>
     );

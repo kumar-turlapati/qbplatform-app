@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -8,18 +8,18 @@ import {
   View,
 } from 'react-native';
 import CommonSearchHeader from '../UI/CommonSearchHeader';
-import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
-import {getValue} from '../../../utils/asyncStorage';
-import {getCustomerName} from '../../../networkcalls/apiCalls';
-import {colors} from '../../../theme/colors';
-import {theme} from '../../../theme/theme';
-import {ShoppingCartContext} from '../../context/ShoppingCartProvider';
+import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import { getValue } from '../../../utils/asyncStorage';
+import { getCustomerName } from '../../../networkcalls/apiCalls';
+import { colors } from '../../../theme/colors';
+import { theme } from '../../../theme/theme';
+import { ShoppingCartContext } from '../../context/ShoppingCartProvider';
 
 // const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    ...theme.viewStyles.restContainer,
+    ...theme.viewStyles.container,
   },
   mainDescriptionStyle: {
     ...theme.viewStyles.descriptionStyles,
@@ -33,12 +33,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export const CustomerNameSearch = ({navigation, route}) => {
+export const CustomerNameSearch = ({ navigation, route }) => {
   const [names, setNames] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
   const redirectTo = route.params.redirectTo ? route.params.redirectTo : '';
 
-  const {setSelectedCustomerName} = useContext(ShoppingCartContext);
+  const { setSelectedCustomerName } = useContext(ShoppingCartContext);
 
   useEffect(() => {
     setShowSpinner(true);
@@ -110,7 +110,7 @@ export const CustomerNameSearch = ({navigation, route}) => {
 
   const renderListView = () => {
     return (
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <FlatList
           style={{
             flex: 1,
@@ -119,7 +119,7 @@ export const CustomerNameSearch = ({navigation, route}) => {
             marginBottom: 0,
           }}
           data={names}
-          renderItem={({item, index}) => renderRow(item, index)}
+          renderItem={({ item, index }) => renderRow(item, index)}
           keyExtractor={item => item}
           removeClippedSubviews={true}
           showsVerticalScrollIndicator={false}

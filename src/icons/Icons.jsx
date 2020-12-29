@@ -1,15 +1,15 @@
 import React from 'react';
-import {Image, ImageProps} from 'react-native';
+import { Image, ImageProps } from 'react-native';
 
 const getIconStyle = size => {
-  if (size === 'sm') return {width: 24, height: 24};
-  if (size === 'sm_l') return {width: 18, height: 21};
-  if (size === 'md_l') return {width: 54, height: 54};
-  if (size === 'lg') return {width: 64, height: 64};
-  return {width: 48, height: 48};
+  if (size === 'sm') return { width: 24, height: 24 };
+  if (size === 'sm_l') return { width: 18, height: 21 };
+  if (size === 'md_l') return { width: 54, height: 54 };
+  if (size === 'lg') return { width: 64, height: 64 };
+  return { width: 48, height: 48 };
 };
 
-export const IconBase = ({size, style, ...props}) => (
+export const IconBase = ({ size, style, ...props }) => (
   <Image style={[getIconStyle(size), style]} {...props} />
 );
 
@@ -107,7 +107,7 @@ export const BackHome = props => (
 export const SearchIcon = props => (
   <IconBase
     {...props}
-    style={{width: 17, height: 17}}
+    style={{ width: 17, height: 17 }}
     source={require('./SearchIcon.png')}
     resizeMode={'contain'}
   />
@@ -116,7 +116,7 @@ export const SearchIcon = props => (
 export const BarCodeIcon = props => (
   <IconBase
     {...props}
-    style={{width: 23, height: 23}}
+    style={{ width: 23, height: 23 }}
     source={require('./BarCode.png')}
     resizeMode={'contain'}
   />
@@ -222,6 +222,30 @@ export const ArrowRight = props => (
   <IconBase
     {...props}
     source={require('./ic_arrow_right.png')}
+    resizeMode={'contain'}
+  />
+);
+
+export const SearchClose = (props) => (
+  <IconBase
+    {...props}
+    source={require('./SearchClose.png')}
+    resizeMode={'contain'}
+  />
+);
+
+export const Search_Glyph = (props) => (
+  <IconBase
+    {...props}
+    source={require('./Search_Glyph.png')}
+    resizeMode={'contain'}
+  />
+);
+
+export const SmallLogo = (props) => (
+  <IconBase
+    {...props}
+    source={require('./smallLogo.png')}
     resizeMode={'contain'}
   />
 );

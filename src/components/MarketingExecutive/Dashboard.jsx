@@ -1,5 +1,5 @@
-import React, {useEffect, useCallback} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import React, { useEffect, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   StyleSheet,
@@ -24,14 +24,14 @@ import {
   OrdersIcon,
   LogoutIcon,
 } from '../../icons/Icons';
-import {useState} from 'react';
+import { useState } from 'react';
 // import {colors} from '../../theme/colors';
-import {theme} from '../../theme/theme';
-import {clearAllData} from '../../utils/asyncStorage';
-import {clientName} from '../../../qbconfig';
-import {getValue} from '../../utils/asyncStorage';
+import { theme } from '../../theme/theme';
+import { clearAllData } from '../../utils/asyncStorage';
+import { clientName } from '../../../qbconfig';
+import { getValue } from '../../utils/asyncStorage';
 import axios from 'axios';
-import {restEndPoints, requestHeadersWoOrg} from '../../../qbconfig';
+import { restEndPoints, requestHeadersWoOrg } from '../../../qbconfig';
 import CommonSpinner from '../../components/MarketingExecutive/UI/CommonSpinner';
 import _find from 'lodash/find';
 
@@ -126,17 +126,17 @@ const styles = StyleSheet.create({
 
 const list = [
   {
-    icon: <AppointmentsIcon style={{width: 36, height: 30}} />,
+    icon: <AppointmentsIcon style={{ width: 36, height: 30 }} />,
     title: 'Appointments',
     statKey: 'appointments',
   },
   {
-    icon: <OrdersIcon style={{width: 31, height: 30}} />,
+    icon: <OrdersIcon style={{ width: 31, height: 30 }} />,
     title: 'Orders',
     statKey: 'orders',
   },
   {
-    icon: <ReceiptsIcon style={{width: 23, height: 30}} />,
+    icon: <ReceiptsIcon style={{ width: 23, height: 30 }} />,
     title: 'Receipts',
     statKey: 'receipts',
   },
@@ -145,13 +145,13 @@ const list = [
   //   title: 'Customers',
   // },
   {
-    icon: <GalleryIcon style={{width: 36, height: 29}} />,
+    icon: <GalleryIcon style={{ width: 36, height: 29 }} />,
     title: 'Catalogs',
     statKey: 'catalogs',
   },
 ];
 
-export const Dashboard = ({navigation}) => {
+export const Dashboard = ({ navigation }) => {
   const [showSideMenu, setShowSideMenu] = useState(false);
   const [showSpinner, setShowSpinner] = useState(false);
   const [stats, setStats] = useState([]);
@@ -183,10 +183,9 @@ export const Dashboard = ({navigation}) => {
       const fullNameSplit = fullName.split(' ');
       if (fullNameSplit.length > 0) {
         setShortName(
-          `${fullNameSplit[0][0]}${
-            fullNameSplit[1].length > 0
-              ? fullNameSplit[1][0]
-              : fullNameSplit[0][1]
+          `${fullNameSplit[0][0]}${fullNameSplit[1].length > 0
+            ? fullNameSplit[1][0]
+            : fullNameSplit[0][1]
           }`,
         );
       } else {
@@ -233,7 +232,7 @@ export const Dashboard = ({navigation}) => {
         <Text style={theme.viewStyles.textDashboardHeaderStyles}>
           {clientName}
         </Text>
-        <View style={{width: 40, height: 1}} />
+        <View style={{ width: 40, height: 1 }} />
       </View>
     );
   };
@@ -246,13 +245,13 @@ export const Dashboard = ({navigation}) => {
         keyExtractor={item => item.title}
         contentContainerStyle={{
           marginHorizontal: 16,
-          marginTop: 14,
+          marginTop: 100,
           flex: 1,
         }}
         numColumns={2}
-        renderItem={({item, index}) => {
+        renderItem={({ item, index }) => {
           const statKey = item.statKey;
-          const moduleStats = _find(stats, {moduleName: statKey});
+          const moduleStats = _find(stats, { moduleName: statKey });
           const recordCount =
             moduleStats && moduleStats.recordCount
               ? moduleStats.recordCount
@@ -290,7 +289,7 @@ export const Dashboard = ({navigation}) => {
   const renderFooterView = () => {
     return (
       <View>
-        <View style={{height: 20}} />
+        <View style={{ height: 20 }} />
       </View>
     );
   };
@@ -329,7 +328,7 @@ export const Dashboard = ({navigation}) => {
           flex: 1,
         }}
         numColumns={1}
-        renderItem={({item, index}) => (
+        renderItem={({ item, index }) => (
           <View
             style={{
               height: 58,
@@ -418,8 +417,8 @@ export const Dashboard = ({navigation}) => {
               }}
             />
             <View
-              style={{height: '100%', width: '80%', backgroundColor: 'white'}}>
-              <View style={{marginTop: 24, flex: 1}}>
+              style={{ height: '100%', width: '80%', backgroundColor: 'white' }}>
+              <View style={{ marginTop: 24, flex: 1 }}>
                 <TouchableOpacity
                   activeOpacity={1}
                   onPress={() => {
@@ -428,7 +427,7 @@ export const Dashboard = ({navigation}) => {
                     //   ScreenNamesMarketing.MYPROFILE,
                     // ); /*** uncomment it during the edit profilr integration ***/
                   }}>
-                  <View style={{flexDirection: 'row', marginLeft: 14}}>
+                  <View style={{ flexDirection: 'row', marginLeft: 14 }}>
                     <Image style={styles.imageStyle} />
                     <Text style={styles.imageTextStyle}>
                       {shortName.toUpperCase()}
@@ -442,7 +441,7 @@ export const Dashboard = ({navigation}) => {
                 {renderListView()}
               </View>
               <View
-                style={{borderTopColor: 'rgba(0,0,0,0.1)', borderTopWidth: 1}}>
+                style={{ borderTopColor: 'rgba(0,0,0,0.1)', borderTopWidth: 1 }}>
                 <TouchableOpacity
                   activeOpacity={1}
                   onPress={() => {
@@ -459,7 +458,7 @@ export const Dashboard = ({navigation}) => {
                         marginTop: 24,
                         flexDirection: 'row',
                       }}>
-                      <LogoutIcon style={{width: 24, height: 24}} />
+                      <LogoutIcon style={{ width: 24, height: 24 }} />
                       <Text style={styles.logoutStyles}>Logout</Text>
                     </View>
                   </View>
