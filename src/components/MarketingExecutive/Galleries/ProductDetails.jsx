@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -7,13 +7,13 @@ import {
   TextInput,
   Platform,
 } from 'react-native';
-import {theme} from '../../../theme/theme';
+import { theme } from '../../../theme/theme';
 import CommonHeader from '../UI/CommonHeader';
 import Carousel from 'react-native-snap-carousel';
 // import {Product, ProductFullScreen, CrossIcon} from '../../icons/Icons';
-import {CrossIcon} from '../../../icons/Icons';
-import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
-import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
+import { CrossIcon } from '../../../icons/Icons';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
 import {
   cdnUrl,
   clientCode,
@@ -25,11 +25,12 @@ import {
 // import axios from 'axios';
 import _startCase from 'lodash/startCase';
 import _lowerCase from 'lodash/lowerCase';
-import {Image} from 'react-native-elements';
+import { Image } from 'react-native-elements';
 import ImageZoom from 'react-native-image-pan-zoom';
-import {ShoppingCartContext} from '../../context/ShoppingCartProvider';
+import { ShoppingCartContext } from '../../context/ShoppingCartProvider';
+import { colors } from '../../../theme/colors';
 
-const {width: winWidth, height: winHeight} = Dimensions.get('window');
+const { width: winWidth, height: winHeight } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -141,8 +142,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ProductDetails = ({route, navigation}) => {
-  const {addToCart, cartItems} = useContext(ShoppingCartContext);
+export const ProductDetails = ({ route, navigation }) => {
+  const { addToCart, cartItems } = useContext(ShoppingCartContext);
 
   const [orderQty, setOrderQty] = useState('1');
   const [showFullScreen, setShowFullScreen] = useState(false);
@@ -180,7 +181,7 @@ export const ProductDetails = ({route, navigation}) => {
         onPressLeftButton={() => {
           navigation.goBack();
         }}
-        onAddIconPress={() => {}}
+        onAddIconPress={() => { }}
         searchIcon={false}
         onPressSearchIcon={() => {
           console.log('search clicked');
@@ -204,7 +205,7 @@ export const ProductDetails = ({route, navigation}) => {
     />
   );
 
-  const renderSliderItem = ({item}) => {
+  const renderSliderItem = ({ item }) => {
     const imageUrl = encodeURI(
       `${cdnUrl}/${clientCode}/${productLocationKey}/${item.imageName}`,
     );
@@ -218,8 +219,8 @@ export const ProductDetails = ({route, navigation}) => {
         key={item.itemID}>
         <View style={styles.onboardingViewStyles}>
           <Image
-            source={{uri: imageUrl}}
-            style={{height: 280, width: winWidth - 80}}
+            source={{ uri: imageUrl }}
+            style={{ height: 280, width: winWidth - 80 }}
           />
         </View>
       </TouchableOpacity>
@@ -245,7 +246,7 @@ export const ProductDetails = ({route, navigation}) => {
     );
   };
 
-  const renderSliderFullView = ({item}) => {
+  const renderSliderFullView = ({ item }) => {
     const imageUrl = encodeURI(
       `${cdnUrl}/${clientCode}/${productLocationKey}/${item.imageName}`,
     );
@@ -257,7 +258,7 @@ export const ProductDetails = ({route, navigation}) => {
           imageWidth={winWidth}
           imageHeight={winHeight}>
           <Image
-            source={{uri: imageUrl}}
+            source={{ uri: imageUrl }}
             style={{
               width: winWidth - 50,
               height: winHeight - 150,
@@ -323,7 +324,7 @@ export const ProductDetails = ({route, navigation}) => {
   const renderTitleAndButton = () => {
     return (
       <View style={styles.titleViewStyle}>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <Text style={styles.titleStyle}>{productName}</Text>
         </View>
         <Text style={styles.priceStyles}>
@@ -352,12 +353,12 @@ export const ProductDetails = ({route, navigation}) => {
               }}
               value={orderQty}
               maxLength={3}
-              onEndEditing={e => {}}
+              onEndEditing={e => { }}
               keyboardType="numeric"
             />
             <TouchableOpacity
               activeOpacity={1}
-              style={styles.addToCartStyles}
+              style={[styles.addToCartStyles, { backgroundColor: colors.BLACK }]}
               onPress={() => {
                 navigation.navigate(ScreenNamesMarketing.ORDERPRODUCTSEARCH, {
                   itemName: productName,
@@ -365,10 +366,10 @@ export const ProductDetails = ({route, navigation}) => {
                 });
               }}
               disabled={buttonDisable}>
-              <Text style={styles.addToCartStyle}>CHECK STOCK</Text>
+              <Text style={[styles.addToCartStyle, { fontSize: 14, color: colors.WHITE, fontWeight: '400' }]}>CHECK AVAILABILITY</Text>
             </TouchableOpacity>
           </View>
-          <View style={{opacity: disableViewCart ? 0.5 : 1}}>
+          <View style={{ opacity: disableViewCart ? 0.5 : 1 }}>
             <TouchableOpacity
               activeOpacity={1}
               style={[styles.buyNowStyles]}
@@ -377,7 +378,7 @@ export const ProductDetails = ({route, navigation}) => {
               }}
               disabled={disableViewCart}>
               <Text
-                style={[styles.addToCartStyle, {color: theme.colors.WHITE}]}>
+                style={[styles.addToCartStyle, { color: theme.colors.WHITE }]}>
                 VIEW CART
               </Text>
             </TouchableOpacity>
@@ -391,7 +392,7 @@ export const ProductDetails = ({route, navigation}) => {
     return (
       <View style={styles.descripitonViewStyle}>
         <View style={styles.descripitonSubViewStyle} />
-        <Text style={[styles.descriptionTextStyle, {fontWeight: 'bold'}]}>
+        <Text style={[styles.descriptionTextStyle, { fontWeight: 'bold' }]}>
           About
         </Text>
         {/* <View
@@ -404,26 +405,26 @@ export const ProductDetails = ({route, navigation}) => {
             height: 1,
           }}
         /> */}
-        <View style={{marginLeft: 24, marginTop: -20}}>
+        <View style={{ marginLeft: 24, marginTop: -20 }}>
           {/* <Text style={styles.addToCartStyle}>{'Size & Fit'}</Text> */}
-          <Text style={[styles.addToCartStyle, {fontSize: 15}]}>
+          <Text style={[styles.addToCartStyle, { fontSize: 15 }]}>
             {productDescription}
           </Text>
           <Text
             style={[
               styles.addToCartStyle,
-              {fontWeight: 'normal', marginTop: -5},
+              { fontWeight: 'normal', marginTop: -5 },
             ]}
           />
         </View>
-        <View style={{marginLeft: 24, marginTop: -20}}>
-          <Text style={[styles.addToCartStyle, {fontWeight: 'bold'}]}>
+        <View style={{ marginLeft: 24, marginTop: -20 }}>
+          <Text style={[styles.addToCartStyle, { fontWeight: 'bold' }]}>
             Specifications
           </Text>
           <Text
             style={[
               styles.addToCartStyle,
-              {fontWeight: 'normal', marginTop: -10},
+              { fontWeight: 'normal', marginTop: -10 },
             ]}>
             Packed Qty. -{' '}
             {`${parseFloat(packedQty).toFixed(2)} ${_lowerCase(
@@ -433,20 +434,20 @@ export const ProductDetails = ({route, navigation}) => {
           <Text
             style={[
               styles.addToCartStyle,
-              {fontWeight: 'normal', marginTop: -5},
+              { fontWeight: 'normal', marginTop: -5 },
             ]}>
             Brand - {_startCase(_lowerCase(productBrand))}
           </Text>
           <Text
             style={[
               styles.addToCartStyle,
-              {fontWeight: 'normal', marginTop: -5},
+              { fontWeight: 'normal', marginTop: -5 },
             ]}>
             Category - {_startCase(_lowerCase(productCategory))}
           </Text>
         </View>
-        <View style={{marginLeft: 24, marginTop: 10}}>
-          <Text style={[styles.addToCartStyle, {fontWeight: 'bold'}]}>
+        <View style={{ marginLeft: 24, marginTop: 10 }}>
+          <Text style={[styles.addToCartStyle, { fontWeight: 'bold' }]}>
             Billing Information
           </Text>
           <Text

@@ -248,7 +248,7 @@ export const Orders = ({ navigation }) => {
             }}>
             <BackHome style={{ width: 13, height: 21 }} />
           </TouchableOpacity>
-          <Text style={{ marginTop: 35, marginLeft: -25, fontWeight: '600' }}>Barcode Scan</Text>
+          <Text style={{ marginTop: 35, marginLeft: -25, fontWeight: '600', color: colors.RED, fontSize: 16 }}>Barcode Scan</Text>
           <View />
         </View>
       </View>

@@ -1,4 +1,5 @@
 import { Dimensions } from 'react-native';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { colors } from './colors';
 
 const { width } = Dimensions.get('window');
@@ -190,7 +191,11 @@ export const viewStyles = {
   },
   headerMainStyles: {
     width: width,
-    height: 88,
+    ...ifIphoneX({
+      height: 90,
+    }, {
+      height: 75, //changed
+    }),
     backgroundColor: colors.WHITE,
     justifyContent: 'space-between',
     alignItems: 'flex-start',
