@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -7,18 +7,27 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { colors } from '../../../theme/colors';
-import { theme } from '../../../theme/theme';
+import {colors} from '../../../theme/colors';
+import {theme} from '../../../theme/theme';
 import _orderBy from 'lodash/orderBy';
-import { cdnUrl, clientCode, clientName } from '../../../../qbconfig';
-import { Image } from 'react-native-elements';
-import { Loader } from '../../Loader';
+import {
+  cdnUrl,
+  clientCode,
+  clientName,
+  requestHeadersWoOrg,
+  restEndPoints,
+} from '../../../../qbconfig';
+import {Image} from 'react-native-elements';
+import {Loader} from '../../Loader';
 import _startCase from 'lodash/startCase';
 import _toLower from 'lodash/toLower';
-import { ScreenNamesMarketing } from '../../../helpers/ScreenNames';
+import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
 import SearchHeader from '../UI/SearchHeader';
+import {useDebounce} from 'use-debounce';
+import {getValue} from '../../../utils/asyncStorage';
+import axios from 'axios';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -60,11 +69,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ShowBrands = ({ route, navigation }) => {
-  const { title, catsSubcats, categoryId } = route.params;
+export const ShowBrands = ({route, navigation}) => {
+  const {title, catsSubcats, categoryId} = route.params;
   const [showSearch, setShowSearch] = useState(false);
   const [searchData, setSearchData] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [debouncedText] = useDebounce(searchText, 300);
 
   let brands = [];
   catsSubcats.map(catSubCatDetails => {
@@ -73,6 +83,34 @@ export const ShowBrands = ({ route, navigation }) => {
   });
 
   const orderedBrands = _orderBy(brands, ['weight'], ['asc']);
+
+  // console.log(searchData, 'search data is....');
+
+  const searchItems = async () => {
+    // console.log(debouncedText, 'debouncedText is........');
+    const accessToken = await getValue('accessToken');
+    requestHeadersWoOrg['Access-Token'] = accessToken;
+    if (searchText.length >= 3) {
+      try {
+        await axios
+          .get(`${restEndPoints.CATALOG_ITEMS_AC.URL}?q=${debouncedText}`, {
+            headers: requestHeadersWoOrg,
+          })
+          .then(apiResponse => {
+            setShowSearch(true);
+            setSearchData(apiResponse.data);
+            // console.log(apiResponse.data, 'apiResponse');
+          })
+          .catch(error => {
+            // if (checkTokenExpired(error))
+            //   navigation.push(ScreenNamesCustomer.LOGIN);
+            console.log(error.response.data, '@@@@@@@@@@@@@@@@@@@@@@@@@@');
+          });
+      } catch (error) {
+        console.log(error, '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+      }
+    }
+  };
 
   useEffect(() => {
     return () => {
@@ -97,12 +135,12 @@ export const ShowBrands = ({ route, navigation }) => {
           // console.log('onPressSearchCloseButton');
           setSearchData([]);
         }}
-        onTextChange={(changedText) => {
+        onTextChange={changedText => {
           setSearchText(changedText);
           if (changedText.length === 0) {
             setSearchData([]);
           } else {
-            // searchItems();
+            searchItems();
           }
         }}
         onPressBackButton={() => {
@@ -126,7 +164,7 @@ export const ShowBrands = ({ route, navigation }) => {
         }}
         data={orderedBrands}
         numColumns={2}
-        renderItem={({ item }) => renderRow(item)}
+        renderItem={({item}) => renderRow(item)}
         keyExtractor={item => item.categoryCode}
         removeClippedSubviews={false}
         showsHorizontalScrollIndicator={false}
@@ -151,8 +189,8 @@ export const ShowBrands = ({ route, navigation }) => {
           });
         }}>
         <Image
-          source={{ uri: imageUrl }}
-          style={{ width: 150, height: 150 }}
+          source={{uri: imageUrl}}
+          style={{width: 150, height: 150}}
           resizeMode="stretch"
           PlaceholderContent={<Loader />}
         />
@@ -166,12 +204,12 @@ export const ShowBrands = ({ route, navigation }) => {
         style={{
           flex: 1,
           position: 'absolute',
-          marginTop: 88,
+          marginTop: 77,
           height: height - 88,
           backgroundColor: theme.colors.BLACK_WITH_OPACITY_5,
         }}
         data={searchData}
-        renderItem={({ item }) => renderSearchRow(item)}
+        renderItem={({item}) => renderSearchRow(item)}
         keyExtractor={item => item}
         removeClippedSubviews={false}
         showsHorizontalScrollIndicator={false}
@@ -189,6 +227,9 @@ export const ShowBrands = ({ route, navigation }) => {
           setSearchData([]);
           setSearchText('');
           setShowSearch(false);
+          navigation.navigate(ScreenNamesMarketing.PRODUCTDETAILSFROMSEARCH, {
+            itemName: item,
+          });
         }}>
         <Text style={styles.searchRowTextStyles}>{item}</Text>
       </TouchableOpacity>

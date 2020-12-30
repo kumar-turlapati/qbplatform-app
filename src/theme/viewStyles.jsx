@@ -1,8 +1,8 @@
-import { Dimensions } from 'react-native';
-import { ifIphoneX } from 'react-native-iphone-x-helper';
-import { colors } from './colors';
+import {Dimensions} from 'react-native';
+import {ifIphoneX} from 'react-native-iphone-x-helper';
+import {colors} from './colors';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 export const viewStyles = {
   flex: {
@@ -61,7 +61,7 @@ export const viewStyles = {
     marginTop: 50,
   },
   textDashboardHeaderStyles: {
-    marginTop: 54,
+    marginTop: 30,
     height: 20,
     fontSize: 17,
     lineHeight: 22,
@@ -70,7 +70,7 @@ export const viewStyles = {
   },
   headerDashboardStyles: {
     width: width,
-    height: 88,
+    height: 70,
     backgroundColor: 'white',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
@@ -191,11 +191,14 @@ export const viewStyles = {
   },
   headerMainStyles: {
     width: width,
-    ...ifIphoneX({
-      height: 90,
-    }, {
-      height: 75, //changed
-    }),
+    ...ifIphoneX(
+      {
+        height: 90,
+      },
+      {
+        height: 75, //changed
+      },
+    ),
     backgroundColor: colors.WHITE,
     justifyContent: 'space-between',
     alignItems: 'flex-start',

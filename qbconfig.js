@@ -4,7 +4,7 @@ const apiBaseUrl = 'http://api-retail-clothing.qwikbills.com';
 export const clientCode = 'nVlnoRYkRCGWulS';
 
 // client name
-export const clientName = 'S V FABRICS';
+export const clientName = 'S V FABRICS PRIVATE LIMITED';
 
 // this can be used where there is a need for org id
 export const requestHeaders = {
@@ -72,6 +72,9 @@ export const restEndPoints = {
   CATALOGS: {URL: `${apiBaseUrl}/app/v1/catalog`},
   CATALOG_DETAILS: {
     URL: catalogCode => `${apiBaseUrl}/app/v1/catalog/details/${catalogCode}`,
+  },
+  CATALOG_ITEMS_AC: {
+    URL: `${apiBaseUrl}/catalog/item/ac`,
   },
   DETAILS_BY_NAME: {
     URL: productName =>

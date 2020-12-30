@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -6,22 +6,26 @@ import {
   ImageBackground,
   TouchableOpacity,
   Text,
+  Dimensions,
 } from 'react-native';
-import CommonHeader from '../UI/CommonHeader';
-import { MenuBig } from '../../../icons/Icons';
+// import CommonHeader from '../UI/CommonHeader';
+import {MenuBig} from '../../../icons/Icons';
 import {
   ScreenNamesMarketing,
   ScreenNamesGeneral,
 } from '../../../helpers/ScreenNames';
-import { theme } from '../../../theme/theme';
-import { getValue } from '../../../utils/asyncStorage';
+import {theme} from '../../../theme/theme';
+import {getValue} from '../../../utils/asyncStorage';
 import _find from 'lodash/find';
 import _map from 'lodash/map';
 import _compact from 'lodash/compact';
-import { cdnUrl, clientCode, clientName } from '../../../../qbconfig';
+import {cdnUrl, clientCode, clientName} from '../../../../qbconfig';
 import axios from 'axios';
-import { restEndPoints, requestHeaders } from '../../../../qbconfig';
+import {restEndPoints, requestHeaders} from '../../../../qbconfig';
 import SearchHeader from '../UI/SearchHeader';
+import {useDebounce} from 'use-debounce';
+
+const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -40,20 +44,35 @@ const styles = StyleSheet.create({
   descriptionStyles: {
     ...theme.viewStyles.galleryDescriptionStyles,
   },
+  searchRowStyles: {
+    height: 44,
+    backgroundColor: theme.colors.WHITE,
+    width: width,
+    borderBottomColor: theme.colors.SEPERATOR_COLOR,
+    borderBottomWidth: 0.5,
+  },
+  searchRowTextStyles: {
+    paddingLeft: 15,
+    paddingTop: 10,
+    fontSize: 17,
+    lineHeight: 22,
+    letterSpacing: -0.408,
+    color: theme.colors.BLACK,
+  },
 });
 
-export const Galleries = ({ navigation, route }) => {
+export const Galleries = ({navigation, route}) => {
   const [businessLocations, setBusinessLocations] = useState([]);
   const [catalogs, setCatalogs] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchData, setSearchData] = useState([]);
   const [searchText, setSearchText] = useState('');
-
   const categoryId =
     route.params && route.params.categoryId ? route.params.categoryId : 0;
   const subCategoryId =
     route.params && route.params.subCategoryId ? route.params.subCategoryId : 0;
+  const [debouncedText] = useDebounce(searchText, 500);
 
   useEffect(() => {
     setShowSpinner(true);
@@ -65,12 +84,13 @@ export const Galleries = ({ navigation, route }) => {
   const catalogListCalling = async () => {
     const accessToken = await getValue('accessToken');
     requestHeaders['Access-Token'] = accessToken;
-    const catalogsUrl = `${restEndPoints.CATALOGS.URL
-      }?categoryID=${categoryId}&subCategoryID=${subCategoryId}`;
+    const catalogsUrl = `${
+      restEndPoints.CATALOGS.URL
+    }?categoryID=${categoryId}&subCategoryID=${subCategoryId}`;
 
     try {
       await axios
-        .get(catalogsUrl, { headers: requestHeaders })
+        .get(catalogsUrl, {headers: requestHeaders})
         .then(apiResponse => {
           setShowSpinner(false);
           const catalogs = apiResponse.data.response.catalogs;
@@ -101,6 +121,33 @@ export const Galleries = ({ navigation, route }) => {
     }
   };
 
+  const searchItems = async () => {
+    // console.log(debouncedText, 'debouncedText is........');
+    const accessToken = await getValue('accessToken');
+    requestHeaders['Access-Token'] = accessToken;
+
+    if (searchText.length >= 3) {
+      try {
+        await axios
+          .get(`${restEndPoints.CATALOG_ITEMS_AC.URL}?q=${debouncedText}`, {
+            headers: requestHeaders,
+          })
+          .then(apiResponse => {
+            setSearchData(apiResponse.data);
+            setShowSearch(true);
+            // console.log(apiResponse.data, 'apiResponse');
+          })
+          .catch(error => {
+            // if (checkTokenExpired(error))
+            //   navigation.push(ScreenNamesCustomer.LOGIN);
+            // console.log(error.response, '@@@@@@@@@@@@@@@@@@@@@@@@@@');
+          });
+      } catch (error) {
+        // console.log(error, '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+      }
+    }
+  };
+
   const renderHeader = () => {
     return (
       <SearchHeader
@@ -118,12 +165,12 @@ export const Galleries = ({ navigation, route }) => {
           // console.log('onPressSearchCloseButton');
           setSearchData([]);
         }}
-        onTextChange={(changedText) => {
+        onTextChange={changedText => {
           setSearchText(changedText);
           if (changedText.length === 0) {
             setSearchData([]);
           } else {
-            // searchItems();
+            searchItems();
           }
         }}
         onPressBackButton={() => {
@@ -146,9 +193,10 @@ export const Galleries = ({ navigation, route }) => {
     );
     let imageUrl = imageLocation
       ? encodeURI(
-        `${cdnUrl}/${clientCode}/${imageLocation.locationCode}/${item.imageName
-        }`,
-      )
+          `${cdnUrl}/${clientCode}/${imageLocation.locationCode}/${
+            item.imageName
+          }`,
+        )
       : '';
     // if (imageUrl === '') {
     //   imageUrl = require('../../../icons/Aravinda.png');
@@ -163,7 +211,7 @@ export const Galleries = ({ navigation, route }) => {
               catalogCode: item.catalogCode,
             });
           }}>
-          <ImageBackground style={styles.rowStyle} source={{ uri: imageUrl }}>
+          <ImageBackground style={styles.rowStyle} source={{uri: imageUrl}}>
             <View style={theme.viewStyles.galleryRowOverlayView} />
             <Text style={styles.textStyle}>{item.catalogName}</Text>
             <Text style={styles.descriptionStyles}>{item.catalogDesc}</Text>
@@ -183,7 +231,7 @@ export const Galleries = ({ navigation, route }) => {
           marginBottom: 0,
         }}
         data={catalogs}
-        renderItem={({ item, index }) => renderRow(item, index)}
+        renderItem={({item, index}) => renderRow(item, index)}
         keyExtractor={item => item.catalogName}
         removeClippedSubviews={true}
         showsHorizontalScrollIndicator={false}
@@ -196,19 +244,18 @@ export const Galleries = ({ navigation, route }) => {
     return <CommonSpinner animating={showSpinner} />;
   };
 
-
   const renderSearchView = () => {
     return (
       <FlatList
         style={{
           flex: 1,
           position: 'absolute',
-          marginTop: 88,
+          marginTop: 77,
           height: height - 88,
           backgroundColor: theme.colors.BLACK_WITH_OPACITY_5,
         }}
         data={searchData}
-        renderItem={({ item }) => renderSearchRow(item)}
+        renderItem={({item}) => renderSearchRow(item)}
         keyExtractor={item => item}
         removeClippedSubviews={false}
         showsHorizontalScrollIndicator={false}
@@ -226,6 +273,9 @@ export const Galleries = ({ navigation, route }) => {
           setSearchData([]);
           setSearchText('');
           setShowSearch(false);
+          navigation.navigate(ScreenNamesMarketing.PRODUCTDETAILSFROMSEARCH, {
+            itemName: item,
+          });
         }}>
         <Text style={styles.searchRowTextStyles}>{item}</Text>
       </TouchableOpacity>

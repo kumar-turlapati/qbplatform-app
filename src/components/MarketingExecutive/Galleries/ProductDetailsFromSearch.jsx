@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   Platform,
+  Alert,
 } from 'react-native';
 import {theme} from '../../../theme/theme';
 import CommonHeader from '../UI/CommonHeader';
@@ -13,13 +14,22 @@ import Carousel from 'react-native-snap-carousel';
 import {CrossIcon} from '../../../icons/Icons';
 import {TouchableOpacity, ScrollView} from 'react-native-gesture-handler';
 import {ScreenNamesMarketing} from '../../../helpers/ScreenNames';
-import {cdnUrl, clientCode} from '../../../../qbconfig';
+import {
+  cdnUrl,
+  clientCode,
+  requestHeaders,
+  restEndPoints,
+} from '../../../../qbconfig';
 import _startCase from 'lodash/startCase';
 import _lowerCase from 'lodash/lowerCase';
 import {Image} from 'react-native-elements';
 import ImageZoom from 'react-native-image-pan-zoom';
 import {ShoppingCartContext} from '../../context/ShoppingCartProvider';
 import {colors} from '../../../theme/colors';
+import {getValue} from '../../../utils/asyncStorage';
+import axios from 'axios';
+import _find from 'lodash/find';
+import CommonSpinner from '../UI/CommonSpinner';
 
 const {width: winWidth, height: winHeight} = Dimensions.get('window');
 
@@ -133,36 +143,97 @@ const styles = StyleSheet.create({
   },
 });
 
-export const ProductDetails = ({route, navigation}) => {
+export const ProductDetailsFromSearch = ({route, navigation}) => {
   const {cartItems} = useContext(ShoppingCartContext);
-
+  const itemName = route.params.itemName;
   const [orderQty, setOrderQty] = useState('1');
   const [showFullScreen, setShowFullScreen] = useState(false);
   const [slideIndex, setSlideIndex] = useState(0);
-  // const [showAlert, setShowAlert] = useState(false);
-  // const [alertText, setAlertText] = useState('');
   const [disableViewCart, setDisableViewCart] = useState(true);
+  const [itemDetails, setItemDetails] = useState([]);
+  const [showSpinner, setShowSpinner] = useState(false);
+  const productImages =
+    itemDetails && itemDetails.images ? itemDetails.images : [];
+  const productLocationId =
+    itemDetails && itemDetails.locationID ? itemDetails.locationID : 0;
+  const productRate =
+    itemDetails && itemDetails.itemRate ? itemDetails.itemRate : 0;
+  const mrp = itemDetails && itemDetails.mrp ? itemDetails.mrp : 0;
+  const productName =
+    itemDetails && itemDetails.itemName ? itemDetails.itemName : '';
+  const productDescription =
+    itemDetails && itemDetails.itemDescription
+      ? itemDetails.itemDescription
+      : '';
+  const productCategory =
+    itemDetails && itemDetails.categoryName ? itemDetails.categoryName : '';
+  const productBrand =
+    itemDetails && itemDetails.brandName ? itemDetails.brandName : '';
+  const packedQty =
+    itemDetails && itemDetails.packedQty ? itemDetails.packedQty : '';
+  const productUomName =
+    itemDetails && itemDetails.uomName ? itemDetails.uomName : '';
+  const businessLocations =
+    itemDetails && itemDetails.businessLocations
+      ? itemDetails.businessLocations
+      : [];
 
-  const productImages = route.params.productDetails.images;
-  const productLocationKey = route.params.productLocation;
-  const productRate = route.params.productDetails.itemRate;
-  const productName = route.params.productDetails.itemName;
-  // const productCode = route.params.productDetails.itemID;
-  const productDescription = route.params.productDetails.itemDescription;
-  const productCategory = route.params.productDetails.categoryName;
-  const productBrand = route.params.productDetails.brandName;
-  const packedQty = route.params.productDetails.packedQty;
-  const productUomName = route.params.productDetails.uomName;
-  const mrp = route.params.productDetails.mrp;
   const buttonDisable = false;
-
-  // console.log(cartItems.length, 'cart items length.....');
 
   useEffect(() => {
     if (cartItems && cartItems.length > 0) {
       setDisableViewCart(false);
     }
   }, [cartItems]);
+
+  const showGenericAlert = (title, message) => {
+    Alert.alert(title, message, [
+      {
+        text: 'OK',
+        onPress: () => {
+          // setReloadComponent(true);
+        },
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    const itemDetails = async () => {
+      setShowSpinner(true);
+      const accessToken = await getValue('accessToken');
+      requestHeaders['Access-Token'] = accessToken;
+      try {
+        await axios
+          .post(
+            restEndPoints.CATALOG_ITEM_DETAILS.URL,
+            {itemName: itemName, byNameOrId: 'name'},
+            {headers: requestHeaders},
+          )
+          .then(apiResponse => {
+            // console.log(apiResponse.data);
+            setShowSpinner(false);
+            if (apiResponse.data.status === 'success') {
+              setItemDetails(apiResponse.data.response);
+            } else {
+              showGenericAlert(
+                'Error',
+                'Oops...No product is available with this name :(',
+              );
+            }
+          })
+          .catch(error => {
+            // console.log(error, '@@@@@@@@@@@@@@@@@@@@@@@@@@');
+            setShowSpinner(false);
+            showGenericAlert('Error', 'Oops...Something went wrong :(');
+          });
+      } catch (error) {
+        setShowSpinner(false);
+        // console.log(error, '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+        showGenericAlert('Error', 'Something went wrong... :(');
+      }
+    };
+    itemDetails();
+  }, []);
 
   const renderHeader = () => {
     return (
@@ -197,9 +268,17 @@ export const ProductDetails = ({route, navigation}) => {
   );
 
   const renderSliderItem = ({item}) => {
-    const imageUrl = encodeURI(
-      `${cdnUrl}/${clientCode}/${productLocationKey}/${item.imageName}`,
+    const imageLocation = _find(
+      businessLocations,
+      locationDetails =>
+        parseInt(locationDetails.locationID, 10) ===
+        parseInt(productLocationId, 10),
     );
+
+    const imageUrl = encodeURI(
+      `${cdnUrl}/${clientCode}/${imageLocation.locationCode}/${item.imageName}`,
+    );
+
     return (
       <TouchableOpacity
         activeOpacity={1}
@@ -238,8 +317,15 @@ export const ProductDetails = ({route, navigation}) => {
   };
 
   const renderSliderFullView = ({item}) => {
+    const imageLocation = _find(
+      businessLocations,
+      locationDetails =>
+        parseInt(locationDetails.locationID, 10) ===
+        parseInt(productLocationId, 10),
+    );
+
     const imageUrl = encodeURI(
-      `${cdnUrl}/${clientCode}/${productLocationKey}/${item.imageName}`,
+      `${cdnUrl}/${clientCode}/${imageLocation.locationCode}/${item.imageName}`,
     );
     return (
       <View>
@@ -466,6 +552,10 @@ export const ProductDetails = ({route, navigation}) => {
     );
   };
 
+  const renderSpinner = () => {
+    return <CommonSpinner animating={showSpinner} />;
+  };
+
   return (
     <View style={theme.viewStyles.flex}>
       <ScrollView
@@ -481,6 +571,7 @@ export const ProductDetails = ({route, navigation}) => {
       </ScrollView>
       {showFullScreen && renderImageFullScreen()}
       {showFullScreen && renderSliderFullClose()}
+      {renderSpinner()}
     </View>
   );
 };

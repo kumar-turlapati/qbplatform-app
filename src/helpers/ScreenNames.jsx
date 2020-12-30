@@ -33,6 +33,7 @@ export const ScreenNamesMarketing = {
   SHOWBRANDS: 'ShowBrands',
   SHOWCATEGORIES: 'ShowCategories',
   PRODUCTDETAILS: 'ProductDetails',
+  PRODUCTDETAILSFROMSEARCH: 'ProductDetailsFromSearch',
 };
 
 export const ScreenNamesGeneral = {
