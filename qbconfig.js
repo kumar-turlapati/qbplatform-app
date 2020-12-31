@@ -156,4 +156,5 @@ export const paymentMethods = [
 ];
 
 // payment methods
-export const paymentTypes = ['Wholesale', 'Retail', 'Online', 'Exmill'];
+// export const paymentTypes = ['Wholesale', 'Retail', 'Online', 'Exmill'];
+export const paymentTypes = ['Wholesale', 'Retail'];

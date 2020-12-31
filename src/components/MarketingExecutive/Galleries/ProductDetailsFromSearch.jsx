@@ -448,7 +448,7 @@ export const ProductDetailsFromSearch = ({route, navigation}) => {
                   styles.addToCartStyle,
                   {fontSize: 14, color: colors.WHITE, fontWeight: '400'},
                 ]}>
-                CHECK AVAILABILITY
+                CHECK STOCK
               </Text>
             </TouchableOpacity>
           </View>
