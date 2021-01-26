@@ -83,14 +83,14 @@ export default (CommonDialogView = ({
               onPress={() => {
                 onPressDownloadIndentWr();
               }}>
-              Download Indent With Rate
+              Download Indent - With Rate
             </Text>
             <Text
               style={[styles.buttonStyles]}
               onPress={() => {
                 onPressDownloadIndentWor();
               }}>
-              Download Indent W/o Rate
+              Download Indent - W/o Rate
             </Text>
           </>
         )}
