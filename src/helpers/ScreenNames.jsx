@@ -34,6 +34,7 @@ export const ScreenNamesMarketing = {
   SHOWCATEGORIES: 'ShowCategories',
   PRODUCTDETAILS: 'ProductDetails',
   PRODUCTDETAILSFROMSEARCH: 'ProductDetailsFromSearch',
+  PDFVIEWER: 'PdfViewer',
 };
 
 export const ScreenNamesGeneral = {

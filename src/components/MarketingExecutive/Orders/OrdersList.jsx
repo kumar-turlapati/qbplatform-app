@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
-  // Dimensions,
+  Dimensions,
   FlatList,
   StyleSheet,
   Text,
@@ -25,6 +25,7 @@ import {
 import moment from 'moment';
 import {useIsFocused} from '@react-navigation/native';
 import {NoDataMessage} from '../NoDataMessage';
+import {restEndPoints, clientCode} from '../../../../qbconfig';
 
 // const {height, width} = Dimensions.get('window');
 
@@ -96,6 +97,11 @@ const styles = StyleSheet.create({
     paddingTop: 1,
     overflow: 'hidden',
   },
+  pdf: {
+    flex: 1,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  },
 });
 
 export const OrdersList = ({navigation}) => {
@@ -106,6 +112,17 @@ export const OrdersList = ({navigation}) => {
   const [reloadComponent, setReloadComponent] = useState(false);
   const [showNoDataMessage, setShowNoDataMessage] = useState(false);
   const isFocused = useIsFocused();
+
+  // console.log(pdfUrl, 'pdfurll.....');
+
+  const getPdfUrl = async (indentType, indentNo) => {
+    const accessToken = await getValue('accessToken');
+    const pdfUrl =
+      indentType === 'wor'
+        ? restEndPoints.PRINT_INDENT_WOR.URL(indentNo, accessToken, clientCode)
+        : restEndPoints.PRINT_INDENT_WR.URL(indentNo, accessToken, clientCode);
+    navigation.navigate(ScreenNamesMarketing.PDFVIEWER, {pdfUrl: pdfUrl});
+  };
 
   const getOrderList = async () => {
     setShowSpinner(true);
@@ -390,6 +407,13 @@ export const OrdersList = ({navigation}) => {
           setShowDialogue(false);
         }}
         showCancelButton={parseInt(selectedData.indentStatus) === 0}
+        showDownloadPdfButton
+        onPressDownloadIndentWr={() => {
+          getPdfUrl('wr', selectedData.indentNo);
+        }}
+        onPressDownloadIndentWor={() => {
+          getPdfUrl('wor', selectedData.indentNo);
+        }}
       />
     );
   };

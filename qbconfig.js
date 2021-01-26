@@ -1,4 +1,5 @@
 const apiBaseUrl = 'http://api-retail-clothing.qwikbills.com';
+const pdfUrl = 'https://app.qwikbills.com';
 
 // org id or client code
 export const clientCode = 'nVlnoRYkRCGWulS';
@@ -116,6 +117,14 @@ export const restEndPoints = {
   },
   GET_USER_STATS: {
     URL: uuid => `${apiBaseUrl}/user-stats/${uuid}`,
+  },
+  PRINT_INDENT_WR: {
+    URL: (indentNo, token, clientCode) =>
+      `${pdfUrl}/app-print-indent?indentNo=${indentNo}&token=${token}&clientCode=${clientCode}`,
+  },
+  PRINT_INDENT_WOR: {
+    URL: (indentNo, token, clientCode) =>
+      `${pdfUrl}/app-print-indent-wor?indentNo=${indentNo}&token=${token}&clientCode=${clientCode}`,
   },
 };
 

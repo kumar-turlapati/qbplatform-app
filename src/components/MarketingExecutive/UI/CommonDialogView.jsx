@@ -55,6 +55,9 @@ export default (CommonDialogView = ({
   onPressDelete,
   onPressCancel,
   showCancelButton,
+  showDownloadPdfButton,
+  onPressDownloadIndentWr,
+  onPressDownloadIndentWor,
 }) => {
   const renderButtons = () => {
     return (
@@ -73,6 +76,24 @@ export default (CommonDialogView = ({
           }}>
           Track Status
         </Text>
+        {showDownloadPdfButton && (
+          <>
+            <Text
+              style={[styles.buttonStyles]}
+              onPress={() => {
+                onPressDownloadIndentWr();
+              }}>
+              Download Indent With Rate
+            </Text>
+            <Text
+              style={[styles.buttonStyles]}
+              onPress={() => {
+                onPressDownloadIndentWor();
+              }}>
+              Download Indent W/o Rate
+            </Text>
+          </>
+        )}
         {showCancelButton && (
           <Text
             style={[styles.buttonStyles, {color: '#FF3B30'}]}

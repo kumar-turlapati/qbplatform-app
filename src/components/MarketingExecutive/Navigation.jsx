@@ -42,6 +42,7 @@ import {
 } from '../../helpers/ScreenNames';
 import {Loader} from '../Loader';
 import {getValue} from '../../utils/asyncStorage';
+import {PdfViewer} from '../PdfViewer';
 
 export const AppNavigatorMarketing = () => {
   const Stack = createStackNavigator();
@@ -226,6 +227,10 @@ export const AppNavigatorMarketing = () => {
       <Stack.Screen
         name={ScreenNamesMarketing.PRODUCTDETAILSFROMSEARCH}
         component={ProductDetailsFromSearch}
+      />
+      <Stack.Screen
+        name={ScreenNamesMarketing.PDFVIEWER}
+        component={PdfViewer}
       />
     </Stack.Navigator>
   );
